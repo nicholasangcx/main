@@ -25,6 +25,18 @@ public abstract class Command {
     }
 
     /**
+     * Constructs a feedback message to summarise an operation that displayed
+     * a listing of persons with the specified tags.
+     *
+     * @param displaySize indicates the number of people listed, used to generate summary
+     * @param tagKeywords the tags searched for, used to generate summary
+     * @return summary message for persons displayed
+     */
+    public static String getMessageForTagListShownSummary(int displaySize, String tagKeywords) {
+        return String.format(Messages.MESSAGE_PERSONS_WITH_TAGS_LISTED_OVERVIEW, displaySize, tagKeywords);
+    }
+
+    /**
      * Executes the command and returns the result message.
      *
      * @return feedback message of the operation result for display

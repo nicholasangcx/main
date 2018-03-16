@@ -95,6 +95,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {
         requireNonNull(predicate);
+        logger.info("The current predicate is: " + predicate);
         filteredPersons.setPredicate(predicate);
     }
 

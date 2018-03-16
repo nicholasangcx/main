@@ -118,6 +118,25 @@ Returns `john` and `John Doe`
 * `find Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
 
+=== Locating persons by tags: `tag`
+
+Finds person whose tags contain any of the given keywords.
+Format: `tag KEYWORD [MORE_KEYWORDS]`
+
+****
+* The search is case sensitive. e.g. `friends` will not match `Friends`
+* Only the tags are searched.
+* Only full words will be matched e.g. `friends` will not match `friend`
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `friends family` will return persons with either `friends` OR `family` as their tags.
+****
+
+Examples:
+
+* `tag friends` +
+Returns persons with the tag `friends`
+* `tag friends family` +
+Returns any person with the tag `friends` or `family`
+
 === Deleting a person : `delete`
 
 Deletes the specified person from the address book. +

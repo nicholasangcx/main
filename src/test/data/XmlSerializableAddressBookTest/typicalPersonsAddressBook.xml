@@ -7,7 +7,7 @@
         <phone>85355255</phone>
         <email>alice@example.com</email>
         <address>123, Jurong West Ave 6, #08-111</address>
-        <tagged>friends</tagged>
+        <tagged>family</tagged>
     </persons>
     <persons>
         <name>Benson Meier</name>
@@ -15,13 +15,14 @@
         <email>johnd@example.com</email>
         <address>311, Clementi Ave 2, #02-25</address>
         <tagged>owesMoney</tagged>
-        <tagged>friends</tagged>
+        <tagged>family</tagged>
     </persons>
     <persons>
         <name>Carl Kurz</name>
         <phone>95352563</phone>
         <email>heinz@example.com</email>
         <address>wall street</address>
+        <tagged>owesMoney</tagged>
     </persons>
     <persons>
         <name>Daniel Meier</name>
