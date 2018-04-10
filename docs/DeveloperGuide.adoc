@@ -144,7 +144,7 @@ For example, the <<Design-Logic,*`Logic`*>> component (see the class diagram giv
 [discrete]
 ==== Events-Driven nature of the design
 
-In general, the components are designed in such a way that they are being driven by events.
+In general, the components are designed in such a way that their interactions are being driven by events. And we will now give an example of what happens when a command is being executed.
 
 The _Sequence Diagram_ below (<<fig-ComponentInteraction>>) shows how the components interact in the scenario where the user issues the command *`delete 1`*.
 
@@ -176,7 +176,7 @@ The sections below give more details of each component.
 === Commons component
 <<Design-Commons,*`Commons`*>> represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level:
 
-* `_EventsCenter_` : Written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library] and used by components to communicate with other components using events (i.e. a form of _Event Driven_ design).
+* `_EventsCenter_` :  Used by components to communicate with other components using events (i.e. a form of _Event Driven_ design). Written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library].
 * `_LogsCenter_` : Used by many classes to write log messages to the App's log file.
 
 [[Design-Ui]]
