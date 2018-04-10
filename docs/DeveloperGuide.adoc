@@ -18,7 +18,8 @@ By: `Team F09-B2`      Since: `Jan 2018`      Licence: `MIT`
 == Introduction
 *<<ReciRecipe,ReciRecipé>>* is a desktop recipe storage application for users who prefer using the keyboard instead of a mouse for efficient management. It is useful for tech-savvy cooks that want all their recipes stored in one place.
 
-This *Developer Guide* will take you through the design and implementation of *ReciRecipé*. If you want to understand _how_, and hopefully _why_, *ReciRecipé* works, you are at the right place!
+This *Developer Guide* will take you through the design and implementation of *ReciRecipé*. It takes a top-down approach in explaining the design, beginning from the architecture of the entire application before moving into the specifics of how some functions are implemented.
+If you are new to development, you can choose a component in the architecture that you are more comfortable with and start there first.
 
 == Setting up
 
@@ -42,7 +43,7 @@ Do not disable them. If you have disabled them, go to *File > Settings > Plugins
 
 === Setting up the project
 
-Follow these step carefully to set up ReciRecipé on your computer.
+Follow these steps carefully to set up ReciRecipé on your computer:
 
 . Fork this repo, and clone the fork to your computer.
 . Open IntelliJ (if you are not in the welcome screen, click *File > Close Project* to close the existing project dialog first).
@@ -57,6 +58,8 @@ Follow these step carefully to set up ReciRecipé on your computer.
 This will generate all resources required by the application and tests.
 
 === Verifying the setup
+
+Complete the following steps to verify the setup:
 
 . Run the `seedu.recipe.MainApp` to see if it can starts.
 . Try some simple commands to see if the app can respond.
@@ -75,8 +78,9 @@ This project follows https://github.com/oss-generic/process/blob/master/docs/Cod
 * For **Class count to use import with '\*'** and **Names count to use static import with '*'**: Set to *999* to prevent IntelliJ from contracting the import statements.
 * For *Import Layout*: The order is `import static all other imports`, `import java.\*`, `import javax.*`, `import org.\*`, `import com.*`, `import all other imports`. Add a `<blank line>` between each `import`.
 
-IntelliJ should look like Figure 1 below after step 3.
+IntelliJ should look like <<fig-CodeStyleImports>> below after step 3.
 
+[[fig-CodeStyleImports]]
 .Code Style Imports
 image::CodeStyleImports.png[width="400"]
 
@@ -123,8 +127,8 @@ The *.pptx* files used to create diagrams in this document can be found in the l
 
 Given below is a quick overview of each component:
 
-. <<Design-Main,*`Main`*>>: Contains the app.
-. <<Design-Commons,*`Commons`*>>: Contains classes that are used by multiple components.
+. <<Design-Main,*`Main`*>>: Contains the initializing, starting-up and exiting of the app.
+. <<Design-Commons,*`Commons`*>>: Contains classes that are used by the following 4 components, `UI`, `Logic`, `Model`, and `Storage`.
 . <<Design-Ui,*`UI`*>>: Contains the UI of the app.
 . <<Design-Logic,*`Logic`*>>: Contains the commands of the app.
 . <<Design-Model,*`Model`*>>: Contains the the data of the app in-memory.
@@ -139,6 +143,8 @@ For example, the <<Design-Logic,*`Logic`*>> component (see the class diagram giv
 
 [discrete]
 ==== Events-Driven nature of the design
+
+In general, the components are designed in such a way that they are being driven by events.
 
 The _Sequence Diagram_ below (<<fig-ComponentInteraction>>) shows how the components interact in the scenario where the user issues the command *`delete 1`*.
 

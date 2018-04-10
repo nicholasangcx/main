@@ -171,7 +171,7 @@ public class BrowserPanel extends UiPart<Region> {
     //@@author nicholasangcx
     @Subscribe
     private void handleUploadRecipesEvent(UploadRecipesEvent event) {
-        loadPageExternalBrowser(CloudStorageUtil.getAuthorizationUrl());
+        loadPage(CloudStorageUtil.getAuthorizationUrl());
     }
     //@@author
 }
