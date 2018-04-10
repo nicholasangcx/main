@@ -218,7 +218,7 @@ For an overview of the structure of the <<Design-Logic,*`Logic`*>> component, re
 image::LogicClassDiagram.png[width="800"]
 
 {nbsp} +
-For finer details concerning `_XYZCommand_` and `_Command_`, refer to <<fig-LogicCommandClassDiagram>>.
+For finer details concerning `_XYZCommand_` and `_Command_`, refer to the diagram <<fig-LogicCommandClassDiagram>>.
 {nbsp} +
 
 [[fig-LogicCommandClassDiagram]]
@@ -372,14 +372,14 @@ item.setOnAction(event -> commandBox.replaceText(textInputProcessor.replaceLastW
 // tag::change-theme[]
 ==== Current implementation
 
-The command is implemented in `_ChangeThemeCommand_`. When user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_ChangeThemeRequestEvent_` to the `_EventsCenter_` (refer to <<fig-ChangeThemeSD>>).
+The command is implemented in `_ChangeThemeCommand_`. When user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_ChangeThemeRequestEvent_` to the `_EventsCenter_`. For more details, refer to <<fig-ChangeThemeSD>>).
 
 [[fig-ChangeThemeSD]]
 .Component interactions for *`theme`* command (part 1)
 image::SDforChangeTheme.png[width="800"]
 {nbsp} +
 
-The event is then propagated through the `_EventsCenter_` to the `*UI*`. The `*UI*` will call `handleChangeThemeRequestEvent()` to update the theme accordingly (refer to <<fig-ChangeThemeEventSD>>).
+The event is then propagated through the `_EventsCenter_` to the `*UI*`. The `*UI*` will call `handleChangeThemeRequestEvent()` to update the theme accordingly. To understand the execution better, refer to <<fig-ChangeThemeEventSD>>).
 
 [[fig-ChangeThemeEventSD]]
 .Component interactions for *`theme`* command (part 2)
@@ -396,7 +396,7 @@ If the command is called directly from the menu bar, `handleChangeTheme()` will 
 . Changes the main page loaded on the `_BrowserPanel_`.
 . Changes the style using on the `_Stage_`.
 
-To understand the interaction between the components (refer to <<fig-ChangeThemeDetailsSD>>):
+To understand the interaction between the components, refer to <<fig-ChangeThemeDetailsSD>>):
 
 [[fig-ChangeThemeDetailsSD]]
 .Component interactions for `handleChangeTheme()`
@@ -440,19 +440,19 @@ Currently the implementation of `loadDefaultPage()` reloads the `_BrowserPanel_`
 
 * **Alternative 1 (current choice):** Reload the default page.
 ** Pros: It is easy to implement.
-** Cons: Any page loaded on `_BrowserPanel_` will be lost during the operation.
+** Cons: Any page that is loaded on `_BrowserPanel_` will be lost during the operation.
 * **Alternative 2:** Reload the style for the default page.
 ** Pros: It is possible to keep the status of the `_BrowserPanel_`, in other words, any page loaded may still retain.
-** Cons: It is not entirely sure if this implementation is possible.
+** Cons: We are not entirely sure if this implementation is possible.
 * **Alternative 3:** Reload the default page *and* reload any page currently loaded on `_BrowserPanel_`.
 ** Pros: It is possible to keep the status of the `_BrowserPanel_`, in other words, any page loaded may still retain.
-** Cons: This approach is obviously harder to implement, also it will sends an additional request to the server of the website.
+** Cons: This approach is obviously harder to implement. It will also send an additional request to the server of the website.
 * **Alternative 4:** Save any page currently loaded on `_BrowserPanel_`, reload the default page then load the saved page.
-** Pros: This is the ideal output.
-** Cons: This is the ideal output, thus very hard to implement.
+** Pros: This is the ideal method.
+** Cons: Because this is the ideal output, it is very hard to implement.
 * **Alternative 5:** Stop using the default page.
-** Pros: It is somewhat easy to implement.
-** Cons: Obviously there is no default page to display so we have to find another approach to make `_BrowserPanel_` display something as a placeholder, *without* using a default page.
+** Pros: It is relatively easy to implement.
+** Cons: There is no default page to display so we have to find another approach to make `_BrowserPanel_` display something as a placeholder, *without* using a default page.
 // end::change-theme[]
 
 // tag::cloud-storage[]
@@ -515,12 +515,12 @@ try (InputStream in = new FileInputStream(RECIPE_BOOK_FILE)) {
 ==== Design considerations
 
 ===== Aspect: Handling of the access token.
-* **Alternative 1 (current choice):** Save the access token within the application for future use within that session.
-** Pros: Convenience. User does not have to keep logging into their Dropbox account every time they want to upload. Since our application does not support multiple users, keeping them "logged in" is acceptable.
-** Cons: Security concerns. Since the access token is meant to be a secret and there is no security aspect to our application at all, it is possible for a someone malicious to obtain this access token.
-* **Alternative 2:** One-time usage of the access token. Delete after using.
-** Pros: Less security issues/concerns.
-** Cons: Very inconvenient. Requires user to keep logging in to their Dropbox account every time they want to upload. This is redundant as our application only supports one user anyway.
+* **Alternative 1 (current choice):** Save it for the current session.
+** Pros: It is more convenient as the user does not have to keep logging in to their Dropbox account every time they want to upload.
+** Cons: There will be security concerns since there is no security aspect to our application at all.
+* **Alternative 2:** One-time usage of the access token.
+** Pros: There will be less security issues/concerns.
+** Cons: This is very inconvenient as it requires the user to keep logging in to their Dropbox account every time they want to upload.
 // end::cloud-storage[]
 
 === Configuration
@@ -572,11 +572,11 @@ public static Optional<Url> parseUrlOnInitialAdd(Optional<String> url) throws Il
 ===== Aspect: Implementation of optional property.
 
 * **Alternative 1 (current choice):** Add a placeholder for omitted URL.
-** Pros: Simple implementation can be used as a reference by new developers for creating optional fields. Interaction with `_BrowserPanel_` requires more control over the status of a recipe's URL property.
-** Cons: `_Recipe_` class may contain unnecessary variables.
+** Pros: A simple implementation can be used as a reference by new developers for creating optional fields. The interaction with `_BrowserPanel_` requires more control over the status of a recipe's URL property.
+** Cons: The `_Recipe_` class may contain unnecessary variables.
 * **Alternative 2:** Store URL property in the same fashion as tag labels.
-** Pros: `_Recipe_` class has better separation of optional and compulsory properties.
-** Cons: Complex implementation may confuse new developers. Interaction with other components may become needlessly complex.
+** Pros: The `_Recipe_` class has better separation of optional and compulsory properties.
+** Cons: The more complex implementation may confuse new developers, and the interaction with other components may become needlessly complex.
 // end::embedded-url[]
 
 // tag::facebook-compatibility[]
@@ -621,11 +621,11 @@ The `_BrowserPanel_` will be updated to show the Facebook feed of the User.
 ===== Aspect: Implementation of Facebook sharing.
 
 * **Alternative 1 (current choice):** Use a feed dialog.
-** Pros: User has more control over what is posted on their Facebook wall. Implementation is easier to maintain.
-** Cons: User has to take more steps to successfully make a post (paste recipe onto post, click "post").
+** Pros: The user has more control over what is posted on their Facebook wall, and the implementation is easier to maintain.
+** Cons: The user has to take more steps to successfully make a post (paste recipe onto post, click "post").
 * **Alternative 2:** Use RestFB API.
-** Pros: Recipe is posted immediately on the User's Facebook wall using the *`share`* command. User need not manually paste the recipe from the clipboard onto the post.
-** Cons: User *must* manually obtain their Facebook access key and input it into the application - this may raise security concerns (Facebook does not allow automatic posting of text even if permission is given by the User upon log in).
+** Pros: The recipe will be posted immediately on the user's Facebook wall using the *`share`* command. The user need not manually paste the recipe from the clipboard onto the post.
+** Cons: The user *must* manually obtain their Facebook access key and input it into the application - this may raise security concerns (Facebook does not allow automatic posting of text even if permission is given by the user upon log in).
 // end::facebook-compatibility[]
 
 // tag::inserting-an-image[]
@@ -650,11 +650,11 @@ The recipe image is displayed using an <img> HTML tag in the HTML formatted reci
 ===== Aspect: Implementation of inserting image.
 
 * **Alternative 1 (current choice):** Insert the absolute image path during an *`add`* command.
-** Pros: No need for a mouse. Ensures that the application still uses Command Line Interface for important operations.
-** Cons: User may take a significant amount of time to type out the image path.
+** Pros: There is no need for a mouse. This ensures that the application still uses Command Line Interface for important operations.
+** Cons: The user may take a significant amount of time to type out the image path.
 * **Alternative 2 :** Drag and drop an image onto the GUI.
-** Pros: More intuitive for the user as there is no need to deal with image paths.
-** Cons: Deviates from the Command Line Interface.
+** Pros: This implementation is more intuitive for the user as there is no need to deal with image paths.
+** Cons: It deviates from the idea of a Command Line Interface.
 // end::inserting-an-image[]
 
 === Keyboard shortcuts
