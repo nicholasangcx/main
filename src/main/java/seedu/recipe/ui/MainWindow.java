@@ -31,7 +31,7 @@ import seedu.recipe.model.UserPrefs;
  */
 public class MainWindow extends UiPart<Stage> {
 
-    public static final String DARK_THEME_CSS = "DarkTheme.css";
+    public static final String GIRL_THEME_CSS = "GirlTheme.css";
     public static final String LIGHT_THEME_CSS = "LightTheme.css";
     public static final String EXTENSIONS_CSS = "Extensions.css";
 
@@ -222,6 +222,7 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.show();
     }
 
+    //@@author kokonguyen191
     /**
      * Toggles the main window theme
      */
@@ -229,7 +230,7 @@ public class MainWindow extends UiPart<Stage> {
         Scene scene = primaryStage.getScene();
         scene.getStylesheets().clear();
         if (darkTheme) {
-            scene.getStylesheets().add(MainApp.class.getResource(FXML_FILE_FOLDER + DARK_THEME_CSS).toExternalForm());
+            scene.getStylesheets().add(MainApp.class.getResource(FXML_FILE_FOLDER + GIRL_THEME_CSS).toExternalForm());
         } else {
             scene.getStylesheets().add(MainApp.class.getResource(FXML_FILE_FOLDER + LIGHT_THEME_CSS).toExternalForm());
         }
@@ -237,6 +238,7 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    //@@author
 
     /**
      * Closes the application.

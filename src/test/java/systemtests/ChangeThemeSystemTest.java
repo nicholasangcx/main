@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.recipe.TestApp.APP_TITLE;
 import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_RECIPE;
 import static seedu.recipe.testutil.TypicalRecipes.getTypicalRecipeBook;
-import static seedu.recipe.ui.MainWindow.DARK_THEME_CSS;
+import static seedu.recipe.ui.MainWindow.GIRL_THEME_CSS;
 import static seedu.recipe.ui.MainWindow.LIGHT_THEME_CSS;
 import static seedu.recipe.ui.UiPart.FXML_FILE_FOLDER;
 
@@ -74,7 +74,7 @@ public class ChangeThemeSystemTest extends RecipeBookSystemTest {
      */
     private void assertDarkTheme() {
         assertTrue(ERROR_MESSAGE, guiRobot.getStage(APP_TITLE).getScene().getStylesheets().get(0)
-                .equals(MainApp.class.getResource(FXML_FILE_FOLDER + DARK_THEME_CSS).toExternalForm()));
+                .equals(MainApp.class.getResource(FXML_FILE_FOLDER + GIRL_THEME_CSS).toExternalForm()));
         guiRobot.pauseForHuman();
     }
 

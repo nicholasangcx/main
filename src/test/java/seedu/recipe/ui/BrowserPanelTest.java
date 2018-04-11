@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static seedu.recipe.testutil.EventsUtil.postNow;
 import static seedu.recipe.testutil.TypicalRecipes.ALICE;
 import static seedu.recipe.testutil.TypicalRecipes.NOURL;
-import static seedu.recipe.ui.BrowserPanel.DEFAULT_PAGE_DARK;
+import static seedu.recipe.ui.BrowserPanel.DEFAULT_PAGE_GIRL;
 import static seedu.recipe.ui.UiPart.FXML_FILE_FOLDER;
 
 import java.net.URL;
@@ -40,7 +40,7 @@ public class BrowserPanelTest extends GuiUnitTest {
     @Test
     public void display() throws Exception {
         // default web page
-        URL expectedDefaultPageUrl = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_DARK);
+        URL expectedDefaultPageUrl = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
         assertEquals(expectedDefaultPageUrl, browserPanelHandle.getLoadedUrl());
 
         // associated web page of a recipe

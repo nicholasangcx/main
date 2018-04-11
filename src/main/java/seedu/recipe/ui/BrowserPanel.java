@@ -36,7 +36,7 @@ import seedu.recipe.ui.util.UiUtil;
  */
 public class BrowserPanel extends UiPart<Region> {
 
-    public static final String DEFAULT_PAGE_DARK = "defaultdark.html";
+    public static final String DEFAULT_PAGE_GIRL = "defaultgirl.html";
     public static final String DEFAULT_PAGE_LIGHT = "defaultlight.html";
     public static final String SEARCH_PAGE_URL =
             "https://se-edu.github.io/addressbook-level4/DummySearchPage.html?name=";
@@ -109,7 +109,7 @@ public class BrowserPanel extends UiPart<Region> {
         if (!isLoaded()) {
             URL defaultPage;
             if (isDarkTheme) {
-                defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_DARK);
+                defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
             } else {
                 defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_LIGHT);
             }
@@ -125,7 +125,7 @@ public class BrowserPanel extends UiPart<Region> {
      */
     private boolean isLoaded() {
         URL lightTheme = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_LIGHT);
-        URL darkTheme = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_DARK);
+        URL darkTheme = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
 
         String loadedUrlString = browser.getEngine().getLocation();
         if (loadedUrlString == null) {

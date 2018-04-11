@@ -3,9 +3,9 @@
 :toc-title:
 :toc-placement: preamble
 :sectnums:
-:imagesDir: images/userguide
+:imagesDir: images
 :stylesDir: stylesheets
-:xrefstyle: full
+:xrefstyle: short
 :experimental:
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -66,7 +66,7 @@ Words in upper case are the parameters to be supplied by the user. For example:
 
 ** *_INGREDIENT_* is a list of ingredients, delimited by commas. E.g. `chicken,fish,rice` and `chicken, fish, rice` are valid.
 ** *_INSTRUCTION_* can receive multiple lines as its value.
-** *_TIME_* fields accept a number of formats: `1h20m`, `1h20min`, `1 hour 20 minutes`, `80m`, `80min`, `80 mins`, etc. However, sticking to the most simple format `80m` is recommended.
+** *_PREPARATION_TIME_* and *_COOKING_TIME_* fields accept a number of formats: `1h20m`, `1h20min`, `1 hour 20 minutes`, `80m`, `80min`, `80 mins`, etc. However, sticking to the most simple format `80m` is recommended.
 ** *_CALORIES_* and *_SERVINGS_* are positive numbers. E.g. `120`, `5000`, etc.
 ** *_URL_* takes a valid website address as its value. E.g. `http://google.com`.
 ** *_IMAGE_* takes a valid image path as its value (E.g. for macOS: `/Users/administrator/Desktop/image.png`, for windows: `C:\Users\admin\image.png`). Or it can also be a valid image URL, for example, `https://i.imgur.com/FhRsgCK.jpg`.
@@ -586,70 +586,68 @@ Uploads the 6th recipe in the recipe book to the server.
 *A*: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous ReciRecipé.
 
 *Q*: Where do I find my data file? +
-*A*: +
-
-image::FAQ1.png[width="450"]
+*A*: image:FAQ1.png[width="450"]
 {nbsp}
 
 Q: There is still something I don't understand after reading this guide! +
 A: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] about what you're confused about. We will try our best to answer your query.
 
 *Q*: I found a bug in your program, what should I do? +
-*A*: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] describing the problem you encountered as detailed as possible.
+*A*: Please check <<current-issues>> to see whether your bug has been reported already. If it is a new bug, please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] describing the problem you encountered as detailed as possible.
 
 *Q*: I know how to code, how can I contribute to your project? +
 *A*: Code contributors are always appreciated! Please https://github.com/CS2103JAN2018-F09-B2/main/pulls[create a PR] with your contribution. You might want to take a look at the <<DeveloperGuide#,Developer Guide>> to get started.
 
 == Cheatsheet
-[width=90%, cols="1,9"]
+[width=100%, cols="1,5,5"]
 |===
-| Command | Format and example
+| Command | Format | Example
 
-.2+|    *Add*               |   `add name/RECIPE_NAME [ingredient/INGREDIENT] [instruction/INSTRUCTION] [cooking_time/COOKING_TIME] [preparation_time/PREPARATION_TIME] [calories/CALORIES] [servings/SERVINGS] [url/URL] [img/IMAGE] [tag/TAG]...`
-                            |   E.g. *`add name/Chicken Rice ingredient/chicken, rice cooking_time/10m tag/good tag/fast`*
-.2+|    *Change theme*      |  `theme`
-                            |  *`theme`*
-.2+|    *Clear*             |  `clear`
-                            |  *`clear`*
-.2+|    *Delete*            |  `delete INDEX`
-                            |   E.g. *`delete 3`*
-.2+|    *Edit*              |  `edit INDEX [name/RECIPE_NAME] [ingredient/INGREDIENT] [instruction/INSTRUCTION] [cooking_time/COOKING_TIME] [preparation_time/PREPARATION_TIME] [calories/CALORIES] [servings/SERVINGS] [url/URL] [img/IMAGE] [tag/TAG]`
-                            |   E.g. *`edit 2 name/Chicken pizza ingredient/INGREDIENT/flour,chicken,pepper`*
-.2+|    *Find*              |  `find KEYWORD [MORE_KEYWORDS]`
-                            |   E.g. *`find Chicken Pizza`*
-.2+|    *Group*             |  `group group_name/GROUP_NAME index/INDEX [index/INDEX]`
-                            |   E.g. *`group group_name/ Best index/ 1 index/ 3`*
-.2+|    *Help*              |  `help`
-                            |  *`help`*
-.2+|    *History*           |  `history`
-                            |  *`history`*
-.2+|    *Internet search*   |  `search RECIPE_NAME`
-                            |   E.g. *`search chicken rice`*
-.2+|    *List*              |  `list`
-                            |  *`list`*
-.2+|    *Parse*             |  `parse`
-                            |  *`parse`*
-.2+|    *Redo*              |  `redo`
-                            |  *`redo`*
-.2+|    *Select*            |  `select INDEX`
-                            |   E.g.*`select 2`*
-.2+|    *Share*             |  `share INDEX`
-                            |   E.g.*`share 2`*
-.2+|    *Tag*               |  `tag KEYWORD [MORE_KEYWORDS]`
-                            |   E.g. *`tag chicken favourites`*
-.2+|    *Token*             |   `token AuthorizationCode`
-                            |   E.g. *`token validCode`*
-.2+|    *Undo*              |  `undo`
-                            |  *`undo`*
-.2+|    *Upload*            |  `upload FILENAME`
-                            |   E.g. *`upload RecipeBook`*
-.2+|    *View group*        |  `view_group GROUP_NAME`
-                            |   E.g. *`view_group Best`*
+| *Add*             |   `add name/RECIPE_NAME [ingredient/INGREDIENT] [instruction/INSTRUCTION] [cooking_time/COOKING_TIME] [preparation_time/PREPARATION_TIME] [calories/CALORIES] [servings/SERVINGS] [url/URL] [img/IMAGE] [tag/TAG]...`
+                    |   *`add name/Chicken Rice ingredient/chicken, rice cooking_time/10m tag/good tag/fast`*
+| *Change theme*    |  `theme`
+                    |  *`theme`*
+| *Clear*           |  `clear`
+                    |  *`clear`*
+| *Delete*          |  `delete INDEX`
+                    |   *`delete 3`*
+| *Edit*            |  `edit INDEX [name/RECIPE_NAME] [ingredient/INGREDIENT] [instruction/INSTRUCTION] [cooking_time/COOKING_TIME] [preparation_time/PREPARATION_TIME] [calories/CALORIES] [servings/SERVINGS] [url/URL] [img/IMAGE] [tag/TAG]`
+                    |   *`edit 2 name/Chicken pizza ingredient/INGREDIENT/flour,chicken,pepper`*
+| *Find*            |  `find KEYWORD [MORE_KEYWORDS]`
+                    |   *`find Chicken Pizza`*
+| *Group*           |  `group group_name/GROUP_NAME index/INDEX [index/INDEX]`
+                    |   *`group group_name/ Best index/ 1 index/ 3`*
+| *Help*            |  `help`
+                    |  *`help`*
+| *History*         |  `history`
+                    |  *`history`*
+| *Internet search* |  `search RECIPE_NAME`
+                    |   E.g. *`search chicken rice`*
+| *List*            |  `list`
+                    |  *`list`*
+| *Parse*           |  `parse`
+                    |  *`parse`*
+| *Redo*            |  `redo`
+                    |  *`redo`*
+| *Select*          |  `select INDEX`
+                    |   *`select 2`*
+| *Share*           |  `share INDEX`
+                    |   *`share 2`*
+| *Tag*             |  `tag KEYWORD [MORE_KEYWORDS]`
+                    |   *`tag chicken favourites`*
+| *Token*           |   `token AuthorizationCode`
+                    |   *`token validCode`*
+| *Undo*            |  `undo`
+                    |  *`undo`*
+| *Upload*          |  `upload FILENAME`
+                    |   *`upload RecipeBook`*
+| *View group*      |  `view_group GROUP_NAME`
+                    |   *`view_group Best`*
 |===
 
 == Keyboard shortcuts
 
-[width=60%, cols="2,4"]
+[width=100%, cols="2,4"]
 |===
 | Shortcut                  |   Function
 
@@ -660,6 +658,19 @@ A: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue
 | kbd:[Shift] + kbd:[Tab]   |   Show command suggestions
 | kbd:[Tab]                 |   Next field in command
 |===
+
+[[current-issues]]
+//tag::current-issues[]
+== Current issues
+These are issues that have been reported and might be resolved in the future:
+
+* `parse` command does not work on some sites. +
+_Currently `parse` only works with http://recipes.wikia.com/ (both desktop and mobile versions). Support for other sites will be considered for v2.0._
+* `parse` command returns results for pages that are not recipes. +
+_`parse` is intended to work with recipe pages only. ReciRecipé might or might not parse other types of pages. Restricting `parse` to work on only recipe pages will be considred for v2.0._
+* *_PREPARATION_TIME_* and *_COOKING_TIME_* accept invalid time values, e.g. `1h90m`, `200 mins 2 hours`, etc. +
+_We expect you to provide ReciRecipé with a correct and valid time value like `150m` instead of `1h90m`. More restrictive formats will be considered for v2.0._
+//end:current-issues[]
 
 == Glossary
 

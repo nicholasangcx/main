@@ -1210,7 +1210,7 @@ package systemtests;
 
 import static org.junit.Assert.assertTrue;
 import static seedu.recipe.TestApp.APP_TITLE;
-import static seedu.recipe.ui.MainWindow.DARK_THEME_CSS;
+import static GIRL_THEME_CSS;
 import static seedu.recipe.ui.MainWindow.LIGHT_THEME_CSS;
 import static seedu.recipe.ui.UiPart.FXML_FILE_FOLDER;
 
