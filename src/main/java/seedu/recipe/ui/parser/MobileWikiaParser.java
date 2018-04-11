@@ -31,6 +31,11 @@ public class MobileWikiaParser extends WikiaParser {
     }
 
     @Override
+    protected void getCategories() {
+        categories = document.select(".mw-content.collapsible-menu.ember-view ul li");
+    }
+
+    @Override
     public String getName() {
         return document.selectFirst(".wiki-page-header__title").text();
     }

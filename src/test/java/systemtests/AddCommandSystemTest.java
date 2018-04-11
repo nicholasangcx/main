@@ -160,6 +160,7 @@ public class AddCommandSystemTest extends RecipeBookSystemTest {
                 .withCalories(VALID_CALORIES_AMY)
                 .withServings(VALID_SERVINGS_AMY)
                 .withUrl(VALID_URL_AMY)
+                .withImage(VALID_IMG_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD
                 + NAME_DESC_AMY

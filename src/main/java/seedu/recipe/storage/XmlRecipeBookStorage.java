@@ -21,6 +21,7 @@ public class XmlRecipeBookStorage implements RecipeBookStorage {
 
     private static final Logger logger = LogsCenter.getLogger(XmlRecipeBookStorage.class);
 
+
     private String filePath;
 
     public XmlRecipeBookStorage(String filePath) {
@@ -76,7 +77,7 @@ public class XmlRecipeBookStorage implements RecipeBookStorage {
 
         File file = new File(filePath);
         FileUtil.createIfMissing(file);
+        ImageStorage.saveAllImageFiles(recipeBook, filePath);
         XmlFileStorage.saveDataToFile(file, new XmlSerializableRecipeBook(recipeBook));
     }
-
 }

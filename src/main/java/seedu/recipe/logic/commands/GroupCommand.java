@@ -1,6 +1,10 @@
 //@@author hoangduong1607
 package seedu.recipe.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_GROUP_NAME;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INDEX;
+
 import java.util.List;
 import java.util.Set;
 
@@ -13,25 +17,34 @@ import seedu.recipe.model.recipe.Recipe;
 /**
  * Groups selected recipes.
  */
-public class GroupCommand extends Command {
+public class GroupCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "group";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Groups the recipes identified by the indices numbers used in the last recipe listing.\n"
-            + "Parameters: GROUP_NAME INDEX [INDEX] (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " Best 1 3";
+            + "Parameters: "
+            + PREFIX_GROUP_NAME + "GROUP_NAME "
+            + PREFIX_INDEX + "INDEX "
+            + "[" + PREFIX_INDEX + "INDEX] (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_GROUP_NAME + "Best "
+            + PREFIX_INDEX + "1 "
+            + PREFIX_INDEX + "3 ";
     public static final String MESSAGE_SUCCESS = "Created New Recipe Group: %s";
 
     private GroupName groupName;
     private Set<Index> targetIndices;
 
     public GroupCommand(GroupName groupName, Set<Index> targetIndices) {
+        requireNonNull(groupName);
+        requireNonNull(targetIndices);
         this.targetIndices = targetIndices;
         this.groupName = groupName;
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(model);
         List<Recipe> lastShownList = model.getFilteredRecipeList();
 
         for (Index index : targetIndices) {

@@ -3,6 +3,8 @@ package systemtests;
 
 import static org.junit.Assert.assertTrue;
 import static seedu.recipe.TestApp.APP_TITLE;
+import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_RECIPE;
+import static seedu.recipe.testutil.TypicalRecipes.getTypicalRecipeBook;
 import static seedu.recipe.ui.MainWindow.DARK_THEME_CSS;
 import static seedu.recipe.ui.MainWindow.LIGHT_THEME_CSS;
 import static seedu.recipe.ui.UiPart.FXML_FILE_FOLDER;
@@ -12,12 +14,18 @@ import org.junit.Test;
 import guitests.GuiRobot;
 import seedu.recipe.MainApp;
 import seedu.recipe.logic.commands.ChangeThemeCommand;
+import seedu.recipe.logic.commands.SelectCommand;
+import seedu.recipe.model.Model;
+import seedu.recipe.model.ModelManager;
+import seedu.recipe.model.UserPrefs;
 
 public class ChangeThemeSystemTest extends RecipeBookSystemTest {
     private static final String ERROR_MESSAGE = "ATTENTION!!!! : On some computers, this test may fail when run on "
             + "non-headless mode as FxRobot#clickOn(Node, MouseButton...) clicks on the wrong location. We suspect "
             + "that this is a bug with TestFX library that we are using. If this test fails, you have to run your "
             + "tests on headless mode. See UsingGradle.adoc on how to do so.";
+
+    private Model model = new ModelManager(getTypicalRecipeBook(), new UserPrefs());
 
     private final GuiRobot guiRobot = new GuiRobot();
 
@@ -54,6 +62,11 @@ public class ChangeThemeSystemTest extends RecipeBookSystemTest {
 
         executeCommand(ChangeThemeCommand.COMMAND_WORD);
         assertLightTheme();
+
+        String command = SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_RECIPE.getOneBased();
+        executeCommand(command);
+        executeCommand(ChangeThemeCommand.COMMAND_WORD);
+        assertDarkTheme();
     }
 
     /**

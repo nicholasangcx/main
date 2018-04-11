@@ -91,7 +91,7 @@ public class XmlAdaptedRecipe {
         calories = source.getCalories().value;
         servings = source.getServings().value;
         url = source.getUrl().value;
-        image = source.getImage().value;
+        image = source.getImage().toString();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -185,7 +185,7 @@ public class XmlAdaptedRecipe {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Image.class.getSimpleName()));
         }
         if (!Image.isValidImage(this.image)) {
-            throw new IllegalValueException(Image.MESSAGE_IMAGE_CONSTRAINTS);
+            this.image = Image.NULL_IMAGE_REFERENCE;
         }
         final Image image = new Image(this.image);
         //@@author

@@ -39,7 +39,7 @@ public class RecipeUtil {
         sb.append(PREFIX_CALORIES + recipe.getCalories().value + " ");
         sb.append(PREFIX_SERVINGS + recipe.getServings().value + " ");
         sb.append(PREFIX_URL + recipe.getUrl().value + " ");
-        sb.append(PREFIX_IMG + recipe.getImage().value + " ");
+        sb.append(PREFIX_IMG + recipe.getImage().toString() + " ");
         recipe.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );

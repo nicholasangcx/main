@@ -6,7 +6,13 @@ import static seedu.recipe.logic.parser.CliSyntax.PREFIX_IMG;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INSTRUCTION;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_URL;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import seedu.recipe.model.recipe.Recipe;
 
 /**
  * A utility class containing a list of {@code Recipe} objects parsed from Wikia to be used in tests.
@@ -39,6 +45,19 @@ public class WikiaRecipes {
             "http://recipes.wikia.com/wiki/Hainanese_Chicken_Rice?useskin=wikiamobile";
     public static final String MOBILE_CHICKEN_RICE_IMAGE_URL = "https://vignette.wikia.nocookie.net/recipes/images/d/d3"
             + "/Chickenrice2.jpg/revision/latest/scale-to-width-down/340?cb=20080516004325";
+    public static final String[] CHICKEN_TAGS = {"SingaporeanMeat", "ScrewPineLeaf",
+        "Chicken", "Cucumber", "Lettuce", "MainDishPoultry", "Pineapple", "Rice"};
+    public static final Recipe HAINANESE_CHICKEN_RICE = new RecipeBuilder()
+            .withName(CHICKEN_NAME)
+            .withIngredient(CHICKEN_INGREDIENT)
+            .withInstruction(CHICKEN_INSTRUCTION)
+            .withCookingTime("-")
+            .withPreparationTime("-")
+            .withCalories("-")
+            .withServings("-")
+            .withUrl(WIKIA_RECIPE_URL_CHICKEN)
+            .withImage("-")
+            .withTags(CHICKEN_TAGS).build();
 
     public static final String UGANDAN_NAME = "Ugandan Chicken Stew";
     public static final String UGANDAN_INGREDIENT = "chicken, oil, onion, tomatoes, potatoes, salt, pepper";
@@ -49,6 +68,19 @@ public class WikiaRecipes {
     public static final String WIKIA_RECIPE_URL_UGANDAN = "http://recipes.wikia.com/wiki/Ugandan_Chicken_Stew";
     public static final String MOBILE_WIKIA_RECIPE_URL_UGANDAN =
             "http://recipes.wikia.com/wiki/Ugandan_Chicken_Stew?useskin=wikiamobile";
+    public static final String[] UGANDAN_TAGS = {"UgandanMeat", "Potato", "MainDishPoultry", "Tomato", "Stew",
+        "Chicken", "RecipesThatNeedPhotos"};
+    public static final Recipe UGANDAN_CHICKEN_STEW = new RecipeBuilder()
+            .withName(UGANDAN_NAME)
+            .withIngredient(UGANDAN_INGREDIENT)
+            .withInstruction(UGANDAN_INSTRUCTION)
+            .withCookingTime("-")
+            .withPreparationTime("-")
+            .withCalories("-")
+            .withServings("-")
+            .withUrl(MOBILE_WIKIA_RECIPE_URL_UGANDAN)
+            .withImage("-")
+            .withTags(UGANDAN_TAGS).build();
 
     public static final String WIKIA_RECIPE_URL_BEEF =
             "http://recipes.wikia.com/wiki/Beef_Tenderloin_with_Madeira_Sauce";
@@ -60,18 +92,29 @@ public class WikiaRecipes {
     public static final String WIKIA_CHICKEN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + CHICKEN_NAME + LF + PREFIX_INGREDIENT + CHICKEN_INGREDIENT + LF
                     + PREFIX_INSTRUCTION + CHICKEN_INSTRUCTION + LF + PREFIX_IMG + CHICKEN_RICE_IMAGE_URL + LF
-                    + PREFIX_URL + WIKIA_RECIPE_URL_CHICKEN;
+                    + PREFIX_URL + WIKIA_RECIPE_URL_CHICKEN + LF + joinTags(CHICKEN_TAGS);
     public static final String WIKIA_UGANDAN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + UGANDAN_NAME + LF + PREFIX_INGREDIENT + UGANDAN_INGREDIENT + LF
-                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + WIKIA_RECIPE_URL_UGANDAN;
+                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + WIKIA_RECIPE_URL_UGANDAN
+                    + LF + joinTags(UGANDAN_TAGS);
     public static final String MOBILE_WIKIA_CHICKEN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + CHICKEN_NAME + LF + PREFIX_INGREDIENT + CHICKEN_INGREDIENT + LF
                     + PREFIX_INSTRUCTION + CHICKEN_INSTRUCTION + LF + PREFIX_IMG + MOBILE_CHICKEN_RICE_IMAGE_URL + LF
-                    + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_CHICKEN;
+                    + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_CHICKEN + LF + joinTags(CHICKEN_TAGS);
     public static final String MOBILE_WIKIA_UGANDAN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + UGANDAN_NAME + LF + PREFIX_INGREDIENT + UGANDAN_INGREDIENT + LF
-                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_UGANDAN;
+                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_UGANDAN
+                    + LF + joinTags(UGANDAN_TAGS);
 
     private WikiaRecipes() {
     } // prevents instantiation
+
+    /**
+     * Takes in an array of tag strings and returns a string that can be passed to an add or edit command.
+     */
+    private static String joinTags(String[] tags) {
+        return Arrays.stream(tags)
+                .map(tag -> PREFIX_TAG + tag + " ")
+                .collect(Collectors.joining());
+    }
 }

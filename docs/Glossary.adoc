@@ -39,6 +39,12 @@ High chance you are using one. +
 Some prime examples are Windows, Linux, Unix, OS-X.
 ====
 
+[[MD5]] MD5::
+====
+Abbreviation of **Message Digest 5**. +
+MD5 is a hash function producing a 128-bit hash value. An image has one and only one MD5 value.
+====
+
 [[ReciRecipe]] ReciRecipé / RecipeBook / The App::
 ====
 This name is derived from "**Reci**te" and "**Recipé**", an alternate spelling of "Recipe". ReciRecipé is what will tell you all the info you need about your recipes so you don't have to remember your recipes anymore. Also, ReciRecipé sounds fun and kinda French.

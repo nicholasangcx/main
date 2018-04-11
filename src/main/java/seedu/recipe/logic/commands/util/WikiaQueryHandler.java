@@ -15,7 +15,7 @@ import com.restfb.json.Json;
 import com.restfb.json.JsonObject;
 
 /**
- * Handle a query to recipes.wikia.com
+ * Handles a query to recipes.wikia.com
  */
 public class WikiaQueryHandler implements WikiaQuery {
 

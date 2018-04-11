@@ -1,6 +1,7 @@
 package seedu.recipe.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static seedu.recipe.storage.XmlAdaptedRecipe.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.recipe.testutil.TypicalRecipes.BENSON;
 
@@ -18,6 +19,7 @@ import seedu.recipe.model.recipe.Ingredient;
 import seedu.recipe.model.recipe.Instruction;
 import seedu.recipe.model.recipe.Name;
 import seedu.recipe.model.recipe.PreparationTime;
+import seedu.recipe.model.recipe.Recipe;
 import seedu.recipe.model.recipe.Servings;
 import seedu.recipe.model.recipe.Url;
 import seedu.recipe.testutil.Assert;
@@ -31,7 +33,7 @@ public class XmlAdaptedRecipeTest {
     private static final String INVALID_CALORIES = "cccc";
     private static final String INVALID_SERVINGS = "dddd";
     private static final String INVALID_URL = "THIS@IS@NOT@AN@URL";
-    private static final String INVALID_IMAGE = "THIS@IS@NOT@A@FILEPATH";
+    private static final String INVALID_IMAGE = "THIS@IS@NOT@AN@IMAGE";
     private static final String INVALID_TAG = "#hastagfriendzone";
 
     private static final String VALID_NAME = BENSON.getName().toString();
@@ -203,15 +205,6 @@ public class XmlAdaptedRecipeTest {
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Url.class.getSimpleName());
         Assert.assertThrows(IllegalValueException.class, expectedMessage, recipe::toModelType);
     }
-    @Test
-    public void toModelType_invalidImage_throwsIllegalValueException() {
-        XmlAdaptedRecipe recipe =
-                new XmlAdaptedRecipe(VALID_NAME, VALID_INGREDIENT, VALID_INSTRUCTION, VALID_COOKING_TIME,
-                        VALID_PREPARATION_TIME, VALID_CALORIES, VALID_SERVINGS, VALID_URL,
-                        INVALID_IMAGE, VALID_TAGS);
-        String expectedMessage = Image.MESSAGE_IMAGE_CONSTRAINTS;
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, recipe::toModelType);
-    }
 
     @Test
     public void toModelType_nullImage_throwsIllegalValueException() {
@@ -221,6 +214,20 @@ public class XmlAdaptedRecipeTest {
                         null, VALID_TAGS);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Image.class.getSimpleName());
         Assert.assertThrows(IllegalValueException.class, expectedMessage, recipe::toModelType);
+    }
+
+
+    @Test
+    public void toModelType_invalidImage_setsImageToNullReference() {
+        Recipe recipe = null;
+        try {
+            recipe = new XmlAdaptedRecipe(VALID_NAME, VALID_INGREDIENT, VALID_INSTRUCTION, VALID_COOKING_TIME,
+                    VALID_PREPARATION_TIME, VALID_CALORIES, VALID_SERVINGS, VALID_URL,
+                    INVALID_IMAGE, VALID_TAGS).toModelType();
+        } catch (Exception e) {
+            System.out.println("Unable to create recipe");
+        }
+        assertTrue(recipe.getImage().toString().equals(Image.NULL_IMAGE_REFERENCE));
     }
     //@@author RyanAngJY
 

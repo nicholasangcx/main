@@ -47,9 +47,7 @@ public class StorageManager extends ComponentManager implements Storage {
         userPrefsStorage.saveUserPrefs(userPrefs);
     }
 
-
     // ================ RecipeBook methods ==============================
-
     @Override
     public String getRecipeBookFilePath() {
         return recipeBookStorage.getRecipeBookFilePath();
@@ -77,7 +75,6 @@ public class StorageManager extends ComponentManager implements Storage {
         recipeBookStorage.saveRecipeBook(recipeBook, filePath);
     }
 
-
     @Override
     @Subscribe
     public void handleRecipeBookChangedEvent(RecipeBookChangedEvent event) {
@@ -88,5 +85,4 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
-
 }

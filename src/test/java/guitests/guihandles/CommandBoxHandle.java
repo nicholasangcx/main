@@ -25,6 +25,7 @@ public class CommandBoxHandle extends NodeHandle<TextArea> {
 
     /**
      * Enters the given command in the Command Box and presses enter.
+     *
      * @return true if the command succeeded, false otherwise.
      */
     public boolean run(String command) {
@@ -38,6 +39,7 @@ public class CommandBoxHandle extends NodeHandle<TextArea> {
     }
 
     //@@author kokonguyen191
+
     /**
      * Appends the given string to text already existing in the Command box
      */
@@ -46,7 +48,16 @@ public class CommandBoxHandle extends NodeHandle<TextArea> {
         guiRobot.pauseForHuman();
     }
 
+    /**
+     * Submits whatever is in the CommandBox
+     */
+    public void submitCommand() {
+        click();
+        guiRobot.type(KeyCode.ENTER);
+    }
+
     //@@author hoangduong1607
+
     /**
      * Inserts the given string to text at current caret position
      */
@@ -57,6 +68,7 @@ public class CommandBoxHandle extends NodeHandle<TextArea> {
     }
 
     //@@author
+
     /**
      * Returns the list of style classes present in the command box.
      */

@@ -3,8 +3,11 @@ package seedu.recipe.ui.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,6 +24,7 @@ public class WikiaParser extends WebParser {
 
     protected Document document;
     protected Element contentText;
+    protected Elements categories;
 
     /**
      * Constructs from a Jsoup Document.
@@ -29,6 +33,7 @@ public class WikiaParser extends WebParser {
         requireNonNull(document);
         this.document = document;
         getMainBody();
+        getCategories();
     }
 
     /**
@@ -38,13 +43,21 @@ public class WikiaParser extends WebParser {
         requireNonNull(html);
         this.document = Jsoup.parse(html, url);
         getMainBody();
+        getCategories();
     }
 
     /**
      * Assigns {@code contentText} to the Element that contains the article body.
      */
     protected void getMainBody() {
-        contentText = this.document.getElementById("mw-content-text");
+        contentText = document.getElementById("mw-content-text");
+    }
+
+    /**
+     * Assigns {@code categories} to the ElementS that contains the categories.
+     */
+    protected void getCategories() {
+        categories = document.getElementsByClass("category");
     }
 
     @Override
@@ -54,6 +67,15 @@ public class WikiaParser extends WebParser {
 
     @Override
     public String getIngredient() {
+        Elements[] arrayOfElementsOfIngredients = getElementsOfIngredient();
+        return getIngredientString(arrayOfElementsOfIngredients);
+    }
+
+    /**
+     * Returns an array of size 2 of Elements. The first contains all Element with class "a", which contain a link.
+     * The second contains all Element with class "li", which contain the whole ingredient line.
+     */
+    private Elements[] getElementsOfIngredient() {
         Elements elements = contentText.select("h2,ul");
         Iterator<Element> eleIte = elements.iterator();
         while (eleIte.hasNext() && !eleIte.next().text().startsWith("Ingredient")) {
@@ -70,6 +92,16 @@ public class WikiaParser extends WebParser {
             elementsWithIngredient.addAll(nextElement.select("li"));
             elementsWithIngredientWithLink.addAll(nextElement.select("a"));
         }
+
+        return new Elements[] {elementsWithIngredientWithLink, elementsWithIngredient};
+    }
+
+    /**
+     * Returns a Ingredient string that can be used in an add command from the list of ingredients.
+     */
+    private String getIngredientString(Elements[] arrayOfElementsOfIngredients) {
+        Elements elementsWithIngredientWithLink = arrayOfElementsOfIngredients[0];
+        Elements elementsWithIngredient = arrayOfElementsOfIngredients[1];
 
         List<String> ingredientList;
         if (elementsWithIngredientWithLink.isEmpty()) {
@@ -95,6 +127,33 @@ public class WikiaParser extends WebParser {
         } else {
             return image.attr("src");
         }
+    }
+
+    @Override
+    public String[] getTags() {
+        LinkedList<String> tags = new LinkedList<>();
+
+        for (Element category : categories) {
+            String rawText = category.text();
+            tags.add(trimTag(rawText));
+        }
+
+        return tags.toArray(new String[tags.size()]);
+    }
+
+    /**
+     * Trims a tag, removes generic keywords to make tag shorter
+     */
+    protected String trimTag(String tag) {
+        if (tag.endsWith("ishes")) {
+            tag = tag.replace("Dishes", "").replace("dishes", "");
+        }
+        if (tag.endsWith("ecipes")) {
+            tag = tag.replace("Recipes", "").replace("recipes", "");
+        }
+        return Arrays.stream(tag.split(" "))
+                .map(word -> Character.toTitleCase(word.charAt(0)) + word.substring(1))
+                .collect(Collectors.joining());
     }
 
     @Override

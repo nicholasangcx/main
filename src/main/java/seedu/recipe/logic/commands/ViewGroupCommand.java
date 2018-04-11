@@ -14,7 +14,7 @@ public class ViewGroupCommand extends Command {
             + ": Views recipes in a group.\n"
             + "Parameters: GROUP_NAME\n"
             + "Example: " + COMMAND_WORD + " Best";
-    public static final String MESSAGE_FAILURE = "Recipe group not found!";
+    public static final String MESSAGE_GROUP_NOT_FOUND = "Recipe group not found!";
     public static final String MESSAGE_SUCCESS = "Listed all recipes in [%s]";
 
     private GroupPredicate groupPredicate;
@@ -28,7 +28,15 @@ public class ViewGroupCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredRecipeList(groupPredicate);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, groupName));
+
+        String commandResult;
+        if (model.getFilteredRecipeList().size() > 0) {
+            commandResult = String.format(MESSAGE_SUCCESS, groupName);
+        } else {
+            commandResult = MESSAGE_GROUP_NOT_FOUND;
+        }
+
+        return new CommandResult(commandResult);
     }
 
     @Override
