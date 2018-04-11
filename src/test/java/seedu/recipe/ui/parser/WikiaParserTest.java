@@ -1,15 +1,18 @@
 //@@author kokonguyen191
 package seedu.recipe.ui.parser;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static seedu.recipe.testutil.WikiaRecipes.BEEF_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_NAME;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_RICE_IMAGE_URL;
+import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_TAGS;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_NAME;
+import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_TAGS;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_CHICKEN_ADD_COMMAND;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_NOT_RECIPE;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_RECIPE_URL_BEEF;
@@ -89,6 +92,12 @@ public class WikiaParserTest extends GuiUnitTest {
     public void getUrl_validRecipes_returnsResult() throws Exception {
         assertEquals(wikiaParserChicken.getUrl(), WIKIA_RECIPE_URL_CHICKEN);
         assertEquals(wikiaParserUgandan.getUrl(), WIKIA_RECIPE_URL_UGANDAN);
+    }
+
+    @Test
+    public void getTags_validRecipes_returnsResult() throws Exception {
+        assertArrayEquals(wikiaParserChicken.getTags(), CHICKEN_TAGS);
+        assertArrayEquals(wikiaParserUgandan.getTags(), UGANDAN_TAGS);
     }
 
     @Test

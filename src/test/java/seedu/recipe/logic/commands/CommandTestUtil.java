@@ -24,7 +24,6 @@ import seedu.recipe.logic.UndoRedoStack;
 import seedu.recipe.logic.commands.exceptions.CommandException;
 import seedu.recipe.model.Model;
 import seedu.recipe.model.RecipeBook;
-import seedu.recipe.model.recipe.Image;
 import seedu.recipe.model.recipe.NameContainsKeywordsPredicate;
 import seedu.recipe.model.recipe.Recipe;
 import seedu.recipe.model.recipe.exceptions.RecipeNotFoundException;
@@ -49,8 +48,8 @@ public class CommandTestUtil {
     public static final String VALID_CALORIES_BOB = "5000";
     public static final String VALID_SERVINGS_AMY = "3";
     public static final String VALID_SERVINGS_BOB = "4";
-    public static final String VALID_IMG_AMY = Image.VALID_IMAGE_PATH;
-    public static final String VALID_IMG_BOB = Image.VALID_IMAGE_PATH;
+    public static final String VALID_IMG_AMY = "-";
+    public static final String VALID_IMG_BOB = "-";
     public static final String VALID_URL_AMY = "https://www.bbcgoodfood.com/recipes/volcano-cake";
     public static final String VALID_URL_BOB = "https://www.bbcgoodfood.com/recipes/collection/chicken-salad";
     public static final String VALID_TAG_HUSBAND = "husband";

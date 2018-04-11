@@ -139,7 +139,7 @@ public class Recipe {
                 && otherRecipe.getCalories().equals(this.getCalories())
                 && otherRecipe.getServings().equals(this.getServings())
                 && otherRecipe.getUrl().equals(this.getUrl())
-                && otherRecipe.getImage().equals(this.getImage())
+                && otherRecipe.getImage().getImageName().equals(this.getImage().getImageName())
                 && otherRecipe.getTextFormattedRecipe().equals(this.getTextFormattedRecipe());
     }
 
@@ -155,9 +155,11 @@ public class Recipe {
         builder.append(NEW_LINE)
                 .append(getName())
                 .append(LINE_BREAK)
-                .append("PreparationTime: ")
-                .append(NEW_LINE)
+                .append("Preparation Time: ")
                 .append(getPreparationTime())
+                .append(LINE_BREAK)
+                .append("Cooking Time: ")
+                .append(getCookingTime())
                 .append(LINE_BREAK)
                 .append("Ingredient: ")
                 .append(NEW_LINE)

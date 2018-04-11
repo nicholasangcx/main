@@ -6,6 +6,7 @@ import static seedu.recipe.logic.parser.CliSyntax.PREFIX_IMG;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INSTRUCTION;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_URL;
 
 import org.jsoup.nodes.Document;
@@ -28,31 +29,41 @@ public abstract class WebParser {
         String instruction = getInstruction();
         String imageUrl = getImageUrl();
         String url = getUrl();
+        String[] tags = getTags();
 
         if (!name.equals("")) {
             StringBuilder commandBuilder = new StringBuilder();
-            commandBuilder.append(COMMAND_WORD);
-            commandBuilder.append(LF);
-            commandBuilder.append(PREFIX_NAME);
-            commandBuilder.append(name);
+            commandBuilder.append(COMMAND_WORD)
+                    .append(LF)
+                    .append(PREFIX_NAME)
+                    .append(name);
             if (!ingredient.equals("")) {
-                commandBuilder.append(LF);
-                commandBuilder.append(PREFIX_INGREDIENT);
-                commandBuilder.append(ingredient);
+                commandBuilder.append(LF)
+                        .append(PREFIX_INGREDIENT)
+                        .append(ingredient);
             }
             if (!instruction.equals("")) {
-                commandBuilder.append(LF);
-                commandBuilder.append(PREFIX_INSTRUCTION);
-                commandBuilder.append(instruction);
+                commandBuilder.append(LF)
+                        .append(PREFIX_INSTRUCTION)
+                        .append(instruction);
             }
             if (!imageUrl.equals("")) {
-                commandBuilder.append(LF);
-                commandBuilder.append(PREFIX_IMG);
-                commandBuilder.append(imageUrl);
+                commandBuilder.append(LF)
+                        .append(PREFIX_IMG)
+                        .append(imageUrl);
             }
-            commandBuilder.append(LF);
-            commandBuilder.append(PREFIX_URL);
-            commandBuilder.append(url);
+            commandBuilder.append(LF)
+                    .append(PREFIX_URL)
+                    .append(url);
+            if (tags.length > 0) {
+                commandBuilder.append(LF);
+                for (String tag : tags) {
+                    commandBuilder
+                            .append(PREFIX_TAG)
+                            .append(tag)
+                            .append(" ");
+                }
+            }
             return commandBuilder.toString();
         }
         return null;
@@ -67,4 +78,6 @@ public abstract class WebParser {
     public abstract String getImageUrl();
 
     public abstract String getUrl();
+
+    public abstract String[] getTags();
 }

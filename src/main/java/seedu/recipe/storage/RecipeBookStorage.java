@@ -41,5 +41,4 @@ public interface RecipeBookStorage {
      * @see #saveRecipeBook(ReadOnlyRecipeBook)
      */
     void saveRecipeBook(ReadOnlyRecipeBook recipeBook, String filePath) throws IOException;
-
 }

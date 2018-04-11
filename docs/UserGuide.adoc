@@ -59,7 +59,7 @@ E.g. typing `help` and pressing kbd:[Enter] will open the help window.
 ** *_TIME_* fields accept a number of formats: `1h20m`, `1h20min`, `1 hour 20 minutes`, `80m`, `80min`, `80 mins`, etc. However, sticking to the most simple format `80m` is recommended.
 ** *_CALORIES_* and *_SERVINGS_* are positive numbers. E.g. `120`, `5000`, etc.
 ** *_URL_* takes a valid website address as its value. E.g. `http://google.com`.
-** *_IMAGE_* takes a valid image path as its value (E.g. for macOS: `/Users/administrator/Desktop/image.png`, for windows: `C:\Users\admin\image.png`).
+** *_IMAGE_* takes a valid image path as its value (E.g. for macOS: `/Users/administrator/Desktop/image.png`, for windows: `C:\Users\admin\image.png`). Or it can also be a valid image URL, for example, `https://i.imgur.com/FhRsgCK.jpg`.
 * Items in square brackets are optional e.g `name/NAME [tag/TAG]` can be used as *`name/Chicken rice tag/chicken`* or as *`name/Chicken rice`*.
 * Items with `...` after them can be used multiple times including zero times e.g. `[tag/TAG]...` can be used as `{nbsp}` (i.e. 0 times), *`tag/rice`*, *`tag/rice tag/chicken`*, etc.
 * Parameters can be in any order. E.g. if the command specifies `name/RECIPE_NAME instruction/INSTRUCTION`, `instruction/INSTRUCTION name/RECIPE_NAME` has the same effect.

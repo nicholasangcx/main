@@ -74,3 +74,9 @@ div.nav-headbar li a:hover {
     color: white;
     background-color: #a53221;
 }
+
+@media print {
+    a:link:after, a:visited:after {
+        content: "";
+    }
+}
