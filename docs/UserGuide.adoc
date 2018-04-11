@@ -20,7 +20,8 @@ By: `Team F09-B2`      Since: `Jan 2018`      Licence: `MIT`
 // tag::applicationDescription[]
 *<<ReciRecipe,ReciRecipé>>* is for those who *prefer to use a desktop app for managing recipes*. More importantly, ReciRecipé is *optimized for those who prefer to work with a Command Line Interface* (<<CLI,CLI>>) while still having the benefits of a Graphical User Interface (<<GUI, GUI>>).
 // end::applicationDescription[]
-If you can type fast, ReciRecipé can get your recipe management done faster than traditional GUI apps. Interested? Jump to <<Quick start>> to get started. Enjoy!
+So if you are a home cook or are just interested in being exposed to more interesting recipes out there, this app is just for you. It provides an easy way to save old recipes, craft new ones, or just pull the many variations already available online! There are even ways to organise, manage and search through your saved recipes for easy retrieval.
+This user guide will systematically take you through all the functions available in ReciRecipé and teach you how to use them efficiently. Interested? Jump to <<Quick start>> to get started. Enjoy!
 
 == Quick start
 
@@ -326,11 +327,6 @@ Reapplies the *`delete 1`* command +
 *`redo`* +
 Reapplies the *`clear`* command +
 
-=== Saving the data
-
-ReciRecipé saves data in the hard disk automatically after any command that changes the data (`add`, `edit`, `clear`, ...). +
-There is no need to save manually.
-
 //tag::internet-search[]
 [[Search]]
 === *`search`* : Searching on the Internet
@@ -526,6 +522,11 @@ Examples:
 
 * *`view_group My best`* +
 Lists all recipes inside `_My best_` group.
+
+=== Saving the data
+
+No specific command is required to save data in this application. ReciRecipé saves data in the hard disk automatically after any command that changes the data (`add`, `edit`, `clear`, ...). +
+There is no need to save manually.
 
 == Upcoming features
 
