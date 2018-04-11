@@ -43,6 +43,11 @@ This app will not work with earlier versions of Java 8.
 .GUI for ReciRecipe
 image::Ui.png[width="790"]
 {nbsp} +
+Referring to Figure 1 above:
+.. On the left section, we have the display page that gives more details about a specific recipe selected.
+.. On the upper-half of the center section, we have the command box where commands are entered.
+.. On the bottom-half of the center section, we have the response box where the application will provide feedback on the commands you have executed.
+.. On the right section, we have the list of recipes which will display a brief summary of the first few recipes saved in ReciRecipé.
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 E.g. typing `help` and pressing kbd:[Enter] will open the help window.
 
@@ -53,7 +58,12 @@ E.g. typing `help` and pressing kbd:[Enter] will open the help window.
 [[CommandFormat]]
 *Command Format*
 
-* Words in upper case are the parameters to be supplied by the user. For example, in `add name/NAME calories/CALORIES`, *_NAME_* and *_CALORIES_* are parameters which can be substituted in this manner *`add name/Chicken rice calories/500`*.
+Words in upper case are the parameters to be supplied by the user. For example:
+
+* `add name/NAME calories/CALORIES`, *_NAME_* and *_CALORIES_* are parameters which can be substituted in this manner *`add name/Chicken rice calories/500`*.
+* `add name/NAME ingredient/INGREDIENT instruction/INSTRUCTION`,*_NAME_*, *_INGREDIENT_* and *_INSTRUCTION_* are parameters which can be substituted in this manner *`add name/Chicken rice ingredient/chicken, rice instruction/cut chicken into strips before cooking`*.
+* Below is a list of the remaining parameters with examples of their acceptable formats:
+
 ** *_INGREDIENT_* is a list of ingredients, delimited by commas. E.g. `chicken,fish,rice` and `chicken, fish, rice` are valid.
 ** *_INSTRUCTION_* can receive multiple lines as its value.
 ** *_TIME_* fields accept a number of formats: `1h20m`, `1h20min`, `1 hour 20 minutes`, `80m`, `80min`, `80 mins`, etc. However, sticking to the most simple format `80m` is recommended.
@@ -128,6 +138,10 @@ You can use kbd:[Tab] to quickly move the caret to next field.
 Clears all entries from the recipe book.
 
 Format: `clear`
+
+[WARNING]
+This command clears all data in the application.
+Use it cautiously.
 
 See figure below for the expected behavior of this command. +
 {nbsp}
@@ -308,9 +322,9 @@ Examples:
 
 * *`delete 1`* +
 *`undo`* +
-Reverses the *`delete 1`* command +
+Reverses the *`delete 1`* command. +
 *`redo`* +
-Reapplies the *`delete 1`* command +
+Reapplies the *`delete 1`* command. +
 
 * *`delete 1`* +
 *`redo`* +
@@ -319,13 +333,13 @@ The *`redo`* command fails as there are no *`undo`* commands executed previously
 * *`delete 1`* +
 *`clear`* +
 *`undo`* +
-Reverses the *`clear`* command +
+Reverses the *`clear`* command. +
 *`undo`* +
-Reverses the *`delete 1`* command +
+Reverses the *`delete 1`* command. +
 *`redo`* +
-Reapplies the *`delete 1`* command +
+Reapplies the *`delete 1`* command. +
 *`redo`* +
-Reapplies the *`clear`* command +
+Reapplies the *`clear`* command. +
 
 //tag::internet-search[]
 [[Search]]
@@ -335,7 +349,7 @@ Searches for your recipe on the Internet.
 
 Format: `search RECIPE_NAME`
 
-See <<fig-InternetSearchCommand>> for more information. +
+See <<fig-InternetSearchCommand>> for more information on what will be displayed after you search for a specific food. +
 {nbsp}
 
 [[fig-InternetSearchCommand]]
@@ -345,7 +359,7 @@ image::InternetSearchCommand.png[width="750"]
 Examples:
 
 * *`search chicken rice`* +
-You will be brought to the result page and from there, you can select any recipes that you want. See <<fig-InternetSearchResult>>. +
+You will be brought to the result page and from there, you can select any recipes that you want. See <<fig-InternetSearchResult>> to see what will be displayed after you select a specific recipe for chicken rice. +
 {nbsp} +
 +
 [[fig-InternetSearchResult]]
@@ -457,6 +471,11 @@ See <<fig-AuthorizationCode>> for more information. +
 image::AuthorizationCode.PNG[width="750"]
 {nbsp} +
 
+****
+* This command only accepts valid authorization codes.
+* If the authorization code is invalid, an error will be thrown indicating that the application was unable to upload the file.
+****
+
 === *`undo`* : Undoing previous command
 
 Restores the recipe book to the state before the previous _undoable_ command was executed.
@@ -472,7 +491,8 @@ Examples:
 
 * *`delete 1`* +
 *`list`* +
-*`undo`* (reverses the `delete 1` command) +
+*`undo`* +
+Reverses the `delete 1` command. +
 
 * *`select 1`* +
 *`list`* +
@@ -481,8 +501,10 @@ The *`undo`* command fails as there are no undoable commands executed previously
 
 * *`delete 1`* +
 *`clear`* +
-*`undo`* (reverses the *`clear`* command) +
-*`undo`* (reverses the *`delete 1`* command) +
+*`undo`* +
+Reverses the *`clear`* command. +
+*`undo`* +
+Reverses the *`delete 1`* command. +
 
 === *`upload`* : Uploading all recipes
 
@@ -504,12 +526,12 @@ If it is the first time the user is using the `upload` command, you will be prom
 An authorization code will then be given to you which you should copy and paste into this app. See <<token>> for details.
 ====
 
-Examples:
+Example:
 
 * *`upload RecipeBook`* +
-Data file will be uploaded to Dropbox with the name RecipeBook.xml.
-* Perform any *`add`*, *`delete`* or *`edit`* commands.
-* *`upload RecipeBook`* +
+Data file will be uploaded to Dropbox with the name RecipeBook.xml. +
+*`add`*, *`delete`* or *`edit`*. +
+*`upload RecipeBook`* +
 Updated data file will be uploaded to Dropbox with the name RecipeBook(1).xml.
 
 === *`view_group`* : Viewing groups of recipes
