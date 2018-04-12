@@ -454,8 +454,8 @@ Currently the implementation of `loadDefaultPage()` reloads the `_BrowserPanel_`
 ** Cons: There is no default page to display so we have to find another approach to make `_BrowserPanel_` display something as a placeholder, *without* using a default page.
 // end::change-theme[]
 
-// tag::cloud-storage[]
 === Cloud storage support
+// tag::cloud-storage[]
 ==== Current implementation
 
 A new command `_UploadCommand_` has been added to allow users to upload data in the recipe book onto the cloud. `_UploadCommandParser_` takes in and checks the `_String_` filename, adds an XML extension to it before saving it to `_CloudStorageUtil_` and parsing it to `_UploadCommand_`.

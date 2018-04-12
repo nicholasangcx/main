@@ -259,6 +259,7 @@ Format: `history`
 Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows while holding down kbd:[Ctrl] will display the previous and next input respectively in the command box.
 ====
 
+// tag::ingredientCommand[]
 === *`ingredient`* : Locating recipes by ingredients
 
 Finds recipes whose ingredients contain all of the given keywords.
@@ -278,6 +279,7 @@ Examples:
 Returns recipe with ingredient _Chicken_.
 * *`ingredient chicken fish pasta`* +
 Returns only recipes that contain all `_chicken_`, `_fish_`, and `_pasta_` as ingredients.
+// end::ingredientCommand[]
 
 === *`list`* : Listing all recipes
 
@@ -423,6 +425,7 @@ image::FacebookFeedDialog.jpg[width="600"]
 The User will be redirected back to his/her Facebook feed once the post has been made.
 //end::share-command[]
 
+// tag::tagCommand[]
 === *`tag`* : Locating recipes by tags
 
 Finds recipe whose tags contain any of the given keywords.
@@ -442,6 +445,7 @@ Examples:
 Returns all recipes with the tag `_drink_`.
 * *`tag drink food`* +
 Returns any recipe with the tag `_drink_` or `_food_`.
+// end::tagCommand[]
 
 //tag::change-theme[]
 === *`theme`* : Changing theme
@@ -461,6 +465,7 @@ image::ChangeTheme.PNG[width="750"]
 You can change theme from the menu bar or by pressing F2 too!
 //end::change-theme[]
 
+// tag::tokenCommand[]
 [[token]]
 === *`token`* : Exchanging authorization code for access token
 
@@ -480,6 +485,7 @@ image::AuthorizationCode.PNG[width="750"]
 * This command only accepts valid authorization codes.
 * If the authorization code is invalid, an error will be thrown indicating that the application was unable to upload the file.
 ****
+// end::tokenCommand[]
 
 === *`undo`* : Undoing previous command
 
@@ -511,6 +517,7 @@ Reverses the *`clear`* command. +
 *`undo`* +
 Reverses the *`delete 1`* command. +
 
+// tag::uploadCommand[]
 === *`upload`* : Uploading all recipes
 
 Uploads the xml file containing data of all recipes to Dropbox, giving it the specified filename.
@@ -538,6 +545,7 @@ Data file will be uploaded to Dropbox with the name RecipeBook.xml. +
 *`add`*, *`delete`* or *`edit`*. +
 *`upload RecipeBook`* +
 Updated data file will be uploaded to Dropbox with the name RecipeBook(1).xml.
+// end::uploadCommand[]
 
 === *`view_group`* : Viewing groups of recipes
 
