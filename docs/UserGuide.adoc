@@ -10,6 +10,7 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
+:warning-caption: :danger:
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-F09-B2/main
 
