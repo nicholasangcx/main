@@ -24,6 +24,28 @@ public class ShareRecipeEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\recipe\commons\util\FileUtil.java
+``` java
+    /**
+     * Checks if a given file is an image file.
+     *
+     * @return true if a given file is a valid image file.
+     */
+    public static boolean isImageFile(File file) {
+        if (!isFileExists(file) || file.isDirectory()) {
+            return false;
+        } else {
+            try {
+                if (ImageIO.read(file) == null) {
+                    return false;
+                }
+            } catch (IOException exception) {
+                System.out.println("Error reading file");
+            }
+            return true;
+        }
+    }
+```
 ###### \java\seedu\recipe\logic\commands\ShareCommand.java
 ``` java
 /**
@@ -184,6 +206,8 @@ import java.io.File;
 import java.net.URL;
 
 import seedu.recipe.MainApp;
+import seedu.recipe.commons.util.FileUtil;
+import seedu.recipe.storage.ImageDownloader;
 
 /**
  * Represents a Recipe's image in the address book.
@@ -193,10 +217,14 @@ public class Image {
 
     public static final String NULL_IMAGE_REFERENCE = "-";
     public static final String FILE_PREFIX = "file:";
-    public static final String MESSAGE_IMAGE_CONSTRAINTS = "Image path should be valid";
+    public static final String IMAGE_STORAGE_FOLDER = "data/images/";
+    public static final String MESSAGE_IMAGE_CONSTRAINTS = "Image path should be valid,"
+            + " file should be a valid image file";
     public static final URL VALID_IMAGE = MainApp.class.getResource("/images/clock.png");
     public static final String VALID_IMAGE_PATH = VALID_IMAGE.toExternalForm().substring(5);
-    public final String value;
+
+    private String value;
+    private String imageName;
 
     /**
      * Constructs a {@code Image}.
@@ -206,25 +234,44 @@ public class Image {
     public Image(String imagePath) {
         requireNonNull(imagePath);
         checkArgument(isValidImage(imagePath), MESSAGE_IMAGE_CONSTRAINTS);
+        if (ImageDownloader.isValidImageUrl(imagePath)) {
+            imagePath = ImageDownloader.downloadImage(imagePath);
+        }
         this.value = imagePath;
+        setImageName();
     }
 
     /**
-     *  Returns true if a given string is a valid file path, or no file path has been assigned
+     * Sets the name of the image file
      */
-    public static boolean isValidImage(String testImagePath) {
-        if (testImagePath.equals(NULL_IMAGE_REFERENCE)) {
-            return true;
+    public void setImageName() {
+        if (this.value.equals(NULL_IMAGE_REFERENCE)) {
+            imageName = NULL_IMAGE_REFERENCE;
+        } else {
+            this.imageName = new File(this.value).getName();
         }
-        File image = new File(testImagePath);
-        if (image.exists() && !image.isDirectory()) {
-            return true;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+```
+###### \java\seedu\recipe\model\recipe\Image.java
+``` java
+
+    /**
+     * Sets image path to follow internal image storage folder
+     */
+    public void setImageToInternalReference() {
+        if (!imageName.equals(NULL_IMAGE_REFERENCE)) {
+            this.value = IMAGE_STORAGE_FOLDER + imageName;
         }
-        return false;
     }
 
     public String getUsablePath() {
-        return FILE_PREFIX + value;
+        File imagePath = new File(this.value);
+        return FILE_PREFIX + imagePath.getAbsolutePath();
     }
 
     @Override
@@ -392,6 +439,63 @@ public class HtmlFormatter {
     }
 }
 ```
+###### \java\seedu\recipe\storage\ImageStorage.java
+``` java
+package seedu.recipe.storage;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import seedu.recipe.commons.core.LogsCenter;
+import seedu.recipe.commons.util.FileUtil;
+import seedu.recipe.model.ReadOnlyRecipeBook;
+import seedu.recipe.model.recipe.Image;
+
+/**
+ * A class to save RecipeBook image data stored on the hard disk.
+ */
+public class ImageStorage {
+    public static final String IMAGE_FOLDER = "images/";
+    private static final String RECIPE_BOOK_FILENAME = "recipebook.xml";
+    private static final String WARNING_UNABLE_TO_SAVE_IMAGE = "Image cannot be saved.";
+
+    /**
+     * Saves all image files into the images folder of the application
+     *
+     * @param filePath location of the image. Cannot be null
+     */
+    public static void saveAllImageFiles(ReadOnlyRecipeBook recipeBook, String filePath) throws IOException {
+        String imageFolderPath = filePath.replaceAll(RECIPE_BOOK_FILENAME, IMAGE_FOLDER);
+        File imageFolder = new File(imageFolderPath);
+        FileUtil.createDirs(imageFolder);
+
+        for (int i = 0; i < recipeBook.getRecipeList().size(); i++) {
+            Image recipeImage = recipeBook.getRecipeList().get(i).getImage();
+            saveImageFile(recipeImage.toString(), imageFolderPath);
+            recipeImage.setImageToInternalReference();
+        }
+    }
+
+    /**
+     * Saves an image file into the images folder of the application
+     *
+     * @param imagePath       location of the image. Cannot be null
+     * @param imageFolderPath location of the image. Cannot be null
+     */
+    public static void saveImageFile(String imagePath, String imageFolderPath) {
+        try {
+            File imageToSave = new File(imagePath);
+            File pathToNewImage = new File(imageFolderPath + imageToSave.getName());
+            Files.copy(imageToSave.toPath(), pathToNewImage.toPath(), REPLACE_EXISTING);
+        } catch (IOException e) {
+            LogsCenter.getLogger(ImageStorage.class).warning(WARNING_UNABLE_TO_SAVE_IMAGE);
+        }
+    }
+}
+```
 ###### \java\seedu\recipe\storage\XmlAdaptedRecipe.java
 ``` java
         if (this.url == null) {
@@ -406,18 +510,20 @@ public class HtmlFormatter {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Image.class.getSimpleName()));
         }
         if (!Image.isValidImage(this.image)) {
-            throw new IllegalValueException(Image.MESSAGE_IMAGE_CONSTRAINTS);
+            this.image = Image.NULL_IMAGE_REFERENCE;
         }
         final Image image = new Image(this.image);
 ```
 ###### \java\seedu\recipe\ui\BrowserPanel.java
 ``` java
+
     /**
      * Loads the text recipe onto the browser
      */
     private void loadLocalRecipe(Recipe recipe) {
         browser.getEngine().loadContent(HtmlFormatter.getHtmlFormat(recipe));
     }
+
 ```
 ###### \java\seedu\recipe\ui\BrowserPanel.java
 ``` java

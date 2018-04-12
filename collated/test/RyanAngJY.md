@@ -1,4 +1,26 @@
 # RyanAngJY
+###### \java\seedu\recipe\commons\util\FileUtilTest.java
+``` java
+    @Test
+    public void isImageFile() {
+        // file is not an image file
+        File file = new File(MainApp.class.getResource("/view/DarkTheme.css").toExternalForm()
+                .substring(5));
+        assertFalse(FileUtil.isImageFile(file));
+
+        // file is directory
+        file = new File(MainApp.class.getResource("/view").toExternalForm().substring(5));
+        assertFalse(FileUtil.isImageFile(file));
+
+        // file is null pointer
+        File nullFile = null;
+        Assert.assertThrows(NullPointerException.class, () -> FileUtil.isImageFile(nullFile));
+
+        // valid image file
+        file = new File(Image.VALID_IMAGE_PATH);
+        assertTrue(FileUtil.isImageFile(file));
+    }
+```
 ###### \java\seedu\recipe\logic\parser\AddCommandParserTest.java
 ``` java
         // multiple urls - last url accepted
@@ -42,6 +64,10 @@ import org.junit.Test;
 import seedu.recipe.testutil.Assert;
 
 public class ImageTest {
+    private static final String INVALID_IMAGE_URL = "http://google.com";
+    private static final String NOT_AN_IMAGE_PATH = "build.gradle";
+    private static final String VALID_IMAGE_URL = "https://i.imgur.com/FhRsgCK.jpg";
+
     @Test
     public void constructor_null_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () -> new Image(null));
@@ -58,12 +84,30 @@ public class ImageTest {
         // blank image
         assertFalse(Image.isValidImage("")); // empty string
         assertFalse(Image.isValidImage("   ")); // spaces only
+        assertFalse(Image.isValidImage("\t\n\t\r\n"));
 
         // invalid image
         assertFalse(Image.isValidImage("estsed")); //random string
 
-        // valid image
+        // valid image path
+        assertTrue(Image.isValidImage(Image.NULL_IMAGE_REFERENCE));
         assertTrue(Image.isValidImage(Image.VALID_IMAGE_PATH));
+        // invalid image path
+        assertFalse(Image.isValidImage("ZZZ://ZZZ!!@@#"));
+        // not an image
+        assertFalse(Image.isValidImage(NOT_AN_IMAGE_PATH));
+
+        // valid image url
+        assertTrue(Image.isValidImage(VALID_IMAGE_URL));
+        // invalid image url
+        assertFalse(Image.isValidImage(INVALID_IMAGE_URL));
+    }
+
+    @Test
+    public void setImageToInternalReference() {
+        Image imageStub = new Image(Image.VALID_IMAGE_PATH);
+        imageStub.setImageToInternalReference();
+        assertTrue(imageStub.toString().equals(Image.IMAGE_STORAGE_FOLDER + imageStub.getImageName()));
     }
 }
 ```
@@ -133,15 +177,6 @@ public class UrlTest {
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Url.class.getSimpleName());
         Assert.assertThrows(IllegalValueException.class, expectedMessage, recipe::toModelType);
     }
-    @Test
-    public void toModelType_invalidImage_throwsIllegalValueException() {
-        XmlAdaptedRecipe recipe =
-                new XmlAdaptedRecipe(VALID_NAME, VALID_INGREDIENT, VALID_INSTRUCTION, VALID_COOKING_TIME,
-                        VALID_PREPARATION_TIME, VALID_CALORIES, VALID_SERVINGS, VALID_URL,
-                        INVALID_IMAGE, VALID_TAGS);
-        String expectedMessage = Image.MESSAGE_IMAGE_CONSTRAINTS;
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, recipe::toModelType);
-    }
 
     @Test
     public void toModelType_nullImage_throwsIllegalValueException() {
@@ -151,6 +186,20 @@ public class UrlTest {
                         null, VALID_TAGS);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Image.class.getSimpleName());
         Assert.assertThrows(IllegalValueException.class, expectedMessage, recipe::toModelType);
+    }
+
+
+    @Test
+    public void toModelType_invalidImage_setsImageToNullReference() {
+        Recipe recipe = null;
+        try {
+            recipe = new XmlAdaptedRecipe(VALID_NAME, VALID_INGREDIENT, VALID_INSTRUCTION, VALID_COOKING_TIME,
+                    VALID_PREPARATION_TIME, VALID_CALORIES, VALID_SERVINGS, VALID_URL,
+                    INVALID_IMAGE, VALID_TAGS).toModelType();
+        } catch (Exception e) {
+            System.out.println("Unable to create recipe");
+        }
+        assertTrue(recipe.getImage().toString().equals(Image.NULL_IMAGE_REFERENCE));
     }
 ```
 ###### \java\seedu\recipe\storage\XmlAdaptedRecipeTest.java

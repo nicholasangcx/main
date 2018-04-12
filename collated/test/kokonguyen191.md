@@ -1,12 +1,21 @@
 # kokonguyen191
 ###### \java\guitests\guihandles\CommandBoxHandle.java
 ``` java
+
     /**
      * Appends the given string to text already existing in the Command box
      */
     public void appendText(String text) {
         guiRobot.interact(() -> getRootNode().appendText(text));
         guiRobot.pauseForHuman();
+    }
+
+    /**
+     * Submits whatever is in the CommandBox
+     */
+    public void submitCommand() {
+        click();
+        guiRobot.type(KeyCode.ENTER);
     }
 
 ```
@@ -582,6 +591,93 @@ public class ServingsTest {
     }
 }
 ```
+###### \java\seedu\recipe\storage\ImageDownloaderTest.java
+``` java
+package seedu.recipe.storage;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.CRC32;
+
+import org.junit.After;
+import org.junit.Test;
+
+import seedu.recipe.model.recipe.Image;
+import seedu.recipe.testutil.Assert;
+
+public class ImageDownloaderTest {
+
+    private static final String INVALID_IMAGE_URL = "http://google.com";
+    private static final String VALID_IMAGE_URL = "https://i.imgur.com/FhRsgCK.jpg";
+    private static final String VALID_IMAGE_MD5 = "2A78C63135CCB8BCECEF189FE0CD834C";
+    private static final String VALID_IMAGE_PATH =
+            Image.IMAGE_STORAGE_FOLDER + VALID_IMAGE_MD5 + "." + ImageDownloader.DOWNLOADED_IMAGE_FORMAT;
+    private static final long VALID_IMAGE_CRC = 2184062566L;
+
+    @Test
+    public void isValidImageUrl() throws Exception {
+        // not an image url
+        assertFalse(ImageDownloader.isValidImageUrl(null));
+        assertFalse(ImageDownloader.isValidImageUrl("\t\n\t\r\n"));
+        assertFalse(ImageDownloader.isValidImageUrl("ZZZ://ZZZ!!@@#"));
+        assertFalse(ImageDownloader.isValidImageUrl(Image.VALID_IMAGE_PATH));
+        assertFalse(ImageDownloader.isValidImageUrl(Image.NULL_IMAGE_REFERENCE));
+
+        // invalid image url
+        assertFalse(ImageDownloader.isValidImageUrl(INVALID_IMAGE_URL));
+
+        // valid image url
+        assertTrue(ImageDownloader.isValidImageUrl(VALID_IMAGE_URL));
+    }
+
+    @Test
+    public void downloadImage_invalidUrl_throwsAssertionError() {
+        Assert.assertThrows(AssertionError.class, () -> ImageDownloader.downloadImage(INVALID_IMAGE_URL));
+    }
+
+    @Test
+    public void downloadImage_validUrl_returnsImageName() throws Exception {
+        // First download
+        String fileName = ImageDownloader.downloadImage(VALID_IMAGE_URL);
+        File file = new File(fileName);
+        assertTrue(file.exists());
+        assertImageCrc(file, VALID_IMAGE_CRC);
+        assertEquals(VALID_IMAGE_PATH, fileName);
+
+        // Re-download will still return file name
+        assertEquals(VALID_IMAGE_PATH, ImageDownloader.downloadImage(VALID_IMAGE_URL));
+    }
+
+    @After
+    public void cleanUp() {
+        File file = new File(VALID_IMAGE_PATH);
+        file.delete();
+    }
+
+    /**
+     * Asserts that {@code image} has CRC {@code crcValue}
+     */
+    private void assertImageCrc(File image, long crcValue) throws IOException {
+        InputStream in = new FileInputStream(image);
+        CRC32 crc32 = new CRC32();
+        byte[] buffer = new byte[1000];
+        int bytes;
+        while ((bytes = in.read(buffer)) != -1) {
+            crc32.update(buffer, 0, bytes);
+        }
+        long crc = crc32.getValue();
+        in.close();
+
+        assertEquals(VALID_IMAGE_CRC, crc);
+    }
+}
+```
 ###### \java\seedu\recipe\storage\XmlAdaptedRecipeTest.java
 ``` java
     @Test
@@ -806,7 +902,13 @@ import static seedu.recipe.logic.parser.CliSyntax.PREFIX_IMG;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INGREDIENT;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_INSTRUCTION;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.recipe.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.recipe.logic.parser.CliSyntax.PREFIX_URL;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import seedu.recipe.model.recipe.Recipe;
 
 /**
  * A utility class containing a list of {@code Recipe} objects parsed from Wikia to be used in tests.
@@ -839,6 +941,19 @@ public class WikiaRecipes {
             "http://recipes.wikia.com/wiki/Hainanese_Chicken_Rice?useskin=wikiamobile";
     public static final String MOBILE_CHICKEN_RICE_IMAGE_URL = "https://vignette.wikia.nocookie.net/recipes/images/d/d3"
             + "/Chickenrice2.jpg/revision/latest/scale-to-width-down/340?cb=20080516004325";
+    public static final String[] CHICKEN_TAGS = {"SingaporeanMeat", "ScrewPineLeaf",
+        "Chicken", "Cucumber", "Lettuce", "MainDishPoultry", "Pineapple", "Rice"};
+    public static final Recipe HAINANESE_CHICKEN_RICE = new RecipeBuilder()
+            .withName(CHICKEN_NAME)
+            .withIngredient(CHICKEN_INGREDIENT)
+            .withInstruction(CHICKEN_INSTRUCTION)
+            .withCookingTime("-")
+            .withPreparationTime("-")
+            .withCalories("-")
+            .withServings("-")
+            .withUrl(WIKIA_RECIPE_URL_CHICKEN)
+            .withImage("-")
+            .withTags(CHICKEN_TAGS).build();
 
     public static final String UGANDAN_NAME = "Ugandan Chicken Stew";
     public static final String UGANDAN_INGREDIENT = "chicken, oil, onion, tomatoes, potatoes, salt, pepper";
@@ -849,6 +964,19 @@ public class WikiaRecipes {
     public static final String WIKIA_RECIPE_URL_UGANDAN = "http://recipes.wikia.com/wiki/Ugandan_Chicken_Stew";
     public static final String MOBILE_WIKIA_RECIPE_URL_UGANDAN =
             "http://recipes.wikia.com/wiki/Ugandan_Chicken_Stew?useskin=wikiamobile";
+    public static final String[] UGANDAN_TAGS = {"UgandanMeat", "Potato", "MainDishPoultry", "Tomato", "Stew",
+        "Chicken", "RecipesThatNeedPhotos"};
+    public static final Recipe UGANDAN_CHICKEN_STEW = new RecipeBuilder()
+            .withName(UGANDAN_NAME)
+            .withIngredient(UGANDAN_INGREDIENT)
+            .withInstruction(UGANDAN_INSTRUCTION)
+            .withCookingTime("-")
+            .withPreparationTime("-")
+            .withCalories("-")
+            .withServings("-")
+            .withUrl(MOBILE_WIKIA_RECIPE_URL_UGANDAN)
+            .withImage("-")
+            .withTags(UGANDAN_TAGS).build();
 
     public static final String WIKIA_RECIPE_URL_BEEF =
             "http://recipes.wikia.com/wiki/Beef_Tenderloin_with_Madeira_Sauce";
@@ -860,20 +988,31 @@ public class WikiaRecipes {
     public static final String WIKIA_CHICKEN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + CHICKEN_NAME + LF + PREFIX_INGREDIENT + CHICKEN_INGREDIENT + LF
                     + PREFIX_INSTRUCTION + CHICKEN_INSTRUCTION + LF + PREFIX_IMG + CHICKEN_RICE_IMAGE_URL + LF
-                    + PREFIX_URL + WIKIA_RECIPE_URL_CHICKEN;
+                    + PREFIX_URL + WIKIA_RECIPE_URL_CHICKEN + LF + joinTags(CHICKEN_TAGS);
     public static final String WIKIA_UGANDAN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + UGANDAN_NAME + LF + PREFIX_INGREDIENT + UGANDAN_INGREDIENT + LF
-                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + WIKIA_RECIPE_URL_UGANDAN;
+                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + WIKIA_RECIPE_URL_UGANDAN
+                    + LF + joinTags(UGANDAN_TAGS);
     public static final String MOBILE_WIKIA_CHICKEN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + CHICKEN_NAME + LF + PREFIX_INGREDIENT + CHICKEN_INGREDIENT + LF
                     + PREFIX_INSTRUCTION + CHICKEN_INSTRUCTION + LF + PREFIX_IMG + MOBILE_CHICKEN_RICE_IMAGE_URL + LF
-                    + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_CHICKEN;
+                    + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_CHICKEN + LF + joinTags(CHICKEN_TAGS);
     public static final String MOBILE_WIKIA_UGANDAN_ADD_COMMAND =
             COMMAND_WORD + LF + PREFIX_NAME + UGANDAN_NAME + LF + PREFIX_INGREDIENT + UGANDAN_INGREDIENT + LF
-                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_UGANDAN;
+                    + PREFIX_INSTRUCTION + UGANDAN_INSTRUCTION + LF + PREFIX_URL + MOBILE_WIKIA_RECIPE_URL_UGANDAN
+                    + LF + joinTags(UGANDAN_TAGS);
 
     private WikiaRecipes() {
     } // prevents instantiation
+
+    /**
+     * Takes in an array of tag strings and returns a string that can be passed to an add or edit command.
+     */
+    private static String joinTags(String[] tags) {
+        return Arrays.stream(tags)
+                .map(tag -> PREFIX_TAG + tag + " ")
+                .collect(Collectors.joining());
+    }
 }
 ```
 ###### \java\seedu\recipe\ui\CommandBoxTest.java
@@ -888,6 +1027,7 @@ public class WikiaRecipes {
 ```
 ###### \java\seedu\recipe\ui\CommandBoxTest.java
 ``` java
+
     /**
      * Checks that the input in the {@code commandBox} equals to {@code expectedCommand}.
      */
@@ -900,10 +1040,12 @@ public class WikiaRecipes {
 ``` java
 package seedu.recipe.ui.parser;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_NAME;
+import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_TAGS;
 import static seedu.recipe.testutil.WikiaRecipes.MOBILE_CHICKEN_RICE_IMAGE_URL;
 import static seedu.recipe.testutil.WikiaRecipes.MOBILE_WIKIA_CHICKEN_ADD_COMMAND;
 import static seedu.recipe.testutil.WikiaRecipes.MOBILE_WIKIA_RECIPE_URL_CHICKEN;
@@ -912,6 +1054,7 @@ import static seedu.recipe.testutil.WikiaRecipes.MOBILE_WIKIA_UGANDAN_ADD_COMMAN
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_NAME;
+import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_TAGS;
 
 import java.io.IOException;
 
@@ -980,6 +1123,12 @@ public class MobileWikiaParserTest extends GuiUnitTest {
     public void getUrl_validRecipes_returnsResult() throws Exception {
         assertEquals(wikiaParserChicken.getUrl(), MOBILE_WIKIA_RECIPE_URL_CHICKEN);
         assertEquals(wikiaParserUgandan.getUrl(), MOBILE_WIKIA_RECIPE_URL_UGANDAN);
+    }
+
+    @Test
+    public void getTags_validRecipes_returnsResult() throws Exception {
+        assertArrayEquals(wikiaParserChicken.getTags(), CHICKEN_TAGS);
+        assertArrayEquals(wikiaParserUgandan.getTags(), UGANDAN_TAGS);
     }
 
     @Test
@@ -1076,15 +1225,18 @@ public class WebParserHandlerTest extends GuiUnitTest {
 ``` java
 package seedu.recipe.ui.parser;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static seedu.recipe.testutil.WikiaRecipes.BEEF_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_NAME;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_RICE_IMAGE_URL;
+import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_TAGS;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_NAME;
+import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_TAGS;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_CHICKEN_ADD_COMMAND;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_NOT_RECIPE;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_RECIPE_URL_BEEF;
@@ -1167,6 +1319,12 @@ public class WikiaParserTest extends GuiUnitTest {
     }
 
     @Test
+    public void getTags_validRecipes_returnsResult() throws Exception {
+        assertArrayEquals(wikiaParserChicken.getTags(), CHICKEN_TAGS);
+        assertArrayEquals(wikiaParserUgandan.getTags(), UGANDAN_TAGS);
+    }
+
+    @Test
     public void parseRecipe_validRecipe_returnsValidCommand() throws Exception {
         String a = WIKIA_CHICKEN_ADD_COMMAND;
         assertEquals(wikiaParserChicken.parseRecipe(), WIKIA_CHICKEN_ADD_COMMAND);
@@ -1210,7 +1368,9 @@ package systemtests;
 
 import static org.junit.Assert.assertTrue;
 import static seedu.recipe.TestApp.APP_TITLE;
-import static GIRL_THEME_CSS;
+import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_RECIPE;
+import static seedu.recipe.testutil.TypicalRecipes.getTypicalRecipeBook;
+import static seedu.recipe.ui.MainWindow.GIRL_THEME_CSS;
 import static seedu.recipe.ui.MainWindow.LIGHT_THEME_CSS;
 import static seedu.recipe.ui.UiPart.FXML_FILE_FOLDER;
 
@@ -1219,12 +1379,18 @@ import org.junit.Test;
 import guitests.GuiRobot;
 import seedu.recipe.MainApp;
 import seedu.recipe.logic.commands.ChangeThemeCommand;
+import seedu.recipe.logic.commands.SelectCommand;
+import seedu.recipe.model.Model;
+import seedu.recipe.model.ModelManager;
+import seedu.recipe.model.UserPrefs;
 
 public class ChangeThemeSystemTest extends RecipeBookSystemTest {
     private static final String ERROR_MESSAGE = "ATTENTION!!!! : On some computers, this test may fail when run on "
             + "non-headless mode as FxRobot#clickOn(Node, MouseButton...) clicks on the wrong location. We suspect "
             + "that this is a bug with TestFX library that we are using. If this test fails, you have to run your "
             + "tests on headless mode. See UsingGradle.adoc on how to do so.";
+
+    private Model model = new ModelManager(getTypicalRecipeBook(), new UserPrefs());
 
     private final GuiRobot guiRobot = new GuiRobot();
 
@@ -1261,6 +1427,11 @@ public class ChangeThemeSystemTest extends RecipeBookSystemTest {
 
         executeCommand(ChangeThemeCommand.COMMAND_WORD);
         assertLightTheme();
+
+        String command = SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_RECIPE.getOneBased();
+        executeCommand(command);
+        executeCommand(ChangeThemeCommand.COMMAND_WORD);
+        assertDarkTheme();
     }
 
     /**
@@ -1268,7 +1439,7 @@ public class ChangeThemeSystemTest extends RecipeBookSystemTest {
      */
     private void assertDarkTheme() {
         assertTrue(ERROR_MESSAGE, guiRobot.getStage(APP_TITLE).getScene().getStylesheets().get(0)
-                .equals(MainApp.class.getResource(FXML_FILE_FOLDER + DARK_THEME_CSS).toExternalForm()));
+                .equals(MainApp.class.getResource(FXML_FILE_FOLDER + GIRL_THEME_CSS).toExternalForm()));
         guiRobot.pauseForHuman();
     }
 
@@ -1286,38 +1457,94 @@ public class ChangeThemeSystemTest extends RecipeBookSystemTest {
 ``` java
 package systemtests;
 
+import static org.junit.Assert.assertEquals;
 import static seedu.recipe.testutil.TypicalIndexes.INDEX_FIRST_RECIPE;
 import static seedu.recipe.testutil.TypicalIndexes.INDEX_SECOND_RECIPE;
+import static seedu.recipe.testutil.TypicalIndexes.INDEX_THIRD_RECIPE;
 import static seedu.recipe.testutil.TypicalRecipes.getTypicalRecipeBook;
+import static seedu.recipe.testutil.TypicalRecipes.getTypicalRecipes;
+import static seedu.recipe.testutil.WikiaRecipes.HAINANESE_CHICKEN_RICE;
 import static seedu.recipe.testutil.WikiaRecipes.MOBILE_WIKIA_UGANDAN_ADD_COMMAND;
+import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_CHICKEN_STEW;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_CHICKEN_ADD_COMMAND;
 
+import java.io.File;
+import java.util.List;
+
+import org.junit.After;
 import org.junit.Test;
 
 import seedu.recipe.logic.commands.ParseCommand;
 import seedu.recipe.logic.commands.SelectCommand;
+import seedu.recipe.logic.commands.UndoCommand;
 import seedu.recipe.model.Model;
 import seedu.recipe.model.ModelManager;
 import seedu.recipe.model.UserPrefs;
+import seedu.recipe.model.recipe.Image;
+import seedu.recipe.model.recipe.Recipe;
+import seedu.recipe.storage.ImageDownloader;
+import seedu.recipe.testutil.RecipeBuilder;
 
 /**
- * A system test class for the search command, which contains interaction with other UI components.
+ * A system test class for the parse command, which contains interaction with other UI components.
  */
 public class ParseCommandSystemTest extends RecipeBookSystemTest {
 
+    private static final String HAINANESE_CHICKEN_RICE_IMAGE_PATH =
+            Image.IMAGE_STORAGE_FOLDER + "7F474E50D9E9F21A980A30B4D54308AD."
+                    + ImageDownloader.DOWNLOADED_IMAGE_FORMAT;
+
     private Model model = new ModelManager(getTypicalRecipeBook(), new UserPrefs());
+    private List<Recipe> recipes = getTypicalRecipes();
 
     @Test
     public void parse() {
+        // First add
         String command = SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_RECIPE.getOneBased();
         executeCommand(command);
-
         assertCommandSuccess(WIKIA_CHICKEN_ADD_COMMAND);
+        getCommandBox().submitCommand();
 
+        Recipe testRecipe = new RecipeBuilder(HAINANESE_CHICKEN_RICE).withImage(
+                HAINANESE_CHICKEN_RICE_IMAGE_PATH).build();
+
+        recipes.add(testRecipe);
+        assertEquals(recipes, getModel().getFilteredRecipeList());
+
+        // Remove recipe
+        command = UndoCommand.COMMAND_WORD;
+        executeCommand(command);
+        recipes.remove(testRecipe);
+        assertEquals(recipes, getModel().getFilteredRecipeList());
+
+        // Then add again
+        command = SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_RECIPE.getOneBased();
+        executeCommand(command);
+        assertCommandSuccess(WIKIA_CHICKEN_ADD_COMMAND);
+        getCommandBox().submitCommand();
+
+        recipes.add(testRecipe);
+        assertEquals(recipes, getModel().getFilteredRecipeList());
+
+        // Try to parse and add another recipe
         command = SelectCommand.COMMAND_WORD + " " + INDEX_SECOND_RECIPE.getOneBased();
         executeCommand(command);
-
         assertCommandSuccess(MOBILE_WIKIA_UGANDAN_ADD_COMMAND);
+        getCommandBox().submitCommand();
+        recipes.add(UGANDAN_CHICKEN_STEW);
+        assertEquals(recipes, getModel().getFilteredRecipeList());
+
+
+        // Not supported site
+        command = SelectCommand.COMMAND_WORD + " " + INDEX_THIRD_RECIPE.getOneBased();
+        executeCommand(command);
+        assertCommandSuccess("");
+    }
+
+    @After
+    public void cleanUp() {
+        File file = new File(HAINANESE_CHICKEN_RICE_IMAGE_PATH);
+        file.delete();
     }
 
     /**
@@ -1325,7 +1552,6 @@ public class ParseCommandSystemTest extends RecipeBookSystemTest {
      * and the current content of the CommandBox is {@code content}
      */
     private void assertCommandSuccess(String content) {
-
         executeCommand(ParseCommand.COMMAND_WORD);
         assertStatusBarUnchanged();
         assertCommandBoxContent(content);
