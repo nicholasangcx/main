@@ -18,4 +18,6 @@ public class KeyboardShortcutsMapping {
             (KeyCodeCombination) KeyCodeCombination.valueOf("Shift+Tab");
     public static final KeyCodeCombination NEXT_FIELD =
             (KeyCodeCombination) KeyCodeCombination.valueOf("Tab");
+    public static final KeyCodeCombination PREV_FIELD =
+            (KeyCodeCombination) KeyCodeCombination.valueOf("Ctrl+Tab");
 }

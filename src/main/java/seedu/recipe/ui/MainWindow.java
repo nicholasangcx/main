@@ -86,7 +86,7 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
         registerAsAnEventHandler(this);
 
-        loadStyle(prefs.getIsUsingDarkTheme());
+        loadStyle(prefs.getIsUsingGirlTheme());
     }
 
     public Stage getPrimaryStage() {
@@ -134,7 +134,7 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        browserPanel = new BrowserPanel(prefs.getIsUsingDarkTheme());
+        browserPanel = new BrowserPanel(prefs.getIsUsingGirlTheme());
         browserPlaceholder.getChildren().add(browserPanel.getRoot());
 
         recipeListPanel = new RecipeListPanel(logic.getFilteredRecipeList());
@@ -190,10 +190,10 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleChangeTheme() {
-        boolean isUsingDarkTheme = prefs.getIsUsingDarkTheme();
-        browserPanel.loadDefaultPage(!isUsingDarkTheme);
-        loadStyle(!isUsingDarkTheme);
-        prefs.setIsUsingDarkTheme(!isUsingDarkTheme);
+        boolean isUsingGirlTheme = prefs.getIsUsingGirlTheme();
+        browserPanel.loadDefaultPage(!isUsingGirlTheme);
+        loadStyle(!isUsingGirlTheme);
+        prefs.setIsUsingGirlTheme(!isUsingGirlTheme);
     }
 
     @Subscribe

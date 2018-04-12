@@ -12,14 +12,13 @@ public class TextInputProcessorUtil {
     private static final String EMPTY_STRING = "";
     private static final char LF = '\n';
     private static final char SPACE = ' ';
+    private static final int LINE_HEIGHT = 26;
 
     private String content;
     private Font font;
-    private Text text;
 
     public TextInputProcessorUtil() {
         content = new String();
-        text = new Text();
     }
 
     /**
@@ -35,11 +34,24 @@ public class TextInputProcessorUtil {
      * Gets Y-coordinate of caret
      */
     public double getCaretPositionY() {
-        return text.prefHeight(-1);
+        return getRow() * LINE_HEIGHT;
     }
 
     /**
-     * Gets last word from {@code content}
+     * Gets row index (1-indexed) of caret
+     */
+    public int getRow() {
+        int row = 1;
+        for (int i = 0; i < content.length(); i++) {
+            if (content.charAt(i) == LF) {
+                row++;
+            }
+        }
+        return row;
+    }
+
+    /**
+     * Gets last word (character(s) between the last whitespace and end of string) from {@code content}
      */
     public String getLastWord() {
         String lastWord = EMPTY_STRING;
@@ -52,6 +64,23 @@ public class TextInputProcessorUtil {
         }
 
         return lastWord;
+    }
+
+    /**
+     * Gets first word from {@code content}
+     */
+    public String getFirstWord() {
+        String firstWord = EMPTY_STRING;
+
+        String trimmedContent = content.trim();
+        for (int i = 0; i < trimmedContent.length(); i++) {
+            if (isWordSeparator(trimmedContent.charAt(i))) {
+                break;
+            }
+            firstWord = firstWord + trimmedContent.charAt(i);
+        }
+
+        return firstWord;
     }
 
     /**
@@ -112,8 +141,6 @@ public class TextInputProcessorUtil {
      */
     public void setContent(String inputText) {
         content = inputText;
-        text.setText(inputText);
-        text.setFont(font);
     }
 
     /**

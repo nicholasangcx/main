@@ -16,13 +16,21 @@ endif::[]
 
 By: `Team F09-B2`      Since: `Jan 2018`      Licence: `MIT`
 
+ifdef::env-github[]
+Please click https://recirecipe.netlify.com/userguide[here] to view the User Guide with full formatting.
+endif::[]
+
 == Introduction
 
 // tag::applicationDescription[]
-*<<ReciRecipe,ReciRecipé>>* is for those who *prefer to use a desktop app for managing recipes*. More importantly, ReciRecipé is *optimized for those who prefer to work with a Command Line Interface* (<<CLI,CLI>>) while still having the benefits of a Graphical User Interface (<<GUI, GUI>>).
+*<<ReciRecipe,ReciRecipé>>* is *a recipe management desktop app with a built-in web browser*. ReciRecipé is optimized for those who prefer to work with keyboard while still having the benefits of an intuitive user interface. +
 // end::applicationDescription[]
-So if you are a home cook or are just interested in being exposed to more interesting recipes out there, this app is just for you. It provides an easy way to save old recipes, craft new ones, or just pull the many variations already available online! There are even ways to organise, manage and search through your saved recipes for easy retrieval.
+So if you are a home cook or are just interested in being exposed to more interesting recipes out there, this app is just for you. It provides an easy way to save old recipes, craft new ones, or just pull the many variations already available online! There are even ways to organise, manage and search through your saved recipes for easy retrieval. +
 This user guide will systematically take you through all the functions available in ReciRecipé and teach you how to use them efficiently. Interested? Jump to <<Quick start>> to get started. Enjoy!
+
+[WARNING]
+This product only works on computers with monitors having resolution of at least 1000x600.
+
 
 == Quick start
 
@@ -52,6 +60,9 @@ Referring to Figure 1 above:
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 E.g. typing `help` and pressing kbd:[Enter] will open the help window.
 
+[WARNING]
+This product needs Internet access the first time it runs.
+
 [[Features]]
 == Features
 
@@ -74,6 +85,8 @@ Words in upper case are the parameters to be supplied by the user. For example:
 * Items in square brackets are optional e.g `name/NAME [tag/TAG]` can be used as *`name/Chicken rice tag/chicken`* or as *`name/Chicken rice`*.
 * Items with `...` after them can be used multiple times including zero times e.g. `[tag/TAG]...` can be used as `{nbsp}` (i.e. 0 times), *`tag/rice`*, *`tag/rice tag/chicken`*, etc.
 * Parameters can be in any order. E.g. if the command specifies `name/RECIPE_NAME instruction/INSTRUCTION`, `instruction/INSTRUCTION name/RECIPE_NAME` has the same effect.
+* White spaces after a slash are automatically trimmed. For example, `add name/ Chicken rice` and `add name/Chicken rice` are the same. However, the former is more visually pleasing.
+* You can split a command into multiple lines for ease of input.
 // end::command-format[]
 
 // tag::app-navigation[]
@@ -83,7 +96,26 @@ Words in upper case are the parameters to be supplied by the user. For example:
 * Press kbd:[Enter] while holding down kbd:[Shift] to add a new line to your input.
 * Press kbd:[Enter] to submit a command.
 * Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows while holding down kbd:[Ctrl] will display the previous and next input respectively in the command box.
+* Press kbd:[Ctrl]+kbd:[Tab]/kbd:[Tab] to quickly move the caret to previous/next field.
 // end::app-navigation[]
+
+// tag::auto-completion[]
+[[Auto-completion]]
+*Auto-completion*
+
+* Press kbd:[Tab] while holding down kbd:[Shift] to display a list of suggestions for your input. The list will contain application keywords (i.e, commands, field prefixes in commands) that match your current input. If there are words matching your input, they will be shown in alphabetical order. If there is no word found, the list will not be displayed.
+** If you did not type anything, the list will suggest the first commands.
+** If you are typing the first word, the list will suggest some commands that match your current input. For example, if you are typing *`a`*, some commands starting with *`a`* will be displayed.
+** If you are typing not the first word, there are two possible cases:
+*** The first word you typed is not a command keyword, then the list will suggest some commands that match your last word (can be empty string if you have a whitespace at the end of your input).
+*** The first word you typed is a command keyword, then the list will suggest some possible field prefixes of that command. If the command has no field prefix, the list will not be displayed.
+* Press kbd:[&uarr;] and kbd:[&darr;] to choose a suggestion you want.
+* Press kbd:[Enter] to choose the suggestion.
+* The suggestion will be added to your input automatically.
+** If you choose a command keyword, it will replace your current input with the command and possible field prefixes (may be none, some or all possible field prefixes, depending on command).
+** If you choose a field prefix, it will replace the word right before the caret (i.e, the word used to find suggestion).
+
+// end::auto-completion[]
 
 === *`add`* : Adding a recipe
 
@@ -98,26 +130,22 @@ You can add any number of tags (including 0) for a recipe.
 
 ****
 * See <<CommandFormat,Command Format>> for more details on which input is acceptable for each field.
-* White spaces after a colon are automatically trimmed. For example, `add name/ Chicken rice` and `add name/Chicken rice` are the same. However, the former is more visually pleasing.
-* Press kbd:[Enter] while holding down kbd:[Shift] to add a new line to your input.
-* *_INSTRUCTION_* can receive multiple lines as a valid input.
-* You can split a command into multiple lines for ease of input.
 ****
 
 Examples:
 
-* *`add name/Chicken Rice ingredient/chicken, rice cooking_time/10m tag/good tag/fast`*
+* *`add name/Chicken Rice ingredient/chicken, rice cooking_time/10m tag/good tag/fast`* +
 [TIP]
-You can split the command into multiple lines as shown in the figure below. In case you forgot how to add a new line, it's kbd:[Shift]+kbd:[Enter].
+You can split the command into multiple lines as shown in the figure below. In case you forgot how to add a new line, it's kbd:[Shift]+kbd:[Enter]. +
 +
 .Add a recipe with multiple lines
 image::Ui_MultipleLine.PNG[width="500"]
-
++
 {nbsp} +
 If you follow the instructions correctly, the result box will inform you and your recipe will be added to the book (<<fig-AddRecipeResult>>).
 {nbsp} +
-{nbsp}
-
+{nbsp} +
++
 [[fig-AddRecipeResult]]
 .After adding a recipe
 image::Ui_AddCommand.PNG[width="750"]
@@ -128,11 +156,8 @@ You can use kbd:[Shift]+kbd:[Tab] for command auto-completion. After choosing au
 
 
 .Auto-completion for command
-image::AutoCompletion.PNG[width="750"]
+image::AutoCompletion.png[width="750"]
 {nbsp} +
-
-[TIP]
-You can use kbd:[Tab] to quickly move the caret to next field.
 
 === *`clear`* : Clearing all entries
 
@@ -140,17 +165,18 @@ Clears all entries from the recipe book.
 
 Format: `clear`
 
-WARNING: This command clears all data in the application.
-Use it cautiously.
+[WARNING]
+This command clears all data in the application. Use it cautiously.
 
-See figure below for the expected behavior of this command. +
+See <<fig-ClearCommand>> for the expected behavior of this command. +
 {nbsp}
 
+[[fig-ClearCommand]]
 .Effect of the clear command
 image::Ui_Clear.PNG[width="950"]
 {nbsp} +
 [TIP]
-If you clear your recipe book by mistake, you can reverse the command with an `undo`.
+If you clear your recipe book by mistake, you can reverse the command with an `undo` *if you haven't closed the application*.
 
 === *`delete`* : Deleting a recipe
 
@@ -222,6 +248,7 @@ Returns `_Chicken rice_` and `_Chicken pizza_`.
 * *`find chicken fish pasta`* +
 Returns any recipe having substrings `_chicken_`, `_fish_`, or `_pasta_`.
 
+// tag::group-command[]
 === *`group`* : Creating a custom group of recipes
 
 Creates a group of one or multiple recipes by the index or indices used in the last recipe listing.
@@ -241,6 +268,7 @@ Examples:
 * *`list`* +
 *`group group_name/ My best index/ 1 index/ 3`* +
 Creates a group that contains 1st recipe and 3rd recipe and names the group as `_My best_`.
+// end::group-command[]
 
 === *`help`* : Viewing help
 
@@ -294,20 +322,20 @@ Gets a recipe from a website loaded in the browser panel.
 
 Format: `parse`
 
-To use this command, you do a `search` first (See <<Search>>) then select a recipe. +
-Suppose you have that done and you are at this step (see <<fig-InternetSearchResult0>>) +
+To use this command, you do a `search` first (see <<Search>>) then select a recipe. +
+Suppose you have that done and you are at this step (see <<fig-InternetSearchResult0>>). +
 {nbsp} +
 
 [[fig-InternetSearchResult0]]
 .After you click on a result
-image::Parse_Click.PNG[width="750"]
+image::Search_Click.PNG[width="450"]
 
 {nbsp} +
-Type in *`parse`*, press kbd:[Enter] and you have <<fig-ParseCommand>>. +
+Type *`parse`* in the command box, press kbd:[Enter] and you have <<fig-ParseCommand>>. +
 {nbsp} +
 [[fig-ParseCommand]]
 .Parsed result
-image::Parse_Success.PNG[width="750"]
+image::Parse_Success.PNG[width="450"]
 [TIP]
 After that, you can add more fields if you want, or you can just press kbd:[Enter] to submit an `add` command!
 
@@ -352,23 +380,25 @@ Searches for your recipe on the Internet.
 
 Format: `search RECIPE_NAME`
 
-See <<fig-InternetSearchCommand>> for more information on what will be displayed after you search for a specific food. +
-{nbsp}
-
-[[fig-InternetSearchCommand]]
-.Searching for your recipe on the Internet directly from ReciRecipé
-image::Search_Result.PNG[width="750"]
-{nbsp} +
 Examples:
 
-* *`search chicken rice`* +
-You will be brought to the result page and from there, you can select any recipes that you want. See <<fig-InternetSearchResult>> to see what will be displayed after you select a specific recipe for chicken rice. +
+* *`search hainanese chicken rice`* +
+See <<fig-InternetSearchCommand>> for the result of this command example. +
 {nbsp} +
 +
+[[fig-InternetSearchCommand]]
+.Result of `search hainanese chicken rice`
+image::Search_Result.PNG[width="450"]
+//end::internet-search[]
++
+[.not-print]
+From there, you can click on any recipes that you want. Let's say we click on the first search result, and <<fig-InternetSearchResult>> will be what you see on ReciRecipé. +
+{nbsp} +
++
+[.not-print]
 [[fig-InternetSearchResult]]
 .After you click on a result
-image::Parse_Click.PNG[width="750"]
-//end::internet-search[]
+image::Search_Click.PNG[width="450"]
 
 === *`select`* : Selecting a recipe
 
@@ -450,17 +480,17 @@ Returns any recipe with the tag `_drink_` or `_food_`.
 //tag::change-theme[]
 === *`theme`* : Changing theme
 
-Toggles between dark and light theme.
+Toggles between colourful theme and white theme.
 
 Format: `theme`
 
-See <<fig-ChangeThemeCommand>> for more information. +
+You can enjoy the two bright and visually pleasing themes as shown on <<fig-ChangeThemeCommand>>. +
 {nbsp}
 
 [[fig-ChangeThemeCommand]]
 .Two themes provided for ReciRecipé
 image::ChangeTheme.PNG[width="750"]
-{nbsp} +
+
 [TIP]
 You can change theme from the menu bar or by pressing F2 too!
 //end::change-theme[]
@@ -471,7 +501,7 @@ You can change theme from the menu bar or by pressing F2 too!
 
 Takes in the code given during the user's authorization of our app in Dropbox and coverts it into an access token that can be used to upload files to that specific Dropbox account.
 
-Format: `token authorizationCode`
+Format: `token AUTHORIZATION_CODE`
 
 See <<fig-AuthorizationCode>> for more information. +
 {nbsp}
@@ -547,6 +577,7 @@ Data file will be uploaded to Dropbox with the name RecipeBook.xml. +
 Updated data file will be uploaded to Dropbox with the name RecipeBook(1).xml.
 // end::uploadCommand[]
 
+// tag::view-group-command[]
 === *`view_group`* : Viewing groups of recipes
 
 Views recipes inside a group.
@@ -557,6 +588,7 @@ Examples:
 
 * *`view_group My best`* +
 Lists all recipes inside `_My best_` group.
+// end::view-group-command[]
 
 === Saving the data
 
@@ -602,8 +634,8 @@ Uploads the 6th recipe in the recipe book to the server.
 *A*: image:FAQ2.PNG[width="450"]
 {nbsp}
 
-Q: There is still something I don't understand after reading this guide! +
-A: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] about what you're confused about. We will try our best to answer your query.
+*Q*: There is still something I don't understand after reading this guide! +
+*A*: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] about what you're confused about. We will try our best to answer your query.
 
 *Q*: I found a bug in your program, what should I do? +
 *A*: Please check <<current-issues>> to see whether your bug has been reported already. If it is a new bug, please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] describing the problem you encountered as detailed as possible.
@@ -669,6 +701,7 @@ A: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue
 | kbd:[Ctrl] + kbd:[&darr;] |   Next command
 | kbd:[Shift] + kbd:[Enter] |   New line in command
 | kbd:[Shift] + kbd:[Tab]   |   Show command suggestions
+| kbd:[Ctrl] + kbd:[Tab]    |   Previous field in command
 | kbd:[Tab]                 |   Next field in command
 |===
 
@@ -680,9 +713,13 @@ These are issues that have been reported and might be resolved in the future:
 * `parse` command does not work on some sites. +
 _Currently `parse` only works with http://recipes.wikia.com/ (both desktop and mobile versions). Support for other sites will be considered for v2.0._
 * `parse` command returns results for pages that are not recipes. +
-_`parse` is intended to work with recipe pages only. ReciRecipé might or might not parse other types of pages. Restricting `parse` to work on only recipe pages will be considred for v2.0._
+`parse` _is intended to work with recipe pages only. ReciRecipé might or might not parse other types of pages. Restricting `parse` to work on only recipe pages will be considred for v2.0._
 * *_PREPARATION_TIME_* and *_COOKING_TIME_* accept invalid time values, e.g. `1h90m`, `200 mins 2 hours`, etc. +
 _We expect you to provide ReciRecipé with a correct and valid time value like `150m` instead of `1h90m`. More restrictive formats will be considered for v2.0._
+* kbd:[F1] and kbd:[F2] don't work when the in-app browser is clicked. +
+_This is a known problem with current version of Java. We have been looking into this problem and the issue might be resolved soon._
+* Big images make ReciRecipé laggy. +
+_Currently, ReciRecipé does not distinguish between large and small images. You should use images under 1MB as a workaround for now. This problem will be resolved in v2.0._
 //end:current-issues[]
 
 == Glossary

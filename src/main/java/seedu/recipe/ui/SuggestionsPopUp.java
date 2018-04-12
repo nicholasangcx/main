@@ -2,8 +2,8 @@
 package seedu.recipe.ui;
 
 import static seedu.recipe.ui.util.AutoCompletionUtil.APPLICATION_COMMANDS;
-import static seedu.recipe.ui.util.AutoCompletionUtil.APPLICATION_KEYWORDS;
 import static seedu.recipe.ui.util.AutoCompletionUtil.MAX_SUGGESTIONS;
+import static seedu.recipe.ui.util.AutoCompletionUtil.getPrefixesForCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +19,8 @@ import seedu.recipe.ui.util.TextInputProcessorUtil;
  * The component that is responsible for showing a suggestion list for auto-completion
  */
 public class SuggestionsPopUp extends ContextMenu {
+
+    private static final int MARGIN = 5;
 
     private CommandBox commandBox;
     private TextArea commandTextArea;
@@ -49,8 +51,18 @@ public class SuggestionsPopUp extends ContextMenu {
         textInputProcessor.setFont(commandTextArea.getFont());
         String lastWord = textInputProcessor.getLastWord();
         // finds suggestions and displays
-        ArrayList<String> suggestionList = new ArrayList<>(APPLICATION_KEYWORDS);
-        suggestionList.addAll(APPLICATION_COMMANDS);
+        ArrayList<String> suggestionList = new ArrayList<>();
+
+        String firstWord = textInputProcessor.getFirstWord();
+        if (APPLICATION_COMMANDS.contains(firstWord)) {
+            if (firstWord.equals(lastWord)) {
+                suggestionList.add(firstWord);
+            } else {
+                suggestionList.addAll(getPrefixesForCommand().get(firstWord));
+            }
+        } else {
+            suggestionList.addAll(APPLICATION_COMMANDS);
+        }
 
         findSuggestions(lastWord, suggestionList);
 
@@ -92,7 +104,8 @@ public class SuggestionsPopUp extends ContextMenu {
      */
     double findDisplayPositionY(double caretPositionY) {
         return Math.min(-commandTextArea.getHeight() + commandTextArea.getInsets().getTop()
-                + commandTextArea.getInsets().getBottom() + caretPositionY, -commandTextArea.getInsets().getBottom());
+                + commandTextArea.getInsets().getBottom() + caretPositionY, -commandTextArea.getInsets().getBottom())
+                + MARGIN;
     }
 
     /**

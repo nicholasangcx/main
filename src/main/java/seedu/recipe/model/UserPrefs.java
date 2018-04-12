@@ -12,7 +12,7 @@ public class UserPrefs {
     private GuiSettings guiSettings;
     private String recipeBookFilePath = "data/recipebook.xml";
     private String recipeBookName = "MyRecipeBook";
-    private boolean isUsingDarkTheme = false;
+    private boolean isUsingGirlTheme = false;
 
     public UserPrefs() {
         this.setGuiSettings(1000, 1000, 0, 0);
@@ -30,12 +30,12 @@ public class UserPrefs {
         guiSettings = new GuiSettings(width, height, x, y);
     }
 
-    public boolean getIsUsingDarkTheme() {
-        return isUsingDarkTheme;
+    public boolean getIsUsingGirlTheme() {
+        return isUsingGirlTheme;
     }
 
-    public void setIsUsingDarkTheme(boolean value) {
-        isUsingDarkTheme = value;
+    public void setIsUsingGirlTheme(boolean value) {
+        isUsingGirlTheme = value;
     }
 
     public String getRecipeBookFilePath() {

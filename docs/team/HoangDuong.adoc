@@ -1,0 +1,44 @@
+= Hoang Duong - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: ReciRecipé
+
+Welcome to my portfolio page for CS2103T project - ReciRecipé.
+
+== Project Overview
+
+include::../UserGuide.adoc[tag=applicationDescription]
+
+* *Code contributed*: [https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/functional/hoangduong1607.md[Functional code]] [https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/test/hoangduong1607.md[Test code]]
+
+[[code-contributions]]
+== Summary of contributions
+
+=== New feature: Auto-completion
+==== Why?
+
+Without auto-completion feature, users need to spend lots of their precious time just to type long commands and think of what missing fields they need to complete their commands. Auto-completion helps users save their time and effort so that they can enjoy interesting features of the application.
+
+include::../UserGuide.adoc[leveloffset=1,tag=auto-completion]
+
+include::../DeveloperGuide.adoc[tag=auto-completion]
+
+=== New feature: group and view_group commands
+==== Why?
+
+This feature helps users manage their recipes more efficiently.
+
+include::../UserGuide.adoc[tag=group-command]
+include::../UserGuide.adoc[tag=view-group-command]
+
+== Other contributions
+
+* Community:
+** PRs reviewed (with non-trivial review comments on github or via other communication channels): https://github.com/CS2103JAN2018-F09-B2/main/pull/5[#5], https://github.com/CS2103JAN2018-F09-B2/main/pull/12[#12], https://github.com/CS2103JAN2018-F09-B2/main/pull/35[#35], https://github.com/CS2103JAN2018-F09-B2/main/pull/37[#37],
+https://github.com/CS2103JAN2018-F09-B2/main/pull/48[#48],
+https://github.com/CS2103JAN2018-F09-B2/main/pull/73[#73],
+https://github.com/CS2103JAN2018-F09-B2/main/pull/74[#74],
+https://github.com/CS2103JAN2018-F09-B2/main/pull/94[#94]
+
+** Reported bugs and suggestions for other teams in the class (examples:  https://github.com/CS2103JAN2018-F12-B4/main/issues/133[1], https://github.com/CS2103JAN2018-F12-B4/main/issues/134[2], https://github.com/CS2103JAN2018-F12-B4/main/issues/138[3])

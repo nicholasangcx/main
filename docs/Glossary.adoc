@@ -16,6 +16,11 @@ Abbreviation of **Command Line Interface**. +
 In contrast to <<GUI,GUI>>, CLI is a means of interacting with a computer program where the user (or client) issues commands to the program in the form of successive lines of text (command lines). Definition taken from link:https://en.wikipedia.org/wiki/Command-line_interface[wiki].
 ====
 
+[[cloud]] Cloud Storage::
+====
+Cloud storage is a model of data storage in which the digital data is stored in logical pools, the physical storage spans multiple servers (and often locations), and the physical environment is typically owned and managed by a hosting company. Definition taken from link:https://en.wikipedia.org/wiki/Cloud_storage[wiki].
+====
+
 [[CSS]] CSS::
 ====
 Abbreviation of **Cascading Style Sheets**. +

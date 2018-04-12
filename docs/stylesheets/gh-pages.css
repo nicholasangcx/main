@@ -76,7 +76,16 @@ div.nav-headbar li a:hover {
 }
 
 @media print {
-    a:link:after, a:visited:after {
-        content: "";
+    a:after {
+        display: none !important;
+    }
+    div.nav-headbar {
+        display: none !important;
+    }
+    .not-print {
+        display: none !important;
+    }
+    #footer-text {
+        display: none !important;
     }
 }

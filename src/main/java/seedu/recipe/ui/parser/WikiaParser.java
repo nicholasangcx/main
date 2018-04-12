@@ -78,8 +78,11 @@ public class WikiaParser extends WebParser {
     private Elements[] getElementsOfIngredient() {
         Elements elements = contentText.select("h2,ul");
         Iterator<Element> eleIte = elements.iterator();
-        while (eleIte.hasNext() && !eleIte.next().text().startsWith("Ingredient")) {
-            // Do nothing and just go to the line that starts with "Ingredient"
+        while (eleIte.hasNext()) {
+            String nextText = eleIte.next().text();
+            if (nextText.startsWith("Ingredient")) {
+                break;
+            }
         }
 
         Elements elementsWithIngredientWithLink = new Elements();
@@ -115,6 +118,24 @@ public class WikiaParser extends WebParser {
     @Override
     public String getInstruction() {
         Elements elementsWithInstruction = contentText.select("ol li");
+        if (elementsWithInstruction.isEmpty()) {
+            Elements elements = contentText.select("h2,p,h3");
+            Iterator<Element> eleIte = elements.iterator();
+            while (eleIte.hasNext()) {
+                String nextText = eleIte.next().text();
+                if (nextText.startsWith("Directions")) {
+                    break;
+                }
+            }
+            while (eleIte.hasNext()) {
+                Element nextElement = eleIte.next();
+                if (nextElement.tagName().equals("h3")) {
+                    break;
+                } else {
+                    elementsWithInstruction.add(nextElement);
+                }
+            }
+        }
         List<String> instructionList = elementsWithInstruction.eachText();
         return String.join("\n", instructionList);
     }

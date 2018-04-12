@@ -9,38 +9,38 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 == Project Team
 
 === Thanh Nguyen
-image::kokonguyen191.jpeg[width="150", align="left"]
-{empty}[https://github.com/kokonguyen191[github]] [<<johndoe#, portfolio>>]
+image::kokonguyen191.jpeg[width="144", align="left"]
+{empty}https://github.com/kokonguyen191[github] | <<ThanhNguyen#, portfolio>>
 
-Role: Team Lead +
-Responsibilities: Model
+Role: Team Lead, DevOps, FS Dev +
+Responsibilities: Logic, UI, Storage
 
 '''
 
 === Ryan Ang
-image::ryanangjy.jpeg[width="150", align="left"]
-{empty}[https://github.com/RyanAngJY[github]] [https://ryanangjy.herokuapp.com/[portfolio]]
+image::ryanangjy.jpeg[width="144", align="left"]
+{empty}https://github.com/RyanAngJY[github] | <<RyanAng#,portfolio>>
 
-Role: Deliverables and Deadlines +
-Responsibilities: UI
+Role: FS Dev, UX Designer +
+Responsibilities: Logic, UX, Storage, Model
 
 '''
 
 === Hoang Duong
-image::hoangduong1607.jpeg[width="150", align="left"]
-{empty}[https://github.com/hoangduong1607[github]] [<<johndoe#, portfolio>>]
+image::hoangduong1607.jpeg[width="144", align="left"]
+{empty}https://github.com/hoangduong1607[github] | <<HoangDuong#, portfolio>>
 
-Role: Integration +
-Responsibilities: Logic
+Role: FS Dev +
+Responsibilities: Logic, UI, Model
 
 '''
 
 === Nicholas Ang
-image::nicholasangcx.jpeg[width="150", align="left"]
-{empty}[https://github.com/nicholasangcx[github]] [<<johndoe#, portfolio>>]
+image::nicholasangcx.jpeg[width="144", align="left"]
+{empty}https://github.com/nicholasangcx[github] | <<NicholasAng#, portfolio>>
 
-Role: Scheduling and Tracking +
-Responsibilities: Storage
+Role: FS Dev, Releases, Documentation +
+Responsibilities: Logic, UI, Storage
 
 '''
 

@@ -30,21 +30,35 @@ public class CommandBoxTest extends GuiUnitTest {
     private static final String COMMAND_THAT_HAS_MULTIPLE_LINES = FIRST_LINE_OF_COMMAND_THAT_HAS_MULTIPLE_LINES + LF
             + SECOND_LINE_OF_COMMAND_THAT_HAS_MULTIPLE_LINES;
     private static final String ADD_COMMAND = "add";
-    private static final String SECOND_SUGGESTION = "clear";
-    private static final String PREFIX_NAME = "name/";
+    private static final String SECOND_FIELD_OF_ADD_COMMAND = "cooking_time/";
+    private static final String PREFIX_CALORIES = "calories/";
+    private static final String PREFIX_COOKING_TIME = "cooking_time/";
+    private static final String PREFIX_IMG = "img/";
     private static final String PREFIX_INGREDIENT = "ingredient/";
     private static final String PREFIX_INSTRUCTION = "instruction/";
+    private static final String PREFIX_NAME = "name/";
     private static final String PREFIX_PREPARATION_TIME = "preparation_time/";
+    private static final String PREFIX_SERVINGS = "servings/";
     private static final String PREFIX_TAG = "tag/";
     private static final String PREFIX_URL = "url/";
     private static final String RECIPE_NAME = "Chicken rice";
+    private static final String TAG = "Best";
     private static final String ADD_COMMAND_WITH_PREFIX_NAME = ADD_COMMAND + WHITESPACE + PREFIX_NAME;
     private static final String AUTO_COMPLETION_FOR_ADD_COMMAND = ADD_COMMAND + WHITESPACE + LF + PREFIX_NAME
             + WHITESPACE + LF + PREFIX_INGREDIENT + WHITESPACE + LF + PREFIX_INSTRUCTION + WHITESPACE + LF
-            + PREFIX_PREPARATION_TIME + WHITESPACE + LF + PREFIX_TAG + WHITESPACE + LF + PREFIX_URL;
+            + PREFIX_COOKING_TIME + WHITESPACE + LF + PREFIX_PREPARATION_TIME + WHITESPACE + LF + PREFIX_CALORIES
+            + WHITESPACE + LF + PREFIX_SERVINGS + WHITESPACE + LF + PREFIX_URL + WHITESPACE + LF + PREFIX_IMG
+            + WHITESPACE + LF + PREFIX_TAG;
     private static final String AUTO_COMPLETION_FOR_ADD_COMMAND_WITH_RECIPE_NAME = ADD_COMMAND + WHITESPACE + LF
             + PREFIX_NAME + RECIPE_NAME + WHITESPACE + LF + PREFIX_INGREDIENT + WHITESPACE + LF + PREFIX_INSTRUCTION
-            + WHITESPACE + LF + PREFIX_PREPARATION_TIME + WHITESPACE + LF + PREFIX_TAG + WHITESPACE + LF + PREFIX_URL;
+            + WHITESPACE + LF + PREFIX_COOKING_TIME + WHITESPACE + LF + PREFIX_PREPARATION_TIME + WHITESPACE + LF
+            + PREFIX_CALORIES + WHITESPACE + LF + PREFIX_SERVINGS + WHITESPACE + LF + PREFIX_URL + WHITESPACE + LF
+            + PREFIX_IMG + WHITESPACE + LF + PREFIX_TAG;
+    private static final String AUTO_COMPLETION_FOR_ADD_COMMAND_WITH_RECIPE_NAME_AND_TAG = ADD_COMMAND + WHITESPACE + LF
+            + PREFIX_NAME + RECIPE_NAME + WHITESPACE + LF + PREFIX_INGREDIENT + WHITESPACE + LF + PREFIX_INSTRUCTION
+            + WHITESPACE + LF + PREFIX_COOKING_TIME + WHITESPACE + LF + PREFIX_PREPARATION_TIME + WHITESPACE + LF
+            + PREFIX_CALORIES + WHITESPACE + LF + PREFIX_SERVINGS + WHITESPACE + LF + PREFIX_URL + WHITESPACE + LF
+            + PREFIX_IMG + WHITESPACE + LF + PREFIX_TAG + TAG;
 
     private ArrayList<String> defaultStyleOfCommandBox;
     private ArrayList<String> errorStyleOfCommandBox;
@@ -121,7 +135,7 @@ public class CommandBoxTest extends GuiUnitTest {
         guiRobot.push(KeyCode.DOWN);
         guiRobot.push(KeyCode.DOWN);
         guiRobot.push(KeyCode.ENTER);
-        assertInput(SECOND_SUGGESTION);
+        assertInput(ADD_COMMAND_WITH_PREFIX_NAME + WHITESPACE + SECOND_FIELD_OF_ADD_COMMAND);
     }
 
     @Test
@@ -134,6 +148,11 @@ public class CommandBoxTest extends GuiUnitTest {
         guiRobot.push(KeyboardShortcutsMapping.NEXT_FIELD);
         commandBoxHandle.insertText(RECIPE_NAME);
         assertInput(AUTO_COMPLETION_FOR_ADD_COMMAND_WITH_RECIPE_NAME);
+
+        guiRobot.push(KeyboardShortcutsMapping.PREV_FIELD);
+        guiRobot.push(KeyboardShortcutsMapping.PREV_FIELD);
+        commandBoxHandle.insertText(TAG);
+        assertInput(AUTO_COMPLETION_FOR_ADD_COMMAND_WITH_RECIPE_NAME_AND_TAG);
     }
 
     //@@author
@@ -232,6 +251,7 @@ public class CommandBoxTest extends GuiUnitTest {
     }
 
     //@@author kokonguyen191
+
     /**
      * Checks that the input in the {@code commandBox} equals to {@code expectedCommand}.
      */

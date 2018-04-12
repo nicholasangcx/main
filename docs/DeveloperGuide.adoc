@@ -15,11 +15,15 @@ endif::[]
 
 By: `Team F09-B2`      Since: `Jan 2018`      Licence: `MIT`
 
+ifdef::env-github[]
+Please click https://recirecipe.netlify.com/userguide[here] to view the Developer Guide with full formatting.
+endif::[]
+
 == Introduction
 *<<ReciRecipe,ReciRecipé>>* is a desktop recipe storage application for users who prefer using the keyboard instead of a mouse for efficient management. It is useful for tech-savvy cooks that want all their recipes stored in one place.
 
 This *Developer Guide* will take you through the design and implementation of *ReciRecipé*. It takes a top-down approach in explaining the design, beginning from the architecture of the entire application before moving into the specifics of how some functions are implemented.
-If you are new to development, you can choose a component in the architecture that you are more comfortable with and start there first.
+If you are a new developer, you can choose a component in the architecture that you are more comfortable with and start from there.
 
 == Setting up
 
@@ -81,7 +85,7 @@ This project follows https://github.com/oss-generic/process/blob/master/docs/Cod
 IntelliJ should look like <<fig-CodeStyleImports>> below after step 3.
 
 [[fig-CodeStyleImports]]
-.Code Style Imports
+.Code style imports
 image::CodeStyleImports.png[width="400"]
 
 {nbsp} +
@@ -115,10 +119,12 @@ When you are ready to start coding:
 [[Design-Architecture]]
 === Architecture
 
+ReciRecipé, as a product based on AddressBook, implements an events-driven architecture.
+
 The architecture diagram given below (<<fig-ArchitectureDiagram>>) explains the high-level design of the App with 6 components.
 
 [[fig-ArchitectureDiagram]]
-.Architecture Diagram
+.Architecture diagram
 image::Architecture.png[width="600"]
 {nbsp} +
 
@@ -139,10 +145,10 @@ Each of the four components <<Design-Ui,*`UI`*>>, <<Design-Logic,*`Logic`*>>, <<
 * Defines its <<API,API>> in an interface with the same name as the component.
 * Exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the <<Design-Logic,*`Logic`*>> component (see the class diagram given below) defines its <<API,API>> in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
-
 [discrete]
-==== Events-Driven nature of the design
+==== Events-driven architecture
+
+For example, the <<Design-Logic,*`Logic`*>> component (see the class diagram given below) defines its <<API,API>> in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 In general, the components are designed in such a way that their interactions are being driven by events. And we will now give an example of what happens when a command is being executed.
 
@@ -167,10 +173,10 @@ The sections below give more details of each component.
 
 [[Design-Main]]
 === Main component
-<<Design-Main,*`Main`*>> has only one class called link:{repoURL}/src/main/java/seedu/recipe/MainApp.java[`MainApp`].
+<<Design-Main,*`Main`*>> has only one class called link:{repoURL}/src/main/java/seedu/recipe/MainApp.java[`MainApp`]. This class:
 
-* At app launch: Initializes all the components in the correct sequence, and connects them up with each other.
-* At shut down: Shuts down the components and invokes cleanup method where necessary.
+* Initializes all the components in the correct sequence, and connects them up with each other at app launch.
+* Shuts down the components and invokes cleanup method where necessary when the app shuts down..
 
 [[Design-Commons]]
 === Commons component
@@ -182,12 +188,10 @@ The sections below give more details of each component.
 [[Design-Ui]]
 === UI component
 
-*API*: link:{repoURL}/src/main/java/seedu/recipe/ui/Ui.java[`Ui.java`]
-
-The UI consists of a `_MainWindow_` that is made up of smaller parts, for example, `_CommandBox_`, `_ResultDisplay_`, `_RecipeListPanel_`, `_StatusBarFooter_`, `_BrowserPanel_`, etc. All these, including the `_MainWindow_`, inherit from the abstract `_UiPart_` class (See <<fig-UiClassDiagram>>).
+The UI consists of a `_MainWindow_` that is made up of smaller parts, for example, `_CommandBox_`, `_ResultDisplay_`, `_RecipeListPanel_`, `_StatusBarFooter_`, `_BrowserPanel_`, etc. All these, including the `_MainWindow_`, inherit from the abstract `_UiPart_` class (see <<fig-UiClassDiagram>>).
 
 [[fig-UiClassDiagram]]
-.Structure of the UI Component
+.Structure of the `UI` component
 image::UiClassDiagram.png[width="800"]
 {nbsp} +
 
@@ -202,8 +206,6 @@ The <<Design-Ui,*`UI`*>> component:
 [[Design-Logic]]
 === Logic component
 
-*API*: link:{repoURL}/src/main/java/seedu/recipe/logic/Logic.java[`Logic.java`]
-
 <<Design-Logic,*`Logic`*>> contains all commands and this is how <<Design-Logic,*`Logic`*>> reacts when the user submits a command:
 
 .  <<Design-Logic,*`Logic`*>> uses the `_RecipeBookParser_` class to parse the user command.
@@ -214,7 +216,7 @@ The <<Design-Ui,*`UI`*>> component:
 For an overview of the structure of the <<Design-Logic,*`Logic`*>> component, refer to the diagram below <<fig-LogicClassDiagram>>.
 
 [[fig-LogicClassDiagram]]
-.Structure of the Logic Component
+.Structure of the `Logic` component
 image::LogicClassDiagram.png[width="800"]
 
 {nbsp} +
@@ -222,21 +224,19 @@ For finer details concerning `_XYZCommand_` and `_Command_`, refer to the diagra
 {nbsp} +
 
 [[fig-LogicCommandClassDiagram]]
-.Structure of Commands in the Logic Component.
+.Structure of commands in the `Logic` component
 image::LogicCommandClassDiagram.png[width="800"]
 
 {nbsp} +
 
 Refer to the Sequence Diagram for the example of interactions within the <<Design-Logic,*`Logic`*>> component for the `execute("delete 1")` API call.
 
-.Interactions Inside the Logic Component for the *`delete 1`* Command
+.Interactions inside the `Logic` component for the *`delete 1`* command
 image::DeleteRecipeSdForLogic.png[width="800"]
 {nbsp} +
 
 [[Design-Model]]
 === Model component
-
-*API*: link:{repoURL}/src/main/java/seedu/recipe/model/Model.java[`Model.java`]
 
 The <<Design-Model,*`Model`*>>,
 
@@ -245,27 +245,25 @@ The <<Design-Model,*`Model`*>>,
 * exposes an unmodifiable `_ObservableList<Recipe>_` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
-Refer to diagram below <<fig-ModelClassDiagram>>.
+Refer to diagram below <<fig-ModelClassDiagram>> for the interaction between the `Model` component classes.
 
 [[fig-ModelClassDiagram]]
-.Structure of the Model Component
+.Structure of the `Model` component
 image::ModelClassDiagram.png[width="800"]
 {nbsp} +
 
 [[Design-Storage]]
 === Storage component
 
-*API*: link:{repoURL}/src/main/java/seedu/recipe/storage/Storage.java[`Storage.java`]
-
 The <<Design-Storage,*`Storage`*>> component,
 
 * can save `_UserPref_` objects in JSON format and read it back.
 * can save the Recipe Book data in XML format and read it back.
 
-Refer to diagram below <<fig-StorageClassDiagram>>.
+Refer to diagram below <<fig-StorageClassDiagram>> for the interaction between the `Storage` component classes.
 
 [[fig-StorageClassDiagram]]
-.Structure of the Storage Component
+.Structure of the `Storage` component
 image::StorageClassDiagram.png[width="800"]
 
 == Implementation
@@ -273,7 +271,7 @@ image::StorageClassDiagram.png[width="800"]
 This section describes some noteworthy details on how certain features are implemented.
 
 [[Implementation-Configuration]]
-// tag::auto-compeltion[]
+// tag::auto-completion[]
 === Auto-completion
 ==== Current implementation
 
@@ -287,7 +285,7 @@ Key combination kbd:[Shift]+kbd:[Tab] is used to show suggestion pop-up. For oth
 ----
 private void handleKeyPress(KeyEvent keyEvent) {
     suggestionsPopUp.hideSuggestions();
-    if (SHOW_SUGGESTIONS_COMMAND.match(keyEvent)) {
+    if width="750"HOW_SUGGESTIONS_COMMAND.match(keyEvent)) {
         keyEvent.consume();
         suggestionsPopUp.showSuggestions();
     }
@@ -301,7 +299,7 @@ Suggestion list is built with a given list as a dictionary and last word in user
 
 [source,java]
 ----
-for (String suggestion : dictionary) {
+for width="750"tring suggestion : dictionary) {
     if (suggestion.startsWith(prefix)) {
         addSuggestion(suggestion);
     }
@@ -372,24 +370,24 @@ item.setOnAction(event -> commandBox.replaceText(textInputProcessor.replaceLastW
 // tag::change-theme[]
 ==== Current implementation
 
-The command is implemented in `_ChangeThemeCommand_`. When user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_ChangeThemeRequestEvent_` to the `_EventsCenter_`. For more details, refer to <<fig-ChangeThemeSD>>).
+The command is implemented in `_ChangeThemeCommand_`. When the user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_ChangeThemeRequestEvent_` to the `_EventsCenter_`. For more details, refer to <<fig-ChangeThemeSD>>).
 
 [[fig-ChangeThemeSD]]
 .Component interactions for *`theme`* command (part 1)
-image::SDforChangeTheme.png[width="800"]
+image::SDforChangeTheme.png[width="750"]
 {nbsp} +
 
-The event is then propagated through the `_EventsCenter_` to the `*UI*`. The `*UI*` will call `handleChangeThemeRequestEvent()` to update the theme accordingly. To understand the execution better, refer to <<fig-ChangeThemeEventSD>>).
+The event is then propagated through the `_EventsCenter_` to the `UI`. The `UI` will call `handleChangeThemeRequestEvent()` to update the theme accordingly. To understand the execution better, refer to <<fig-ChangeThemeEventSD>>).
 
 [[fig-ChangeThemeEventSD]]
 .Component interactions for *`theme`* command (part 2)
-image::SDforChangeThemeEventHandling.png[width="800"]
+image::SDforChangeThemeEventHandling.png[width="500"]
 {nbsp} +
 
 `handleChangeThemeRequestEvent()` will then log the event trigger and call `handleChangeTheme()`.
 
 [NOTE]
-If the command is called directly from the menu bar, `handleChangeTheme()` will be called instead of `handleChangeThemeRequestEvent()`.
+If the command is called directly from the menu bar, `handleChangeTheme()` will be directly called instead of `handleChangeThemeRequestEvent()`.
 
 `handleChangeTheme()` gets the current theme from `_UserPref_` then:
 
@@ -400,12 +398,14 @@ To understand the interaction between the components, refer to <<fig-ChangeTheme
 
 [[fig-ChangeThemeDetailsSD]]
 .Component interactions for `handleChangeTheme()`
-image::SDforChangeThemeDetails.png[width="800"]
+image::SDforChangeThemeDetails.png[width="500"]
+[.not-print]
 {nbsp} +
 
-Below is the implementation for the two operations:
+[.not-print]
+Below is the implementation of the two operations:
 
-[source,java]
+[.not-print,source,java]
 ----
 public void loadDefaultPage(boolean isDarkTheme) {
     if (!isLoaded()) {
@@ -418,7 +418,6 @@ public void loadDefaultPage(boolean isDarkTheme) {
         loadPage(defaultPage.toExternalForm());
     }
 }
-
 private void loadStyle(boolean darkTheme) {
     Scene scene = primaryStage.getScene();
     scene.getStylesheets().clear();
@@ -433,13 +432,13 @@ private void loadStyle(boolean darkTheme) {
 }
 ----
 
-[NOTE]
-Currently the implementation of `loadDefaultPage()` reloads the `_BrowserPanel_` so if any page is loaded on the `_BrowserPanel_`, it will be lost during changing theme.
-
+[.not-print]
 ==== Design considerations
 
+[.not-print]
 ===== Aspect: Handling of default page in `_BrowserPanel_`.
 
+[.not-print]
 * **Alternative 1 (current choice):** Reload the default page if there is nothing loaded in `_BrowserPanel_`.
 ** Pros: This would prevent any previously loaded page from being lost.
 ** Cons: This approach requires extra work to detect if there is any page loaded in `_BrowserPanel_`.
@@ -475,7 +474,7 @@ private static final String FILENAME_VALIDATION_REGEX = "[^\\Q<>:/|.?\"\\*\\E\\s
 /**
  * Returns true if a given string is a valid filename.
  */
-public static boolean isValidFilename(String test) {
+public static boolean isValidFilenamewidth="750"tring test) {
     return test.matches(FILENAME_VALIDATION_REGEX);
 }
 ----
@@ -485,7 +484,7 @@ The code will then be converted into a unique access token that will be stored i
 
 [source,java]
 ----
-public static void processAuthorizationCode(String code) {
+public static void processAuthorizationCodewidth="750"tring code) {
     // Converts authorization code to access token
     DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
     DbxWebAuth webAuth = new DbxWebAuth(config, appInfo);
@@ -544,17 +543,19 @@ The `_HtmlFormatter_` class is responsible for the HTML formatting of a recipe.
 // tag::download-image[]
 ==== Current Implementation
 
-When an *`add`* or *`edit`* command has an image field input, that input will be checked if it is a valid image URL using `ImageIO` (implementation below).
-[source,java]
+When an *`add`* or *`edit`* command has an image field input, that input will be checked if it is a valid image URL using `ImageDownloader`.
+[.not-print]
+Below is the implementation of this method:
+
+[.not-print,source,java]
 ----
-public static boolean isValidImageUrl(String testUrl) {
+public static boolean isValidImageUrlwidth="750"tring testUrl) {
     URL imageUrl;
     try {
         imageUrl = new URL(testUrl);
     } catch (MalformedURLException e) {
         return false;
     }
-
     BufferedImage image;
     try {
         image = ImageIO.read(imageUrl);
@@ -563,7 +564,6 @@ public static boolean isValidImageUrl(String testUrl) {
                 + testUrl + ". It is likely the app is not connected to the Internet.");
         return false;
     }
-
     if (image != null) {
         return true;
     } else {
@@ -580,11 +580,12 @@ image::DownloadImageAD.png[width="800"]
 {nbsp} +
 
 A particular step that might seems out of place here is the checksum calculation. Because the `BufferedImage` object created by `ImageIO` has different hash code based on the execution configuration, using `hashCode()` does not guarantee the same file name for an image. However, we can be sure the same image data will return the same <<MD5>> checksum, and MD5 checksum is sufficient for the scale of our product. Therefore, using MD5 checksum for the file name will almost guarantee no hash collision and no image duplication. +
+[.not-print]
 Below is the implementation of `downloadImage()`:
 
-[source,java]
+[.not-print, source,java]
 ----
-public static String downloadImage(String imageUrlString) {
+public static String downloadImagewidth="750"tring imageUrlString) {
     assert isValidImageUrl(imageUrlString);
 
     try {
@@ -601,12 +602,15 @@ public static String downloadImage(String imageUrlString) {
     /* Exceptions catching */
 ----
 
-For the detailed implementation of each step, see link:{repoURL}/src/main/java/seedu/recipe/storage/ImageDownloader.java[`ImageDownloader.java`].
+For the detailed implementation of each step, please see link:{repoURL}/src/main/java/seedu/recipe/storage/ImageDownloader.java[`ImageDownloader.java`].
 
+[.not-print]
 ==== Design considerations
 
+[.not-print]
 ===== Aspect: Image file name.
 
+[.not-print]
 * **Alternative 1 (current choice):** Use MD5 of the image data.
 ** Pros: MD5 can ensure that there won't be duplicates of an image.
 ** Cons: MD5 is significantly more computationally expensive compared to a simple `hashCode()`.
@@ -615,7 +619,7 @@ For the detailed implementation of each step, see link:{repoURL}/src/main/java/s
 ** Cons: Due to the way `hashCode()` works, different run configurations will make `hashCode()` return different values. Therefore, it is always certain that the same image from one URL will be downloaded several times into several duplicates.
 * **Alternative 3:** Use the recipe name.
 ** Pros: This is by far the most intuitive approach.
-** Cons: However this approach looks a lot easier than it seems. Furthermore, it would be hard to update the file name if the recipe name is changed.
+** Cons: However, this approach looks a lot easier than it seems. Furthermore, it would be hard to update the file name if the recipe name is changed.
 // end::download-image[]
 
 // tag::embedded-url[]
@@ -631,7 +635,7 @@ As seen below, the URL is not a required parameter during the checking of prefix
 ----
 if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_INSTRUCTION, PREFIX_PREPARATION_TIME,
     PREFIX_INGREDIENT) || !argMultimap.getPreamble().isEmpty()) {
-    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    throw new ParseExceptionwidth="750"tring.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 }
 ----
 
@@ -686,7 +690,7 @@ The method for copying a string to the clipboard is implemented in the `_UiUtil_
 
 [source,java]
 ----
-public static void copyToClipboard(String string) {
+public static void copyToClipboardwidth="750"tring string) {
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Clipboard clipboard = toolkit.getSystemClipboard();
     StringSelection stringSelection = new StringSelection(string);
@@ -757,7 +761,7 @@ public static void saveAllImageFiles(ReadOnlyRecipeBook recipeBook, String fileP
     }
 }
 
-public static void saveImageFile(String imagePath, String imageFolderPath) {
+public static void saveImageFilewidth="750"tring imagePath, String imageFolderPath) {
     try {
         File imageToSave = new File(imagePath);
         File pathToNewImage = new File(imageFolderPath + imageToSave.getName());
@@ -792,9 +796,10 @@ public static void saveImageFile(String imagePath, String imageFolderPath) {
 
 === Keyboard shortcuts
 // tag::keyboard-shortcut[]
+[[keyboard-shortcut]]
 ==== Current implementation
 
-Currently, only `_CommandBox_` accepts keyboard shortcuts. All shortcuts are stored in the `_KeyboardShortcutsMapping_` class inside the `UI` component. `_CommandBox_` listens for key combinations and executes actions mapped to these key presses, which are defined in the `handleKeyPress()` method as shown below:
+Currently, only `_CommandBox_` accepts keyboard shortcuts (`MenuItem` accelerators excluded). All shortcuts are stored in the `_KeyboardShortcutsMapping_` class inside the `UI` component. `_CommandBox_` listens for key combinations and executes actions mapped to these key presses, which are defined in the `handleKeyPress()` method as shown below:
 
 [source,java]
 ----
@@ -818,10 +823,13 @@ private void handleKeyPress(KeyEvent keyEvent) {
 
 As seen from above, all key combinations implemented consume the default effect of the combinations. However, this is not a must as there may be future mappings that do not require consuming the `KeyEvent`.
 
+[.not-print]
 ==== Design considerations
 
+[.not-print]
 ===== Aspect: Location of the shortcuts.
 
+[.not-print]
 * **Alternative 1 (current choice):** Store in the `_KeyboardShortcutsMapping_` class.
 ** Pros: There is good modularity, making it easier to keep track of the mappings.
 ** Cons: The shortcuts have to be imported to be used.
@@ -834,7 +842,7 @@ As seen from above, all key combinations implemented consume the default effect 
 
 We are using `java.util.logging` package for logging. The `_LogsCenter_` class is used to manage the logging levels and logging destinations.
 
-* The logging level can be controlled using the `logLevel` setting in the configuration file (See <<Implementation-Configuration>>)
+* The logging level can be controlled using the `logLevel` setting in the configuration file width="750"ee <<Implementation-Configuration>>)
 * The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level
 * Currently log messages are output through the console and to a *.log* file.
 
@@ -850,38 +858,17 @@ We are using `java.util.logging` package for logging. The `_LogsCenter_` class i
 ==== Current implementation
 
 Former implementation of the `_CommandBox_` used `_TextField_`, which only allows single-line inputs but supports automatic handler of kbd:[Enter]. To support commands with multiple lines, another class has to be used for `_CommandBox_`. The current implementation of `_CommandBox_`
-uses `_TextArea_`, a class which has fewer restrictions on the number of input lines allowed. However, the trade off for `_TextArea_` is that it does not support automatic handler of kbd:[Enter].
+uses `_TextArea_`, a class which has fewer restrictions on the number of input lines allowed. However, the trade off for `_TextArea_` is that it does not support automatic handling of kbd:[Enter].
 
-Currently, the solution for this is to consume the use of kbd:[Enter] and invoke the function `submitCommand()` whenever RecipeBook receives a keyboard combination that is assigned to command submission (default is kbd:[Enter]).
+Currently, the solution is to consume the use of kbd:[Enter] and invoke the function `submitCommand()` whenever `CommandBox` receives a keyboard combination that is assigned to command submission (default is kbd:[Enter]). +
+Because the default use of kbd:[Enter] has been replaced by command submission, another key combination is used for line breaks. The default combination for line breaks is kbd:[Shift]+kbd:[Enter] (like in Facebook). +
+For the implementation of the keyboard shortcuts, please refer to <<keyboard-shortcut>>.
 
+When `CommandBox` receives a keyboard combination that is assigned to line breaks (default is kbd:[Shift]+kbd:[Enter]), `_CommandBox_` generates a `_StringBuilder_` from current text inside `_CommandBox_`, gets the caret location. The `_StringBuilder_` then inserts a new line at the given caret location, returns a `_String_` and `_CommandBox_` replaces its entire body with the new `_String_`.
+
+The implementation of line breaks is as below:
 [source,java]
 ----
-private void handleKeyPress(KeyEvent keyEvent) {
-    // COMMAND_SUBMISSION default is KeyCode.ENTER
-    if (COMMAND_SUBMISSION.match(keyEvent)) {
-        keyEvent.consume();
-        submitCommand();
-    }
-    // Other keyboard combinations
-}
-----
-
-Because the default use of kbd:[Enter] has been replaced by command submission, another key combination is used for line breaks. The default combination for line breaks is kbd:[Shift]+kbd:[Enter] (like in Facebook). Note that these two combinations, line breaks and command submission, are interchangeable according to how the user setups *ReciRecipé* preferences.
-
-When RecipeBook receives a keyboard combination that is assigned to line breaks (default is kbd:[Shift]+kbd:[Enter]), `_CommandBox_` generates a `_StringBuilder_` from current text inside `_CommandBox_`, gets the caret location. The `_StringBuilder_` then inserts a new line at the given caret location, returns a `_String_` and `_CommandBox_` replaces its entire body with the new `_String_`.
-
-The implementation of line breaks is below:
-[source,java]
-----
-private void handleKeyPress(KeyEvent keyEvent) {
-    // NEW_LINE_IN_COMMAND default is KeyCodeCombination(KeyCode.SHIFT, KeyCode.ENTER)
-    if (NEW_LINE_IN_COMMAND.match(keyEvent)) {
-        keyEvent.consume();
-        createNewLine();
-    }
-    // Other keyboard combinations
-}
-
 private void createNewLine() {
     int caretPosition = commandTextArea.getCaretPosition();
     StringBuilder commandTextStringBuilder = new StringBuilder(commandTextArea.getText());
@@ -892,10 +879,13 @@ private void createNewLine() {
 }
 ----
 
+[.not-print]
 ==== Design considerations
 
+[.not-print]
 ===== Aspect: Usage of a component that support multiple lines input.
 
+[.not-print]
 * **Alternative 1 (current choice):** `_TextArea_`.
 ** Pros: It is easy to use and very intuitive.
 ** Cons: The <<CSS,CSS>> is particularly hard to handle due to the way `_TextArea_` and its body function separately. There is no default handler for kbd:[Enter].
@@ -911,22 +901,22 @@ private void createNewLine() {
 // tag::web-parse[]
 ==== Current implementation
 
-The command is implemented in `_ParseCommand_`. When user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_WebParseRequestEvent_` to the `_EventsCenter_`. For more details, refer to <<fig-ParseCommandSD>>.
+The command is implemented in `_ParseCommand_`. When the user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_WebParseRequestEvent_` to the `_EventsCenter_` (<<fig-ParseCommandSD>>).
 
 [[fig-ParseCommandSD]]
 .Component interactions for *`parse`* command (part 1)
-image::SDforParseCommand.png[width="800"]
+image::SDforParseCommand.png[width="750"]
 {nbsp} +
 
-The event is then propagated through the `_EventsCenter_` to the `*UI*`. The `*UI*` will call `handleWebParseRequestEvent()`. The process is shown in <<fig-ParseCommandEventSD>> below.
+The event then propagates through the `_EventsCenter_` to the `UI`. The `UI` will call `handleWebParseRequestEvent()` to handle the event. The process is shown in <<fig-ParseCommandEventSD>> below.
 
 [[fig-ParseCommandEventSD]]
 .Component interactions for *`parse`* command (part 2)
-image::SDforParseCommandEventHandling.png[width="800"]
+image::SDforParseCommandEventHandling.png[width="500"]
 {nbsp} +
 
-This event needs to deal with two `UiPart`: `BrowserPanel` to parse the recipe, and `CommandBox` to automatically put in an `AddCommand` with the parsed recipe. +
-Therefore, `handleWebParseRequestEvent()` is implemented in `MainWindow` class. Below is the implementation:
+This event needs to deal with two `UiPart`: `BrowserPanel` to parse the recipe, and `CommandBox` to display an `AddCommand` with the parsed recipe. +
+Therefore, `handleWebParseRequestEvent()` is implemented in `MainWindow` class, which contains both `BrowserPanel` and `CommandBox`. Below is the implementation of `handleWebParseRequestEvent()`:
 [source,java]
 ----
 @Subscribe
@@ -941,7 +931,7 @@ private void handleWebParseRequestEvent(WebParseRequestEvent event) {
 }
 ----
 
-As seen from the implementation above, the `BrowserPanel` creates a `WebParser` according to the webpage loaded. It does so by calling its `WebParserHandler` and makes the `WebParserHandler` create the according `WebParser`. For example, if the URL is recipes.wikia.com/wiki/Hainanese_Chicken_Rice, then `WebParserHandler` will return `WikiaParser`. which is a class implementing the interface `WebParser`. Below is the implementation for this method:
+`handleWebParseRequestEvent()` will then call `parseRecipe()`. `parseRecipe()`, in turn, creates a `WebParser` and call `parseRecipe()` of the new `WebParser` (implementation below):
 [source,java]
 ----
 public String parseRecipe() {
@@ -954,77 +944,62 @@ public String parseRecipe() {
 }
 ----
 
-For the interactions between the three classes mentioned above, refer to <<fig-WebParserCD>> below.  +
+[.not-print]
+For the interactions between the three classes mentioned above and one parser example (`WikiaParser`), refer to <<fig-WebParserCD>>.  +
+[.not-print]
 {nbsp} +
 
+[.not-print]
 [[fig-WebParserCD]]
-.Class diagram for `_WebParser_`
-image::WebParserClassDiagram.png[width="800"]
+.Class diagram for `_WebParser_` (irrelevant methods omitted)
+image::WebParserCD.png[width="750"]
+[.not-print]
 {nbsp} +
 
-From the figure above, we see `WebParserHandler` takes in a `WebView`, which is the main part of the `BrowserPanel` and returns the corresponding `WebParser`. See implementation below:
-[source,java]
-----
-public WebParser getWebParser() {
-    String url = browser.getEngine().getLocation();
-    if (browser.getEngine().getTitle() != null) {
-        try {
-            URI uri = new URI(url);
-            String domain = uri.getHost();
-            Document document = browser.getEngine().getDocument();
-            W3CDom w3CDom = new W3CDom();
-            String documentString = w3CDom.asString(document);
+`WebParserHandler` takes in a `WebView`, which is the main part of the `BrowserPanel` and returns the corresponding `WebParser`.
+The full implementation can be found in link:{repoURL}/src/main/java/seedu/recipe/ui/parser/WebParserHandler.java[`WebParserHandler.java`].
 
-            switch (domain) {
+The `WebParser`, in turn, takes a string value of the HTML of the page loaded in the `WebView`, parses it then returns the parsed recipe. Therefore, a `WebParser` needs to have methods that return the name, instructions, ingredients, etc... of a recipe. +
+An example of the implementation of a `WebParser` can be found at link:{repoURL}/src/main/java/seedu/recipe/ui/util/WikiaParser.java[`WikiaParser.java`].
 
-            case WikiaParser.DOMAIN:
-                return new WikiaParser(documentString);
-
-            default:
-                return null;
-
-            }
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    } else {
-        return null;
-    }
-}
-----
-
-The `WebParser` in turn takes a string value of the HTML of the page loaded in the `WebView`, parses it then returns the parsed recipe. An example of how a `WebParser` works can be found at link:{repoURL}/src/main/java/seedu/recipe/ui/util/WikiaParser.java[`WikiaParser.java`].
-
-After we get a recipe, or to be exact, a string that contains the `add` command with the recipe, `MainWindow` passes `parsedRecipe`, which is now the string of an `add` command to the `CommandBox`. Then the `CommandBox` just replaces its body with the given string. See <<fig-ParseCommandDetailsSD>> for an example when a `parse` command is submitted with a wikia page loaded in the `Browserpanel`. +
+After we get a recipe, or to be exact, a string that contains the `add` command with the recipe, `MainWindow` passes `parsedRecipe`, which is now the string of an `add` command, to the `CommandBox`. Then the `CommandBox` just replaces its body with the given string. See <<fig-ParseCommandDetailsSD>> for an example when a `parse` command is submitted with a wikia page loaded in the `BrowserPanel`. +
 {nbsp} +
 
 [[fig-ParseCommandDetailsSD]]
 .Sequence diagram for `handleWebParseRequestEvent()`
-image::SDforParseCommandDetails.png[width="800"]
+image::SDforParseCommandDetails.png[width="900"]
+[.not-print]
 {nbsp} +
 
+[.not-print]
 ==== Design considerations
 
+[.not-print]
 ===== Aspect: How to extract data from `WebView`.
 
+[.not-print]
 * **Alternative 1 (current choice):** Use Jsoup.
-** Pros: It returns a Jsoup supported string, which will make parsing *significantly less painful* later.
+** Pros: It returns a Jsoup supported string, which will make parsing *significantly easier* later.
 ** Cons: This approach uses a 3rd-party library.
-* **Alternative 2:** Use a w3c.dom Document directly.
+* **Alternative 2:** Use a w3c.dom.Document directly.
 ** Pros: This approach requires only one line of code.
 ** Cons: However, as we are going to see below, this method makes parsing almost impossible without a lot of trial-and-error.
 
+[.not-print]
 ===== Aspect: How to parse data from `WebView`.
 
+[.not-print]
 * **Alternative 1 (current choice):** Create a Jsoup Document from a HTML string, then parse on it.
 ** Pros: This approach is the easiest to do as Jsoup is a very robust HTML parsing library, especially when you are familiar with the way JQuery selects elements.
 ** Cons: This approach uses a 3rd-party library.
-* **Alternative 2:** Do DOM query on a w3c.dom Document directly.
+* **Alternative 2:** Do DOM query on a w3c.dom.Document directly.
 ** Pros: This approach uses the built-in Java codes.
-** Cons: The DOM queries that have to be made are very expensive. Furthermore, IntelliJ does not support variable debugging on w3c.dom Document, which, as a result, makes parsing for the correct elements a game of lottery.
+** Cons: The DOM queries that have to be made are very expensive. Furthermore, IntelliJ does not support variable debugging on w3c.dom.Document, which, as a result, makes parsing for the correct elements a game of lottery.
 
+[.not-print]
 ===== Aspect: Testing.
 
+[.not-print]
 * **Alternative 1 (current choice):** Create a dummy Document object for `WebParserHandler`.
 ** Pros: This is currently the only working approach.
 ** Cons: This approach does not fully test for the correctness of `WebParserHandler` constructor. Furthermore, the tests usually fail even though they should pass.
@@ -1088,54 +1063,58 @@ public static boolean isColorDark(String color) {
 // tag::internet-search[]
 ==== Current implementation
 
-The command is implemented in `_SearchCommand_`. When user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which creates a `_WikiaQueryHandler_` and posts a `_InternetSearchRequestEvent_` to the `_EventsCenter_`. For a visual understanding, refer to <<fig-InternetSearchSD>>.
+The command is implemented in `_SearchCommand_`. When the user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which creates a `_WikiaQueryHandler_` and posts a `_InternetSearchRequestEvent_` to the `_EventsCenter_`. For a visual understanding, refer to <<fig-InternetSearchSD>>.
 
 [[fig-InternetSearchSD]]
 .Component interactions for *`search chicken rice`* command (part 1)
-image::SDforInternetSearch.png[width="800"]
+image::SDforInternetSearch.png[width="750"]
 {nbsp} +
 
-The event is then propagated through the `_EventsCenter_` to the `*UI*`. The `*UI*` will call `handleInternetSearchRequestEvent()` to search for the recipe. For details on the execution events, refer to <<fig-InternetSearchEventSD>>.
+The event is then propagated through the `_EventsCenter_` to the `UI`. The `UI` will call `handleInternetSearchRequestEvent()` to search for the recipe (<<fig-InternetSearchEventSD>>).
 
 [[fig-InternetSearchEventSD]]
 .Component interactions for *`search chicken rice`* command (part 2)
-image::SDforInternetSearchEventHandling.png[width="800"]
+image::SDforInternetSearchEventHandling.png[width="500"]
 {nbsp} +
 
-This command deals with a class called `_WikiaQueryHandler_`. `_WikiaQueryHandler_` is a class that resolves a query to http://recipes.wikia.com[the recipe repo] we are using for ReciRecipé.
-
-`_WikiaQueryHandler_` takes in the argument of `_SearchCommand_`, makes a query (after going through many steps) to the server. Refer to <<fig-InternetSearchDetailsSD>> for the details.
-
-[[fig-InternetSearchDetailsSD]]
-.Component interactions for `_WikiaQueryHandler_`
-image::SDforInternetSearchDetails.png[width="800"]
-{nbsp} +
+This command deals with a class called `_WikiaQueryHandler_`. `_WikiaQueryHandler_` is a class that resolves a query to http://recipes.wikia.com[the recipe repo] we are using for ReciRecipé. Below is the constructor of `WikiaQueryHandler`:
+[source,java]
+----
+public WikiaQueryHandler(String recipeToSearch) throws AssertionError {
+    requireNonNull(recipeToSearch);
+    this.recipeToSearch = recipeToSearch;
+    loadUrl();
+    startHttpConnection();
+    getRawData();
+    parseData();
+}
+----
 
 After `_WikiaQueryHandler_` is created, we can call `getRecipeQueryUrl()` and `getQueryNumberOfResults()` to get the URL for the `_BrowserPanel_` and the number of results returned by the query.
 
-Refer to <<fig-InternetSearchCD>> for the interaction between relevant classes.
+[.not-print]
+Refer to <<fig-InternetSearchCD>> for the interactions between relevant classes.
 
+[.not-print]
 [[fig-InternetSearchCD]]
 .Classes interactions for `_SearchCommand_`
-image::InternetSearchClassDiagram.png[width="800"]
+image::InternetSearchClassDiagram.png[width="750"]
+[.not-print]
 {nbsp} +
 
-When `execute()` is called, `_SearchCommand_` passes its `_WikiaQueryHandler_` as an argument to `_InternetSearchRequestEvent_`. `_BrowserPanel_` will then call `getQueryNumberOfResults()` to see if the query returns any results. If there is no result, then `_BrowserPanel_` won't load the page to reduce needless requests to the server, else `_BrowserPanel_` will load the URL given by `getRecipeQueryUrl()`. Refer to the code snippet below to see the implementation for `execute()` and the handler.
+When `execute()` is called, `_SearchCommand_` passes its `_WikiaQueryHandler_` as an argument to `_InternetSearchRequestEvent_`. `_BrowserPanel_` will then call `getQueryNumberOfResults()` to see if the query returns any results. If there is no result, then `_BrowserPanel_` won't load the page to reduce redundant requests to the server, else `_BrowserPanel_` will load the URL given by `getRecipeQueryUrl()`. Refer to the code snippet below to see the implementation of `execute()` and the handler:
 
 [source,java]
 ----
 public CommandResult execute() throws CommandException {
     int noOfResult = wikiaQueryHandler.getQueryNumberOfResults();
-
     EventsCenter.getInstance().post(new InternetSearchRequestEvent(wikiaQueryHandler));
-
     if (noOfResult == 0) {
         return new CommandResult(MESSAGE_FAILURE);
     } else {
         return new CommandResult(String.format(MESSAGE_SUCCESS, noOfResult));
     }
 }
-
 private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) {
     logger.info(LogsCenter.getEventHandlingLogMessage(event));
     if (event.wikiaQueryHandler.getQueryNumberOfResults() != 0) {
@@ -1144,10 +1123,13 @@ private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) 
 }
 ----
 
+[.not-print]
 ==== Design considerations
 
+[.not-print]
 ===== Aspect: Usage of `_WikiaQueryHandler_`.
 
+[.not-print]
 * **Alternative 1 (current choice):** Use `_WikiaQueryHandler_`.
 ** Pros: This approach allows more data to be processed separately from the page handling by `_BrowserPanel_`.
 ** Cons: In return, using a separate class makes the implementation a lot harder to manage.
@@ -1166,7 +1148,7 @@ The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides insi
 {nbsp} +
 
 [[diag-LogicCommandClass]]
-.Logic Command Class Diagram
+.Logic command class diagram
 image::LogicCommandClassDiagram.png[width="800"]
 {nbsp} +
 
@@ -1210,7 +1192,7 @@ The user executes a new `_UndoableCommand_`, *`delete 5`*, to delete the 5th rec
 {nbsp} +
 
 [[diag-UndoRedo1]]
-.Undo/Redo Starting Stack Diagram
+.Undo/Redo starting stack diagram
 image::UndoRedoStartingStackDiagram.png[width="800"]
 {nbsp} +
 
@@ -1220,7 +1202,7 @@ The state of the stack is shown in <<diag-UndoRedo2>> below.
 {nbsp} +
 
 [[diag-UndoRedo2]]
-.Undo/Redo New Command Stack Diagram
+.Undo/Redo new command stack diagram
 image::UndoRedoNewCommand1StackDiagram.png[width="800"]
 {nbsp} +
 
@@ -1235,7 +1217,7 @@ The details of the execution can be seen in <<diag-UndoRedo3>> below.
 {nbsp} +
 
 [[diag-UndoRedo3]]
-.Execute Undo Stack Diagram
+.Execute undo stack diagram
 image::UndoRedoExecuteUndoStackDiagram.png[width="800"]
 {nbsp} +
 
@@ -1247,7 +1229,7 @@ The following sequence diagram <<diag-UndoRedoSeq>> shows how the undo operation
 {nbsp} +
 
 [[diag-UndoRedoSeq]]
-.Undo/Redo Sequence Diagram
+.Undo/Redo sequence diagram
 image::UndoRedoSequenceDiagram.png[width="800"]
 {nbsp} +
 
@@ -1262,7 +1244,7 @@ Details can be seen in <<diag-UndoRedo4>> below.
 {nbsp} +
 
 [[diag-UndoRedo4]]
-.Undo/Redo New Command Stack Diagram
+.Undo/Redo new command stack diagram
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
 {nbsp} +
 
@@ -1271,7 +1253,7 @@ Commands that are not undoable are not added into the `undoStack`. For example, 
 {nbsp} +
 
 [[diag-CannotUndoRedo]]
-.Undo/Redo New Command Stack Diagram
+.Undo/Redo new command stack diagram
 image::UndoRedoNewCommand3StackDiagram.png[width="800"]
 {nbsp} +
 
@@ -1280,7 +1262,7 @@ The following activity diagram <<diag-UndoRedoActDiag>> summarizes what happens 
 {nbsp} +
 
 [[diag-UndoRedoActDiag]]
-.Undo/Redo Activity Diagram
+.Undo/Redo activity diagram
 image::UndoRedoActivityDiagram.png[width="650"]
 {nbsp} +
 
@@ -1774,46 +1756,44 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 *Target user profile*:
 
 * has a need to manage a significant number of recipes.
-* prefer desktop apps over other types.
+* prefers desktop apps over other types.
 * can type fast.
 * prefers typing over mouse input.
 * is reasonably comfortable using <<CLI,CLI>> apps.
 
-*Value Proposition*: manage recipes faster than a typical mouse/GUI driven app.
+*Value proposition*: manage recipes faster than a typical mouse/GUI driven app.
 
-*Feature Contribution*:
+*Feature contribution*:
 
 *Ryan* - Media: As a user, I want to share my personal recipes with my friends so that they can try my recipes.
 
-* add url to recipe. `minor`
-* add image to recipe.
-* share recipe on social media. *`major`*
+* *`Major`*: Sharing recipes on social media.
+* `Minor`: Adding URL to recipes.
+* `Minor`: Adding images to recipes.
 
-*Nicholas* - Organisation: As a user, I want to organise my recipe storage so that I can maintain ease of access to my recipes.
+*Nicholas* - Portability: As a user, I want to have my data always ready on the <<cloud, cloud>> so that I can quickly import it to another device.
 
-* create, edit, delete groups for recipes. *`major`*
-* save files online (cloud storage).
-* search recipes by tags. `minor`
+* *`Major`*: Backing up app data online (<<cloud, cloud storage>>).
+* `Minor`: Searching for recipes by tags.
+* `Minor`: Searching for recipes by ingredients.
 
 *Hoang Duong* - Efficiency: As a user, I want to efficiently manage my recipes so that I can save time.
 
-* find recipe by name, ingredient, cuisine. `minor`
-* filter and sort recipes by cooking time/difficulty level.
-* sort recipes by name.
-* auto-completion, IDE style shortcuts (“manage” because you may need to edit recipes. This auto-completion helps in quickening the process). *`major`*
-* get a random recipe.
+* *`Major`*: Auto-completion and keyboard shortcuts.
+* `Minor`: Grouping recipes.
 
-*Thanh Nguyen* - Data: As a user, I want to easily add recipes from the internet so that I can save time on unnecessary typing of recipes.
+*Thanh Nguyen* - Optimization: As a user, I want to add recipes from the Internet without manual copy-pasting so that I can optimize my time.
 
-* add recipe in a user friendly manner (not a single command line). `minor`
-* search and import recipes from internet. *`major`*
+* *`Major`*: Searching and importing recipes from the Internet.
+* `Minor`: Adding recipes in a user friendly and intuitive manner (input with multiple lines).
+* `Minor`: Toggling between themes.
 
 [appendix]
 == User stories
 
 Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (unlikely to have) - `*`
 
-[width="59%",cols="22%,<23%,<25%,<30%",options="header",]
+[width="59%",cols="22%,<23%,<25%,<30%",options="header".]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |Home cook |Add a text recipe |Store my favourite recipes
@@ -1879,51 +1859,6 @@ _{More to be added}_
 (For all use cases below, the *System* is the *RecipeBook* and the *Actor* is the *user*, unless specified otherwise).
 
 [discrete]
-=== Use case: Add a URL to recipe
-
-*MSS*
-
-1.  User requests to list recipes.
-2.  RecipeBook shows a list of recipes.
-3.  User requests to add a video URL to a specific recipe in the list using the edit command.
-4.  RecipeBook updates recipe to show an embedded video when recipe is selected.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 2a. The list is empty.
-+
-Use case ends.
-
-* 3a. The given URL is invalid.
-+
-[none]
-** 3a1. RecipeBook shows an error message.
-+
-Use case resumes at step 2.
-
-[discrete]
-=== Use case: Searching for a specific type of food
-
-*MSS*
-
-1.  User types `find chicken`.
-2.  RecipeBook shows a list of recipes that contain chicken.
-3.  User clicks on a particular recipe.
-4.  RecipeBook displays full recipe and details on the main area.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 2a. The list is empty.
-+
-Use case ends.
-
-[discrete]
 === Use case: Adding a recipe
 
 *MSS*
@@ -1959,28 +1894,28 @@ RecipeBook reminds user to put in a version number for the recipe if user wants 
 Use case ends.
 
 [discrete]
-=== Use case: Searching a recipe from the Internet
+=== Use case: Adding a URL to recipe
 
 *MSS*
 
-1.  User requires to search for a recipe from the Internet.
-2.  RecipeBook shows the search results on the BrowserPanel, RecipeBook also shows the tips on how to navigate with keyboard.
-3.  User types in the index of the result, starting from 1, or types in the exact name of the result, or navigate with mouse.
-4.  RecipeBook shows the result page on the BrowserPanel.
-5.  RecipeBook reminds user that user can parse the data to add a recipe quickly.
+1.  User requests to list recipes.
+2.  RecipeBook shows a list of recipes.
+3.  User requests to add a video URL to a specific recipe in the list using the edit command.
+4.  RecipeBook updates recipe to show an embedded video when recipe is selected.
 +
 Use case ends.
 
 *Extensions*
 
-* 1a. The recipe does not exist.
-** 1a1. This will be handled by the API. No results will show.
-** 1a2. RecipeBook tells user to try another recipe name.
+[none]
+* 2a. The list is empty.
 +
 Use case ends.
 
-* 3a. The index / name the user types in is invalid / does not exist.
-** 3a1. RecipeBook tells user the index / name the user just inputs does not match any results.
+* 3a. The given URL is invalid.
++
+[none]
+** 3a1. RecipeBook shows an error message.
 +
 Use case resumes at step 2.
 
@@ -2002,6 +1937,45 @@ Use case ends.
 ** 1a1. RecipeBook reminds user that parsing is only possible when a recipe site is shown on the BrowserPanel.
 * 1b. User requires to parse while an invalid site is being displayed on the BrowserPanel.
 ** 1b1. RecipeBook reminds user that the current site displayed is not a valid recipe site.
++
+Use case ends.
+
+[discrete]
+=== Use case: Searching for a recipe on the Internet
+
+*MSS*
+
+1.  User requires to search for a recipe from the Internet.
+2.  RecipeBook shows the search results on the BrowserPanel, RecipeBook also shows the tips on how to navigate with keyboard.
+3.  User navigates with mouse.
+4.  RecipeBook shows the result page on the BrowserPanel.
++
+Use case ends.
+
+*Extensions*
+
+* 1a. The recipe does not exist.
+** 1a1. This will be handled by the API. No results will show.
+** 1a2. RecipeBook tells user to try another recipe name.
++
+Use case ends.
+
+[discrete]
+=== Use case: Searching for a specific type of food
+
+*MSS*
+
+1.  User types `find chicken`.
+2.  RecipeBook shows a list of recipes that contain chicken.
+3.  User clicks on a particular recipe.
+4.  RecipeBook displays full recipe and details on the main area.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
 +
 Use case ends.
 

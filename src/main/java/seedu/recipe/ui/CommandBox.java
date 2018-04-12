@@ -5,6 +5,7 @@ import static seedu.recipe.ui.util.KeyboardShortcutsMapping.LAST_COMMAND;
 import static seedu.recipe.ui.util.KeyboardShortcutsMapping.NEW_LINE_IN_COMMAND;
 import static seedu.recipe.ui.util.KeyboardShortcutsMapping.NEXT_COMMAND;
 import static seedu.recipe.ui.util.KeyboardShortcutsMapping.NEXT_FIELD;
+import static seedu.recipe.ui.util.KeyboardShortcutsMapping.PREV_FIELD;
 import static seedu.recipe.ui.util.KeyboardShortcutsMapping.SHOW_SUGGESTIONS_COMMAND;
 
 import java.util.logging.Logger;
@@ -78,6 +79,9 @@ public class CommandBox extends UiPart<Region> {
         } else if (NEXT_FIELD.match(keyEvent)) {
             keyEvent.consume();
             moveToNextField();
+        } else if (PREV_FIELD.match(keyEvent)) {
+            keyEvent.consume();
+            moveToPrevField();
         }
     }
 
@@ -92,6 +96,17 @@ public class CommandBox extends UiPart<Region> {
         int nextFieldPosition = autoCompletionUtil.getNextFieldPosition(commandTextArea.getText(),
                 currentCaretPosition);
         commandTextArea.positionCaret(nextFieldPosition);
+    }
+
+    /**
+     * Moves caret to the next field in input text.
+     * If no field is found after current position, continue from beginning of input text.
+     */
+    private void moveToPrevField() {
+        int currentCaretPosition = commandTextArea.getCaretPosition();
+        int prevFieldPosition = autoCompletionUtil.getPrevFieldPosition(commandTextArea.getText(),
+                currentCaretPosition);
+        commandTextArea.positionCaret(prevFieldPosition);
     }
 
     /**

@@ -12,7 +12,7 @@ public class Ingredient {
     public static final String NULL_INGREDIENT_REFERENCE = "-";
     public static final String MESSAGE_INGREDIENT_CONSTRAINTS = "Recipe ingredients should be a list of "
             + "ingredients, delimited by commas.";
-    public static  final String INGREDIENT_VALIDATION_REGEX = "^(([a-zA-Z0-9]|[^\\x00-\\x7F])+,?\\s*)+$";
+    public static  final String INGREDIENT_VALIDATION_REGEX = "^(([a-zA-Z0-9]|[^\\x00-\\x7F]|-)+,?\\s*)+$";
 
     public final String value;
 

@@ -940,10 +940,10 @@ public class Servings {
      */
     @FXML
     public void handleChangeTheme() {
-        boolean isUsingDarkTheme = prefs.getIsUsingDarkTheme();
-        browserPanel.loadDefaultPage(!isUsingDarkTheme);
-        loadStyle(!isUsingDarkTheme);
-        prefs.setIsUsingDarkTheme(!isUsingDarkTheme);
+        boolean isUsingGirlTheme = prefs.getIsUsingGirlTheme();
+        browserPanel.loadDefaultPage(!isUsingGirlTheme);
+        loadStyle(!isUsingGirlTheme);
+        prefs.setIsUsingGirlTheme(!isUsingGirlTheme);
     }
 
     @Subscribe
