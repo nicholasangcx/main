@@ -147,7 +147,7 @@ See figure below for the expected behavior of this command. +
 {nbsp}
 
 .Effect of the clear command
-image::Ui_Clear.PNG[width="750"]
+image::Ui_Clear.PNG[width="950"]
 {nbsp} +
 [TIP]
 If you clear your recipe book by mistake, you can reverse the command with an `undo`.
