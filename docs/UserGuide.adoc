@@ -41,7 +41,7 @@ This app will not work with earlier versions of Java 8.
 .  Double-click the file to start the app. The GUI should appear in a few seconds (refer to Figure 1).
 +
 .GUI for ReciRecipe
-image::Ui_Layout.PNG[width="790"]
+image::UI_Layout.PNG[width="790"]
 {nbsp} +
 Referring to Figure 1 above:
 .. On the left section, we have the display page that gives more details about a specific recipe selected.
@@ -110,7 +110,7 @@ Examples:
 You can split the command into multiple lines as shown in the figure below. In case you forgot how to add a new line, it's kbd:[Shift]+kbd:[Enter].
 +
 .Add a recipe with multiple lines
-image::Ui_MultipleLine.PNG[width="750"]
+image::Ui_MultipleLine.PNG[width="500"]
 
 {nbsp} +
 If you follow the instructions correctly, the result box will inform you and your recipe will be added to the book (<<fig-AddRecipeResult>>).
@@ -450,7 +450,7 @@ See <<fig-ChangeThemeCommand>> for more information. +
 
 [[fig-ChangeThemeCommand]]
 .Two themes provided for ReciRecipé
-image::ChangeTheme2.PNG[width="750"]
+image::ChangeTheme.PNG[width="750"]
 {nbsp} +
 [TIP]
 You can change theme from the menu bar or by pressing F2 too!
@@ -586,7 +586,7 @@ Uploads the 6th recipe in the recipe book to the server.
 *A*: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous ReciRecipé.
 
 *Q*: Where do I find my data file? +
-*A*: image:FAQ1.png[width="450"]
+*A*: image:FAQ2.png[width="450"]
 {nbsp}
 
 Q: There is still something I don't understand after reading this guide! +
