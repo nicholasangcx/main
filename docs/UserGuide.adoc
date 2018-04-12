@@ -41,7 +41,7 @@ This app will not work with earlier versions of Java 8.
 .  Double-click the file to start the app. The GUI should appear in a few seconds (refer to Figure 1).
 +
 .GUI for ReciRecipe
-image::Ui.png[width="790"]
+image::Ui_Layout.png[width="790"]
 {nbsp} +
 Referring to Figure 1 above:
 .. On the left section, we have the display page that gives more details about a specific recipe selected.
@@ -110,7 +110,7 @@ Examples:
 You can split the command into multiple lines as shown in the figure below. In case you forgot how to add a new line, it's kbd:[Shift]+kbd:[Enter].
 +
 .Add a recipe with multiple lines
-image::AddCommandEg2.png[width="750"]
+image::Ui_MultipleLine.png[width="750"]
 
 {nbsp} +
 If you follow the instructions correctly, the result box will inform you and your recipe will be added to the book (<<fig-AddRecipeResult>>).
@@ -119,7 +119,7 @@ If you follow the instructions correctly, the result box will inform you and you
 
 [[fig-AddRecipeResult]]
 .After adding a recipe
-image::AddCommandResultEg.png[width="750"]
+image::Ui_AddCommand.png[width="750"]
 {nbsp} +
 
 [TIP]
@@ -147,7 +147,7 @@ See figure below for the expected behavior of this command. +
 {nbsp}
 
 .Effect of the clear command
-image::ClearCommand.png[width="750"]
+image::Ui_Clear.png[width="750"]
 {nbsp} +
 [TIP]
 If you clear your recipe book by mistake, you can reverse the command with an `undo`.
@@ -297,14 +297,14 @@ Suppose you have that done and you are at this step (see <<fig-InternetSearchRes
 
 [[fig-InternetSearchResult0]]
 .After you click on a result
-image::InternetSearchResult.png[width="750"]
+image::Parse_Click.png[width="750"]
 
 {nbsp} +
 Type in *`parse`*, press kbd:[Enter] and you have <<fig-ParseCommand>>. +
 {nbsp} +
 [[fig-ParseCommand]]
 .Parsed result
-image::ParsedResult.png[width="750"]
+image::Parse_Success.png[width="750"]
 [TIP]
 After that, you can add more fields if you want, or you can just press kbd:[Enter] to submit an `add` command!
 
@@ -354,7 +354,7 @@ See <<fig-InternetSearchCommand>> for more information on what will be displayed
 
 [[fig-InternetSearchCommand]]
 .Searching for your recipe on the Internet directly from ReciRecipé
-image::InternetSearchCommand.png[width="750"]
+image::Search_Result.png[width="750"]
 {nbsp} +
 Examples:
 
@@ -364,7 +364,7 @@ You will be brought to the result page and from there, you can select any recipe
 +
 [[fig-InternetSearchResult]]
 .After you click on a result
-image::InternetSearchResult.png[width="750"]
+image::Parse_Click.png[width="750"]
 //end::internet-search[]
 
 === *`select`* : Selecting a recipe
@@ -450,7 +450,7 @@ See <<fig-ChangeThemeCommand>> for more information. +
 
 [[fig-ChangeThemeCommand]]
 .Two themes provided for ReciRecipé
-image::ChangeThemeCommand.png[width="750"]
+image::ChangeTheme2.png[width="750"]
 {nbsp} +
 [TIP]
 You can change theme from the menu bar or by pressing F2 too!
