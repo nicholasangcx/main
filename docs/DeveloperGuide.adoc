@@ -665,8 +665,12 @@ The *`share`* command is implemented in the `_ShareCommand_` class. On command e
 
 The event is then propagated through the `_EventsCenter_` to the `_BrowserPanel_`, which is supported by the `_FacebookHandler_` class (contains methods for Facebook integration and authentication).
 
-The `_BrowserPanel_` will call `handleShareRecipeEvent()` and update the web view to show the Facebook authentication page. The recipe name, ingredients, and instructions, are also formatted and copied to the clipboard.
+The `_BrowserPanel_` will call `handleShareRecipeEvent()` and update the web view to show the Facebook authentication page. The recipe name, ingredients, and instructions, are also formatted and copied to the clipboard. Shown below in <<fig-ShareCommandSD>> is the component interactions for a *`share`* command.
 
+[[fig-ShareCommandSD]]
+.Component interactions for *`share 1`* command
+image::SDforShareCommand.jpg[width="700"]
+{nbsp} +
 The `_recipe_` class handles the formatting of the recipe text before it is copied to the clipboard:
 
 [source,java]
@@ -692,7 +696,12 @@ public static void copyToClipboard(String string) {
 
 Upon logging in, the User will be shown a feed dialog with the embedded URL of the recipe. The user may choose to input any text into the post (eg. pasting the copied recipe from clipboard). The User then has to manually click "post" before an actual Facebook post is made.
 
-The `_BrowserPanel_` will be updated to show the Facebook feed of the User.
+The `_BrowserPanel_` will be updated to show the Facebook feed of the User. The activity diagram below (<<fig-ShareCommandAD>>) depicts the execution flow of the *`share`* command.
+
+[[fig-ShareCommandAD]]
+.Activity Diagram for *`share`* command
+image::ADforShareCommand.jpg[width="800"]
+{nbsp} +
 
 ==== Design considerations
 
@@ -710,29 +719,75 @@ The `_BrowserPanel_` will be updated to show the Facebook feed of the User.
 === Inserting an image
 ==== Current Implementation
 
-The image field is an optional field in the *`add`* command and can be omitted. A user can add an image to a recipe by inserting the absolute path name of the image into the image field.
+The image field is an optional field in the *`add`* command and can be omitted. A User can add an image to a recipe by inserting the absolute pathname of the image into the image field. The pathname must reference to a valid image file.
 
-An `_ImageView_` has been inserted into RecipeListCard.fxml so that the image can also be displayed on the recipe card. The image is set in the `_RecipeCard_` class, which is the controller for the FXML file. This is shown below:
+An `_ImageView_` has been inserted into RecipeListCard.fxml so that the image can also be displayed on the recipe card. The image displayed in the `_ImageView_` is set in the `_RecipeCard_` class, which is the controller for the FXML file. This method is shown below:
 
 [source,java]
 ----
-    FileInputStream input = new FileInputStream(recipe.getImage().toString());
-    Image image = new Image(input);
-    imageView.setImage(image);
+private void setImageView(ImageView imageView) {
+    if (recipe.isNullImage()) {
+        return;
+    }
+    try {
+        FileInputStream input = new FileInputStream(recipe.getImage().toString());
+        Image image = new Image(input);
+        imageView.setImage(image);
+    } catch (IOException exception) {
+        System.out.println("File not found");
+    }
+}
 ----
 
-The recipe image is displayed using an <img> HTML tag in the HTML formatted recipe.
+In order to support storage of the added images, an `_ImageStorage_` class has been added. This class is responsible for storing image files into the "data/images" folder whenever the RecipeBook is saved.
+
+Once the images have been stored, the image references in each recipe is set to reference the stored images rather than the original absolute pathname provided by the User.
+
+[source,java]
+----
+public static void saveAllImageFiles(ReadOnlyRecipeBook recipeBook, String filePath) throws IOException {
+    String imageFolderPath = filePath.replaceAll(RECIPE_BOOK_FILENAME, IMAGE_FOLDER);
+    File imageFolder = new File(imageFolderPath);
+    FileUtil.createDirs(imageFolder);
+
+    for (int i = 0; i < recipeBook.getRecipeList().size(); i++) {
+        Image recipeImage = recipeBook.getRecipeList().get(i).getImage();
+        saveImageFile(recipeImage.toString(), imageFolderPath);
+        recipeImage.setImageToInternalReference();
+    }
+}
+
+public static void saveImageFile(String imagePath, String imageFolderPath) {
+    try {
+        File imageToSave = new File(imagePath);
+        File pathToNewImage = new File(imageFolderPath + imageToSave.getName());
+        Files.copy(imageToSave.toPath(), pathToNewImage.toPath(), REPLACE_EXISTING);
+    } catch (IOException e) {
+        LogsCenter.getLogger(ImageStorage.class).warning(WARNING_UNABLE_TO_SAVE_IMAGE);
+    }
+}
+----
 
 ==== Design considerations
 
-===== Aspect: Implementation of inserting image.
+===== Aspect: Implementation of inserting an image.
 
-* **Alternative 1 (current choice):** Insert the absolute image path during an *`add`* command.
-** Pros: There is no need for a mouse. This ensures that the application still uses Command Line Interface for important operations.
-** Cons: The user may take a significant amount of time to type out the image path.
-* **Alternative 2 :** Drag and drop an image onto the GUI.
+* **Alternative 1 :** Drag and drop an image onto the GUI.
 ** Pros: This implementation is more intuitive for the user as there is no need to deal with image paths.
-** Cons: It deviates from the idea of a Command Line Interface.
+** Cons: It deviates from the idea of a Command Line Interface application.
+* **Alternative 2 (current choice):** Insert the absolute image path during an *`add`* command.
+** Pros: It ensures that the application still uses Command Line Interface for important operations without the need for a mouse
+** Cons: The user may take a significant amount of time to type out the image path.
+
+===== Aspect: Image storage.
+
+* **Alternative 1 :** Reference the actual image file stored in the user's computer.
+** Pros: It is easier to implement as there is no need to deal with internal storage management.
+** Cons: The user may delete the original image, resulting in a missing image in the application.
+* **Alternative 2 (current choice):** Store the images in the data folder of the application itself.
+** Pros: The user can safely delete image files on his/her computer without affecting the stored images in the application. The application is not dependant on the user's computer state.
+** Cons: It makes the storage component slightly more complicated.
+
 // end::inserting-an-image[]
 
 === Keyboard shortcuts
@@ -978,6 +1033,57 @@ image::SDforParseCommandDetails.png[width="800"]
 ** Cons: It makes testing a lot slower due to the long waiting time.
 // end::web-parse[]
 
+=== Randomising Tag Colors
+// tag::randomised-tag-colors[]
+==== Current implementation
+The `_RecipeCard_` class calls the `_UiUtil_` class to convert the hashcode of a tag name into a valid hexadecimal color code. This ensures that all tags with the same name will have the same tag color.
+
+[source,java]
+----
+private String getTagColorStyleFor(String tagName) {
+    String hexadecimalHashCode = UiUtil.convertIntToHexadecimalString(tagName.hashCode());
+    String hexadecimalColorCode = UiUtil.convertStringToValidColorCode(hexadecimalHashCode);
+    return hexadecimalColorCode;
+}
+----
+
+In order to find a suitable text color for a given tag color, we must first find out if the given tag color is dark or light. Consequently, we set the text color to black if the tag color is light, and vice versa.
+
+A given tag color is passed through a `isColorDark()` method. This method works by summing up the intensity of the red, green and blue color hue in the given hexadecimal color. A smaller sum would mean a darker color, while a larger sum would mean a lighter color.
+
+[source,java]
+----
+public static boolean isColorDark(String color) {
+    color = removeAllWhitespaceInString(color);
+    color = isValidHexColorCode(color) ? color : HEX_COLOR_WHITE;
+
+    int lightnessCount = 0;
+
+    for (int i = 1; i < 6; i = i + 2) {
+        String colorDensity = color.substring(i, i + 2);
+        lightnessCount += Integer.parseInt(colorDensity, 16);
+    }
+
+    if (lightnessCount >= NEUTRAL_COLOR_DENSITY) {
+        return false;
+    }
+
+    return true;
+}
+----
+
+==== Design considerations
+
+===== Aspect: Generating colors
+
+* **Alternative 1:** Use a random color generator for each separate tag.
+** Pros: The implementation is simple.
+** Cons: Tags with the same names may not have the same tag color. The tag colors are different each time the application is run.
+* **Alternative 2 (current choice):** Use a color generator based on the tag name's hashcode.
+** Pros: Tag colors will remain consistent as they are dependant on the tag name. Tags with same names will have the same tag color.
+** Cons: The implementation is slightly more complicated.
+// end::randomised-tag-colors[]
+
 === Searching on the internet
 // tag::internet-search[]
 ==== Current implementation
@@ -1218,6 +1324,57 @@ image::UndoRedoActivityDiagram.png[width="650"]
 * **Alternative 2:** Use `HistoryManager` for undo/redo.
 ** Pros: We do not need to maintain a separate stack, and can just reuse what is already in the codebase.
 ** Cons: This requires dealing with commands that have already been undone, meaning we must remember to skip these commands. It violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two * different things.
+
+=== Unique Tag Colors
+// tag::unique-tag-colors[]
+==== Current implementation
+The `_RecipeCard_` class calls the `_UiUtil_` class to convert the hashcode of a tag name into a valid hexadecimal color code. This ensures that all tags with the same name will have the same tag color.
+
+[source,java]
+----
+private String getTagColorStyleFor(String tagName) {
+    String hexadecimalHashCode = UiUtil.convertIntToHexadecimalString(tagName.hashCode());
+    String hexadecimalColorCode = UiUtil.convertStringToValidColorCode(hexadecimalHashCode);
+    return hexadecimalColorCode;
+}
+----
+
+In order to find a suitable text color for a given tag color, we must first find out if the given tag color is dark or light. Consequently, we set the text color to black if the tag color is light, and vice versa.
+
+A given tag color is passed through a `isColorDark()` method. This method works by summing up the intensity of the red, green and blue color hue in the given hexadecimal color. A smaller sum would mean a darker color, while a larger sum would mean a lighter color.
+
+[source,java]
+----
+public static boolean isColorDark(String color) {
+    color = removeAllWhitespaceInString(color);
+    color = isValidHexColorCode(color) ? color : HEX_COLOR_WHITE;
+
+    int lightnessCount = 0;
+
+    for (int i = 1; i < 6; i = i + 2) {
+        String colorDensity = color.substring(i, i + 2);
+        lightnessCount += Integer.parseInt(colorDensity, 16);
+    }
+
+    if (lightnessCount >= NEUTRAL_COLOR_DENSITY) {
+        return false;
+    }
+
+    return true;
+}
+----
+
+==== Design considerations
+
+===== Aspect: Generating colors
+
+* **Alternative 1:** Use a random color generator for each separate tag.
+** Pros: The implementation is simple.
+** Cons: Tags with the same names may not have the same tag color. The tag colors are different each time the application is run.
+* **Alternative 2 (current choice):** Use a color generator based on the tag name's hashcode.
+** Pros: Tag colors will remain consistent as they are dependant on the tag name. Tags with same names will have the same tag color.
+** Cons: The implementation is slightly more complicated.
+// end::unique-tag-colors[]
 
 == Documentation
 

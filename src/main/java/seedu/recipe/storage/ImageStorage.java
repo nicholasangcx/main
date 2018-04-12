@@ -18,6 +18,7 @@ import seedu.recipe.model.recipe.Image;
 public class ImageStorage {
     public static final String IMAGE_FOLDER = "images/";
     private static final String RECIPE_BOOK_FILENAME = "recipebook.xml";
+    private static final String WARNING_UNABLE_TO_SAVE_IMAGE = "Image cannot be saved.";
 
     /**
      * Saves all image files into the images folder of the application
@@ -37,7 +38,7 @@ public class ImageStorage {
     }
 
     /**
-     * Saves an image file into the data folder of the application
+     * Saves an image file into the images folder of the application
      *
      * @param imagePath       location of the image. Cannot be null
      * @param imageFolderPath location of the image. Cannot be null
@@ -48,7 +49,7 @@ public class ImageStorage {
             File pathToNewImage = new File(imageFolderPath + imageToSave.getName());
             Files.copy(imageToSave.toPath(), pathToNewImage.toPath(), REPLACE_EXISTING);
         } catch (IOException e) {
-            LogsCenter.getLogger(ImageStorage.class).warning("Image cannot be saved.");
+            LogsCenter.getLogger(ImageStorage.class).warning(WARNING_UNABLE_TO_SAVE_IMAGE);
         }
     }
 }

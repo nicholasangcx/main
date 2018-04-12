@@ -183,6 +183,7 @@ Format: `edit INDEX [name/RECIPE_NAME] [ingredient/INGREDIENT] [instruction/INST
 * *_INDEX_* refers to the index number shown in the last recipe listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional fields *must* be provided.
 * Existing values will be updated to the input values.
+* To remove an image attached to a recipe, use "-" as a placeholder (eg. *`edit 1 img/-`*).
 * When editing tags, the existing tags of the recipe will be removed, i.e. adding of tags is not cumulative.
 * You can remove all the recipe's tags by typing `t/` without specifying any tags after it.
 ****
@@ -389,6 +390,7 @@ Selects the 2nd recipe in the recipe book.
 *`select 1`* +
 Selects the 1st recipe in the results of the *`find`* command.
 
+//tag::share-command[]
 === *`share`*: Sharing a recipe on Facebook
 
 Initiates the sharing of a recipe to Facebook, identified by the index number used in the last recipe listing.
@@ -405,18 +407,21 @@ Examples:
 * *`list`* +
 *`share 2`* +
 Shares the 2nd recipe in the recipe book.
-The contents in the recipe will be copied to the clipboard for the User to paste into the Facebook post.
 The Facebook authentication page is shown on the browser for the User to log in.
+
+[[fig-FacebookAuthentication]]
+.Facebook Authentication Page
+image::FacebookAuthentication.jpg[width="600"]
+{nbsp} +
 Upon logging in: if the shared recipe has a URL, the in-app browser will load a feed dialog for the User to share the URL as shown below (see <<fig-FacebookFeedDialog>>).
+The contents in the recipe would have been copied to the clipboard for the User to paste into the Facebook post.
+
 [[fig-FacebookFeedDialog]]
 .Facebook Feed Dialog
 image::FacebookFeedDialog.jpg[width="600"]
 {nbsp} +
 The User will be redirected back to his/her Facebook feed once the post has been made.
-
-* *`find Chicken`* +
-*`share 1`* +
-Shares the 1st recipe in the results of the *`find`* command in a similar fashion as described in the previous example.
+//end::share-command[]
 
 === *`tag`* : Locating recipes by tags
 
@@ -586,7 +591,7 @@ Uploads the 6th recipe in the recipe book to the server.
 *A*: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous ReciRecipé.
 
 *Q*: Where do I find my data file? +
-*A*: image:FAQ2.png[width="450"]
+*A*: image:FAQ2.PNG[width="450"]
 {nbsp}
 
 Q: There is still something I don't understand after reading this guide! +

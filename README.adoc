@@ -7,11 +7,7 @@ https://coveralls.io/github/CS2103JAN2018-F09-B2/main?branch=master[image:https:
 https://www.codacy.com/app/kokonguyen191/main?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CS2103JAN2018-F09-B2/main&amp;utm_campaign=Badge_Grade[image:https://api.codacy.com/project/badge/Grade/f3f1b716cac244338ea565c73d592d82[Codacy Badge]]
 
 ifdef::env-github[]
-image::docs/images/Ui.png[width="600"]
-endif::[]
-
-ifndef::env-github[]
-image::images/Ui.png[width="600"]
+image::docs/images/ReciRecipeUI.jpg[width="600"]
 endif::[]
 
 Are you a professional chef who is too lazy to manually flip through each page of your recipe book to find your favorite recipe? Are you a home cook who is lost and doesn't know what to have to dinner? Or are you just a perfectionist who prefers to have all of his recipes in one place, organized, systematic, well-structured?
