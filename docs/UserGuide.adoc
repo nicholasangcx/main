@@ -128,7 +128,7 @@ You can use kbd:[Shift]+kbd:[Tab] for command auto-completion. After choosing au
 
 
 .Auto-completion for command
-image::AddCommandWithAutoCompletion.png[width="750"]
+image::AutoCompletion.PNG[width="750"]
 {nbsp} +
 
 [TIP]
