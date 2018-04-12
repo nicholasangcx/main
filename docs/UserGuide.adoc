@@ -139,8 +139,7 @@ Clears all entries from the recipe book.
 
 Format: `clear`
 
-[CAUTION]
-This command clears all data in the application.
+WARNING: This command clears all data in the application.
 Use it cautiously.
 
 See figure below for the expected behavior of this command. +
