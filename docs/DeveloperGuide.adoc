@@ -1138,6 +1138,31 @@ private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) 
 ** Cons: However, we don't get any extra information for pre-processing and this could lead to redundant requests.
 // end::internet-search[]
 
+// tag::ingredientSearch
+=== Searching by ingredients
+[discrete]
+==== Current Implementation
+
+// end::ingredientSearch
+
+// tag::tagSearch
+=== Searching by tags
+[discrete]
+==== Current Implementation
+The user input is parsed and separated into a `String[]` of keywords in `TagCommandParser`. This array is then passed to `TagContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their tags using a stream, setting the predicate to true when there is a match, as seen below:
+[source,java]
+----
+@Override
+public boolean test(Recipe recipe) {
+    return keywords.stream()
+                .anyMatch(keyword -> recipe.getTags().stream()
+                    .anyMatch(tag -> tag.tagName.equals(keyword)));
+}
+----
+This entire list of predicates is then passed into `TagCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the tags.
+The sequence diagram of this entire process can be seen in the figure below.
+// end::tagSearch
+
 === Undo/Redo feature
 ==== Current Implementation
 

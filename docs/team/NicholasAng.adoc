@@ -75,8 +75,11 @@ include::../DeveloperGuide.adoc[tag=ingredientSearch]
 Listed here are the commands I have added, in alphabetical order, in order to make my enhancements work, and how I explained the usage of these commands.
 
 include::./UserGuide.adoc[tag=ingredientCommand]
+
 include::./UserGuide.adoc[tag=tagCommand]
+
 include::./UserGuide.adoc[tag=tokenCommand]
+
 include::./UserGuide.adoc[tag=uploadCommand]
 
 
