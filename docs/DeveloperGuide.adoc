@@ -1205,7 +1205,7 @@ The sequence diagram of this entire process can be seen in <<fig-TagCommandSD>> 
 
 [[fig-TagCommandSD]]
 .Interactions inside the `Logic` component for the *`tag favourites`* command.
-image::TagCommandSD.PNG[width="700"]
+image::TagCommandSD.PNG[width="900"]
 {nbsp}
 // end::tag-search[]
 

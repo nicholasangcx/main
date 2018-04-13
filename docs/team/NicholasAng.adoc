@@ -7,6 +7,10 @@
 
 Welcome to my portfolio page for CS2103T Academic Year 2018 Semester 2 project - ReciRecipé.
 
+ifdef::env-github[]
+Please click https://recirecipe.netlify.com/team/NicholasAng.html[here] to view my project portfolio with full formatting.
+endif::[]
+
 == Overview
 
 include::../UserGuide.adoc[tag=applicationDescription]

@@ -508,7 +508,7 @@ See <<fig-AuthorizationCode>> for more information. +
 
 [[fig-AuthorizationCode]]
 .Allow ReciRecipé access to your Dropbox
-image::AuthorizationCode.PNG[height="200"][width="600"]
+image::AuthorizationCode.PNG[width="500"]
 {nbsp} +
 
 ****
