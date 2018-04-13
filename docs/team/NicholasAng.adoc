@@ -24,16 +24,6 @@ This function allows them to retrieve their recipes any time they want from any 
 
 * *Code contributed*: [https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/functional/nicholasangcx.md[Functional code]] [https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/test/nicholasangcx.md[Test code]]
 
-* *Other contributions*:
-
-** Project management:
-*** Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub.
-*** Managed some issues on GitHub.
-
-** Documentation:
-*** Fixed the overall language of the DG and changed the formats to be consistent (i.e. all in proper sentences). [https://github.com/CS2103JAN2018-F09-B2/main/pull/135[PR #135]]
-*** Fixed language issues/formatting in the UG and updated the images to fit the new UI theme. [https://github.com/CS2103JAN2018-F09-B2/main/pull/138[PR #138]][https://github.com/CS2103JAN2018-F09-B2/main/pull/139[PR #139]]
-
 [[code-contributions]]
 == Code Contributions
 |===
@@ -81,6 +71,16 @@ include::../UserGuide.adoc[tag=tagCommand]
 include::../UserGuide.adoc[tag=tokenCommand]
 
 include::../UserGuide.adoc[tag=uploadCommand]
+
+== Other Contributions
+
+** Project management:
+*** Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub.
+*** Managed some issues on GitHub.
+
+** Documentation:
+*** Fixed the overall language of the DG and changed the formats to be consistent (i.e. all in proper sentences). [https://github.com/CS2103JAN2018-F09-B2/main/pull/135[PR #135]]
+*** Fixed language issues/formatting in the UG and updated the images to fit the new UI theme. [https://github.com/CS2103JAN2018-F09-B2/main/pull/138[PR #138]][https://github.com/CS2103JAN2018-F09-B2/main/pull/139[PR #139]]
 
 
 
