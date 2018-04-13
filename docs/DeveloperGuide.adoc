@@ -458,8 +458,9 @@ private void loadStyle(boolean darkTheme) {
 ==== Current implementation
 
 The class `CloudStorageUtil` contains all the utility methods that are required to upload files and also important data such as filenames and access tokens.
-The command `_UploadCommand_` has been added to allow users to upload data in the recipe book onto the cloud. `_UploadCommandParser_` takes in and checks the `_String_` filename, adds an XML extension to it before saving it to `_CloudStorageUtil_` and parsing it to `_UploadCommand_`.
-Adding the XML extension is to make the command more user-friendly and to maintain integrity of the data since the application can only read data from files in an XML format.
+The command `_UploadCommand_` has been added to allow users to upload data in the recipe book onto the cloud.
+
+`_UploadCommandParser_` takes in and checks the `_String_` filename, adds an XML extension to it before saving it to `_CloudStorageUtil_` and parsing it to `_UploadCommand_`.
 
 `_UploadCommandParser_` parses the user-input as shown below:
 
@@ -480,8 +481,14 @@ public static boolean isValidFilename(String test) {
 }
 ----
 Because the file is being uploaded to the user's Dropbox account, they will be prompted to authorize ReciRecipe if it is their first time connecting to Dropbox.
-After authorization the user will copy and paste the authorization code given.
+An `UploadRecipesEvent` will be created, posted to the `EventsCenter` and propagated to the `BrowserPanel`. The `handleUploadRecipesEvent()` will then be called and the Dropbox authentication page will open in a system browser.
+The component interactions can be seen in <<fig-UploadCommandSD>> below:
 
+[[fig-UploadCommandSD]]
+.Sequence diagram for *`upload recipebook`* command.
+image::UploadCommandSD.PNG[width="700"]
+{nbsp} +
+After authorization the user will copy and paste the authorization code given.
 They can do this using the *`token`* command which takes in and converts the authorization code into a unqiue access token.
 This token will then be stored in `CloudStorageUtil` for that session.
 The `token` command will then invoke the `upload()` method.
@@ -513,9 +520,17 @@ try (InputStream in = new FileInputStream(RECIPE_BOOK_FILE)) {
                 .withAutorename(true)
                 .uploadAndFinish(in);
 ----
-The activity diagram of the command `upload` can be seen below:
+The activity diagram of the command `upload` can be seen in <<fig-UploadCommandAD>> below:
 
-If it is required, the command `token` will proceed the first `upload` and that activity diagram is shown in Figure below:
+[[fig-UploadCommandAD]]
+.Activity diagram of *`upload`* command.
+image::UploadCommandAD.PNG[width="700"]
+{nbsp} +
+If it is required, the command `token` will proceed the first `upload` and that activity diagram is shown in <<fig-TokenCommandAD>> below:
+
+[[fig-TokenCommandAD]]
+.Activity diagram of *`token`* command.
+image::TokenCommandAD.PNG[width="700"]
 
 ==== Design considerations
 
