@@ -9,7 +9,7 @@ Welcome to my portfolio page for CS2103T Academic Year 2018 Semester 2 project -
 
 == Overview
 
-include::./UserGuide.adoc[tag=applicationDescription]
+include::../UserGuide.adoc[tag=applicationDescription]
 
 == Summary of contributions
 
@@ -27,7 +27,7 @@ This function allows them to retrieve their recipes any time they want from any 
 * *Other contributions*:
 
 ** Project management:
-*** Managed releases `v1.3` - `v1.4` (2 releases) on GitHub.
+*** Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub.
 *** Managed some issues on GitHub.
 
 ** Documentation:
@@ -47,7 +47,7 @@ Quite a bit of additional work was required as I had to change my original imple
 ==== Why?
 Saving all of their painstakingly searched, added or crafted recipes solely on their own hard drives is very risky as it could be lost very easily. Furthermore, if they accidentally cleared and closed the app, all the data will disappear too.
 
-include::./DeveloperGuide.adoc[tag=cloud-storage]
+include::../DeveloperGuide.adoc[tag=cloud-storage]
 
 === Minor Enhancement: Tag Search
 This feature has been implemented in version 1.1, in link:https://github.com/CS2103JAN2018-F09-B2/main/pull/33[PR #33].
@@ -56,7 +56,7 @@ This feature allows the user to search for recipes based on the tags allocated t
 ==== Why?
 This allows the user to organise their recipes more efficiently and can obtain the ones they are interested in faster. For example, tagging their frequently used recipes with favourites, a simple search of favourites would list all those recipes immediately.
 
-include::../DeveloperGuide.adoc[tag=tagSearch]
+include::../DeveloperGuide.adoc[tag=tag-search]
 
 === Minor Enhancement: Ingredient Search
 This feature has been implemented in version 1.4, in link:https://github.com/CS2103JAN2018-F09-B2/main/pull/98[PR #98]. This feature allows the user to search for recipes based on the ingredients specified within them.
@@ -64,7 +64,7 @@ This feature has been implemented in version 1.4, in link:https://github.com/CS2
 ==== Why?
 This allows the user to maximise the ingredients they currently have, searching for recipes that contain ALL the ingredients that they have searched for.
 
-include::../DeveloperGuide.adoc[tag=ingredientSearch]
+include::../DeveloperGuide.adoc[tag=ingredient-search]
 
 == Contributions to User Guide
 |===
@@ -74,13 +74,13 @@ include::../DeveloperGuide.adoc[tag=ingredientSearch]
 === Usage
 Listed here are the commands I have added, in alphabetical order, in order to make my enhancements work, and how I explained the usage of these commands.
 
-include::./UserGuide.adoc[tag=ingredientCommand]
+include::../UserGuide.adoc[tag=ingredientCommand]
 
-include::./UserGuide.adoc[tag=tagCommand]
+include::../UserGuide.adoc[tag=tagCommand]
 
-include::./UserGuide.adoc[tag=tokenCommand]
+include::../UserGuide.adoc[tag=tokenCommand]
 
-include::./UserGuide.adoc[tag=uploadCommand]
+include::../UserGuide.adoc[tag=uploadCommand]
 
 
 

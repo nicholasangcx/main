@@ -1160,9 +1160,9 @@ private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) 
 ** Cons: However, we don't get any extra information for pre-processing and this could lead to redundant requests.
 // end::internet-search[]
 
-// tag::ingredientSearch
 === Searching by ingredients
 [discrete]
+// tag::ingredient-search[]
 ==== Current Implementation
 The user input is parsed and separated into a `String[]` of keywords that represent each ingredient in `IngredientCommandParser`. This array is then passed to `IngredientContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their ingredients. The matching is case-insensitive and the predicate will only be true when the recipe contains ALL ingredients in the parsed array.
 The implementation of that can be seen below:
@@ -1182,12 +1182,11 @@ public boolean test(Recipe recipe) {
 ----
 This entire list of predicates is then passed into `IngredientCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the ingredients.
 The sequence diagram of this entire process can be seen in the Figure below:
+// end::ingredient-search[]
 
-// end::ingredientSearch
-
-// tag::tagSearch
 === Searching by tags
 [discrete]
+// tag::tag-search[]
 ==== Current Implementation
 The user input is parsed and separated into a `String[]` of keywords in `TagCommandParser`. This array is then passed to `TagContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their tags using a stream, setting the predicate to true when there is any match (i.e. the recipe does not have to contain ALL the tags specified like how the ingredient search was implemented).
 The matching is case-sensitive and the implementation can be seen below:
@@ -1202,7 +1201,7 @@ public boolean test(Recipe recipe) {
 ----
 This entire list of predicates is then passed into `TagCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the tags.
 The sequence diagram of this entire process is very similar to the one for searching by ingredient. Hence, you can refer to the Figure above for more details.
-// end::tagSearch
+// end::tag-search[]
 
 === Undo/Redo feature
 ==== Current Implementation
