@@ -457,7 +457,8 @@ private void loadStyle(boolean darkTheme) {
 // tag::cloud-storage[]
 ==== Current implementation
 
-A new command `_UploadCommand_` has been added to allow users to upload data in the recipe book onto the cloud. `_UploadCommandParser_` takes in and checks the `_String_` filename, adds an XML extension to it before saving it to `_CloudStorageUtil_` and parsing it to `_UploadCommand_`.
+The class `CloudStorageUtil` contains all the utility methods that are required to upload files and also important data such as filenames and access tokens.
+The command `_UploadCommand_` has been added to allow users to upload data in the recipe book onto the cloud. `_UploadCommandParser_` takes in and checks the `_String_` filename, adds an XML extension to it before saving it to `_CloudStorageUtil_` and parsing it to `_UploadCommand_`.
 Adding the XML extension is to make the command more user-friendly and to maintain integrity of the data since the application can only read data from files in an XML format.
 
 `_UploadCommandParser_` parses the user-input as shown below:
@@ -474,17 +475,20 @@ private static final String FILENAME_VALIDATION_REGEX = "[^\\Q<>:/|.?\"\\*\\E\\s
 /**
  * Returns true if a given string is a valid filename.
  */
-public static boolean isValidFilenamewidth="750"tring test) {
+public static boolean isValidFilename(String test) {
     return test.matches(FILENAME_VALIDATION_REGEX);
 }
 ----
 Because the file is being uploaded to the user's Dropbox account, they will be prompted to authorize ReciRecipe if it is their first time connecting to Dropbox.
-After authorization the user will copy and paste the authorization code given by using the *`token`* command.
-The code will then be converted into a unique access token that will be stored in `CloudStorageUtil` for that session.
+After authorization the user will copy and paste the authorization code given.
+
+They can do this using the *`token`* command which takes in and converts the authorization code into a unqiue access token.
+This token will then be stored in `CloudStorageUtil` for that session.
+The `token` command will then invoke the `upload()` method.
 
 [source,java]
 ----
-public static void processAuthorizationCodewidth="750"tring code) {
+public static void processAuthorizationCode(String code) {
     // Converts authorization code to access token
     DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
     DbxWebAuth webAuth = new DbxWebAuth(config, appInfo);
@@ -498,9 +502,9 @@ public static void processAuthorizationCodewidth="750"tring code) {
 }
 ----
 Since the access token will be saved in the application for the current session, any subsequent calls to the *`upload`* command
-will skip the above `processAuthorizationCode` method and skip straight to the `upload()` method.
+will skip the above `processAuthorizationCode` method and skip straight to the `upload()` method. Hence, there will be no need for the user to use the `token` command again too.
 
-Furthermore, to overcome the problem with conflicting filenames that already exist in the user's dropbox, we turned on the auto-renaming which will append a (#) to the filename while uploading.
+Furthermore, to overcome the problem with conflicting filenames that already exist in the user's dropbox, auto-renaming is turned on. This means a (#) will be appended to the filename while uploading.
 
 [source,java]
 ----
@@ -509,6 +513,9 @@ try (InputStream in = new FileInputStream(RECIPE_BOOK_FILE)) {
                 .withAutorename(true)
                 .uploadAndFinish(in);
 ----
+The activity diagram of the command `upload` can be seen below:
+
+If it is required, the command `token` will proceed the first `upload` and that activity diagram is shown in Figure below:
 
 ==== Design considerations
 
