@@ -1181,9 +1181,10 @@ public boolean test(Recipe recipe) {
 }
 ----
 This entire list of predicates is then passed into `IngredientCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the ingredients.
-The sequence diagram of this entire process can be seen in the Figure below:
+Since the sequence is very similar to searching by tags, the sequence diagram of this entire process can be seen in the <<fig-TagCommandSD>> under <<tagSearch>> below.
 // end::ingredient-search[]
 
+[[tagSearch]]
 === Searching by tags
 [discrete]
 // tag::tag-search[]
@@ -1200,7 +1201,12 @@ public boolean test(Recipe recipe) {
 }
 ----
 This entire list of predicates is then passed into `TagCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the tags.
-The sequence diagram of this entire process is very similar to the one for searching by ingredient. Hence, you can refer to the Figure above for more details.
+The sequence diagram of this entire process can be seen in <<fig-TagCommandSD>> below:
+
+[[fig-TagCommandSD]]
+.Interactions inside the `Logic` component for the *`tag favourites`* command.
+image::TagCommandSD.PNG[width="700"]
+{nbsp}
 // end::tag-search[]
 
 === Undo/Redo feature
