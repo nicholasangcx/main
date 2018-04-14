@@ -1,3 +1,4 @@
+//@@author nicholasangcx
 package seedu.recipe.model.file;
 
 import static java.util.Objects.requireNonNull;
@@ -45,3 +46,4 @@ public class Filename {
         return filename.hashCode();
     }
 }
+//@@author
