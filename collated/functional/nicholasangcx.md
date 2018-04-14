@@ -175,7 +175,7 @@ public class TagCommand extends Command {
 ``` java
 package seedu.recipe.logic.commands;
 
-import static seedu.recipe.storage.model.Filename.MESSAGE_FILENAME_CONSTRAINTS;
+import static seedu.recipe.model.file.Filename.MESSAGE_FILENAME_CONSTRAINTS;
 
 import seedu.recipe.commons.core.EventsCenter;
 import seedu.recipe.commons.events.ui.UploadRecipesEvent;

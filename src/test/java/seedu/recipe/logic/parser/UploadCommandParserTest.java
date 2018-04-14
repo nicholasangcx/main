@@ -8,6 +8,7 @@ import static seedu.recipe.logic.parser.CommandParserTestUtil.assertParseSuccess
 import org.junit.Test;
 
 import seedu.recipe.logic.commands.UploadCommand;
+import seedu.recipe.model.file.Filename;
 
 public class UploadCommandParserTest {
 
@@ -31,8 +32,7 @@ public class UploadCommandParserTest {
 
     @Test
     public void parseInvalidArgsThrowsParseException() {
-        assertParseFailure(parser, "recipe/book", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                UploadCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "recipe/book", Filename.MESSAGE_FILENAME_CONSTRAINTS);
     }
 }
 //@@author

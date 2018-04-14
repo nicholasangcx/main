@@ -8,6 +8,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.dropbox.core.DbxException;
+
 import seedu.recipe.ui.util.CloudStorageUtil;
 
 public class CloudStorageUtilTest {
@@ -28,8 +30,8 @@ public class CloudStorageUtilTest {
     }
 
     @Test
-    public void processInvalidAuthorizationCode() {
-        thrown.expect(AssertionError.class);
+    public void processInvalidAuthorizationCode() throws DbxException {
+        thrown.expect(DbxException.class);
         CloudStorageUtil.processAuthorizationCode(WRONG_AUTHORIZATION_CODE);
         assertFalse(CloudStorageUtil.hasAccessToken());
     }

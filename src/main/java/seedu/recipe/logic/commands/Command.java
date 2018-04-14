@@ -1,5 +1,7 @@
 package seedu.recipe.logic.commands;
 
+import com.dropbox.core.DbxException;
+
 import seedu.recipe.commons.core.Messages;
 import seedu.recipe.logic.CommandHistory;
 import seedu.recipe.logic.UndoRedoStack;
@@ -57,7 +59,7 @@ public abstract class Command {
      * @return feedback message of the operation result for display
      * @throws CommandException If an error occurs during command execution.
      */
-    public abstract CommandResult execute() throws CommandException;
+    public abstract CommandResult execute() throws CommandException, DbxException;
 
     /**
      * Provides any needed dependencies to the command.

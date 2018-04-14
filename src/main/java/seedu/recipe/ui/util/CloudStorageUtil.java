@@ -56,7 +56,7 @@ public class CloudStorageUtil {
      *
      * @throws DbxException
      */
-    public static void upload() {
+    public static void upload() throws DbxException {
         // Ensures access token has been obtained
         requireNonNull(CloudStorageUtil.getAccessToken());
 
@@ -70,7 +70,7 @@ public class CloudStorageUtil {
                     .uploadAndFinish(in);
             System.out.println("File has been uploaded");
         } catch (IOException | DbxException e) {
-            throw new AssertionError(UploadCommand.MESSAGE_FAILURE + " Invalid access token.");
+            throw new DbxException(UploadCommand.MESSAGE_FAILURE + " Make sure you have an Internet connection.");
         }
 
     }
@@ -80,7 +80,7 @@ public class CloudStorageUtil {
      * @param code given by Dropbox after user has allowed access
      * and converts it into the access token that can be used to upload files
      */
-    public static void processAuthorizationCode(String code) {
+    public static void processAuthorizationCode(String code) throws DbxException {
         // Converts authorization code to access token
         DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
         DbxWebAuth webAuth = new DbxWebAuth(config, appInfo);
@@ -88,7 +88,8 @@ public class CloudStorageUtil {
             DbxAuthFinish authFinish = webAuth.finishFromCode(code);
             accessToken = authFinish.getAccessToken();
         } catch (DbxException e) {
-            throw new AssertionError(UploadCommand.MESSAGE_FAILURE + " Invalid authorization code");
+            throw new DbxException(UploadCommand.MESSAGE_FAILURE + " Make sure you have an Internet connection"
+                    + " and have entered a  valid authorization code");
         }
         upload();
     }

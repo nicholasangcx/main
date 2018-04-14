@@ -8,6 +8,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.dropbox.core.DbxException;
+
 public class AccessTokenCommandTest {
 
     private static final String INVALID_AUTHORIZATION_CODE = "wrong_format";
@@ -43,8 +45,8 @@ public class AccessTokenCommandTest {
     }
 
     @Test
-    public void execute_invalidAuthorizationCode() {
-        thrown.expect(AssertionError.class);
+    public void execute_invalidAuthorizationCode() throws DbxException {
+        thrown.expect(DbxException.class);
         AccessTokenCommand command = new AccessTokenCommand(INVALID_AUTHORIZATION_CODE);
         command.execute();
     }

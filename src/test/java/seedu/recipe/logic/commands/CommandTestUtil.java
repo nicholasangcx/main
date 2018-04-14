@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.dropbox.core.DbxException;
+
 import seedu.recipe.commons.core.index.Index;
 import seedu.recipe.logic.CommandHistory;
 import seedu.recipe.logic.UndoRedoStack;
@@ -133,7 +135,7 @@ public class CommandTestUtil {
             CommandResult result = command.execute();
             assertEquals(expectedMessage, result.feedbackToUser);
             assertEquals(expectedModel, actualModel);
-        } catch (CommandException ce) {
+        } catch (CommandException | DbxException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
     }
@@ -156,7 +158,7 @@ public class CommandTestUtil {
         try {
             command.execute();
             fail("The expected CommandException was not thrown.");
-        } catch (CommandException e) {
+        } catch (CommandException | DbxException e) {
             assertEquals(expectedMessage, e.getMessage());
             assertEquals(expectedRecipeBook, actualModel.getRecipeBook());
             assertEquals(expectedFilteredList, actualModel.getFilteredRecipeList());

@@ -1,7 +1,9 @@
 //@@author nicholasangcx
 package seedu.recipe.logic.commands;
 
-import static seedu.recipe.storage.model.Filename.MESSAGE_FILENAME_CONSTRAINTS;
+import static seedu.recipe.model.file.Filename.MESSAGE_FILENAME_CONSTRAINTS;
+
+import com.dropbox.core.DbxException;
 
 import seedu.recipe.commons.core.EventsCenter;
 import seedu.recipe.commons.events.ui.UploadRecipesEvent;
@@ -36,7 +38,7 @@ public class UploadCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws DbxException {
         if (CloudStorageUtil.hasAccessToken()) {
             CloudStorageUtil.upload();
             return new CommandResult(MESSAGE_SUCCESS);

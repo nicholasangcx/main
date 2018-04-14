@@ -1,4 +1,4 @@
-package seedu.recipe.storage.model;
+package seedu.recipe.model.file;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.recipe.commons.util.AppUtil.checkArgument;

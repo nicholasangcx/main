@@ -2,6 +2,8 @@ package seedu.recipe.logic;
 
 import java.util.logging.Logger;
 
+import com.dropbox.core.DbxException;
+
 import javafx.collections.ObservableList;
 import seedu.recipe.commons.core.ComponentManager;
 import seedu.recipe.commons.core.LogsCenter;
@@ -32,7 +34,7 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
-    public CommandResult execute(String commandText) throws CommandException, ParseException {
+    public CommandResult execute(String commandText) throws CommandException, ParseException, DbxException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
             Command command = recipeBookParser.parseCommand(commandText);

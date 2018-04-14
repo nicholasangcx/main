@@ -1,5 +1,5 @@
 //@@author nicholasangcx
-package seedu.recipe.storage.model;
+package seedu.recipe.model.file;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

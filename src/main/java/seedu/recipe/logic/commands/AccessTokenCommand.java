@@ -1,6 +1,8 @@
 //@@author nicholasangcx
 package seedu.recipe.logic.commands;
 
+import com.dropbox.core.DbxException;
+
 import seedu.recipe.ui.util.CloudStorageUtil;
 
 /**
@@ -23,7 +25,7 @@ public class AccessTokenCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws DbxException {
         CloudStorageUtil.processAuthorizationCode(accessCode);
         return new CommandResult(MESSAGE_SUCCESS);
     }
