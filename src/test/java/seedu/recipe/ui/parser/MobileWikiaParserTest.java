@@ -59,42 +59,42 @@ public class MobileWikiaParserTest extends GuiUnitTest {
 
     @Test
     public void getName_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getName(), CHICKEN_NAME);
-        assertEquals(wikiaParserUgandan.getName(), UGANDAN_NAME);
+        assertEquals(CHICKEN_NAME, wikiaParserChicken.getName());
+        assertEquals(UGANDAN_NAME, wikiaParserUgandan.getName());
     }
 
     @Test
     public void getIngredient_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getIngredient(), CHICKEN_INGREDIENT);
-        assertEquals(wikiaParserUgandan.getIngredient(), UGANDAN_INGREDIENT);
+        assertEquals(CHICKEN_INGREDIENT, wikiaParserChicken.getIngredient());
+        assertEquals(UGANDAN_INGREDIENT, wikiaParserUgandan.getIngredient());
     }
 
     @Test
     public void getInstruction_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getInstruction(), CHICKEN_INSTRUCTION);
-        assertEquals(wikiaParserUgandan.getInstruction(), UGANDAN_INSTRUCTION);
+        assertEquals(CHICKEN_INSTRUCTION, wikiaParserChicken.getInstruction());
+        assertEquals(UGANDAN_INSTRUCTION, wikiaParserUgandan.getInstruction());
     }
 
     @Test
     public void getImageUrl_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getImageUrl(), MOBILE_CHICKEN_RICE_IMAGE_URL);
+        assertEquals(MOBILE_CHICKEN_RICE_IMAGE_URL, wikiaParserChicken.getImageUrl());
     }
 
     @Test
     public void getUrl_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getUrl(), MOBILE_WIKIA_RECIPE_URL_CHICKEN);
-        assertEquals(wikiaParserUgandan.getUrl(), MOBILE_WIKIA_RECIPE_URL_UGANDAN);
+        assertEquals(MOBILE_WIKIA_RECIPE_URL_CHICKEN, wikiaParserChicken.getUrl());
+        assertEquals(MOBILE_WIKIA_RECIPE_URL_UGANDAN, wikiaParserUgandan.getUrl());
     }
 
     @Test
     public void getTags_validRecipes_returnsResult() throws Exception {
-        assertArrayEquals(wikiaParserChicken.getTags(), CHICKEN_TAGS);
-        assertArrayEquals(wikiaParserUgandan.getTags(), UGANDAN_TAGS);
+        assertArrayEquals(CHICKEN_TAGS, wikiaParserChicken.getTags());
+        assertArrayEquals(UGANDAN_TAGS, wikiaParserUgandan.getTags());
     }
 
     @Test
     public void parseRecipe_validRecipe_returnsValidCommand() throws Exception {
-        assertEquals(wikiaParserChicken.parseRecipe(), MOBILE_WIKIA_CHICKEN_ADD_COMMAND);
-        assertEquals(wikiaParserUgandan.parseRecipe(), MOBILE_WIKIA_UGANDAN_ADD_COMMAND);
+        assertEquals(MOBILE_WIKIA_CHICKEN_ADD_COMMAND, wikiaParserChicken.parseRecipe());
+        assertEquals(MOBILE_WIKIA_UGANDAN_ADD_COMMAND, wikiaParserUgandan.parseRecipe());
     }
 }

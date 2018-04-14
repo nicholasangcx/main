@@ -2,7 +2,7 @@
 package seedu.recipe.model.recipe;
 
 /**
- * Represents a Recipe's group name in the recipe book.
+ * Represents a recipe group's name in the recipe book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class GroupName extends Name {

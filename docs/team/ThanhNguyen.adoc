@@ -10,19 +10,16 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :stylesDir: ../stylesheets
 :repoURL: https://github.com/CS2103JAN2018-F09-B2/main/tree/master
 
-Welcome to my portfolio page for CS2103T Academic Year 2018 Semester 2 project - ReciRecipé.
-
-ifdef::env-github[]
-Please click https://recirecipe.netlify.com/team/ThanhNguyen.html[here] to view my project portfolio with full formatting.
----
-endif::[]
+Welcome to my portfolio page for CS2103T Academic Year 2018 Semester 2 project - *ReciRecipé*.
 
 [.print-only]
 Please visit the https://recirecipe.netlify.com/team/ThanhNguyen.html[online page] to view my project portfolio with full formatting.
 
+---
 
 == Project overview
 
+[.include]
 include::../UserGuide.adoc[tag=applicationDescription]
 
 *Code contributed*: https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/functional/kokonguyen191.md[Functional code] || https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/test/kokonguyen191.md[Test code]
@@ -36,7 +33,11 @@ A recipe book needs to have instructions and instructions usually consist of lon
 
 This feature has been implemented in version 1.1, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/12[#12].
 
+[.include]
 include::../DeveloperGuide.adoc[tag=multiple-lines]
+
+[.include.not-print]
+include::../DeveloperGuide.adoc[tag=multiple-lines-consideration]
 
 === Enhancement: Keyboard shortcuts support
 ==== Why?
@@ -44,7 +45,11 @@ The changes made to the original AddressBook to support input with multiple line
 
 This feature has been implemented in version 1.1, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/12[#12].
 
+[.include]
 include::../DeveloperGuide.adoc[tag=keyboard-shortcut]
+
+[.include.not-print]
+include::../DeveloperGuide.adoc[tag=keyboard-shortcut-consideration]
 
 === New feature: Toggling between themes, adding bright theme
 ==== Why?
@@ -52,9 +57,14 @@ Pictures of food usually are very bright and thus look bad on dark background. T
 
 This feature has been implemented in version 1.3, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/77[#77].
 
+[.include]
 include::../UserGuide.adoc[leveloffset=1,tag=change-theme]
 
+[.include]
 include::../DeveloperGuide.adoc[tag=change-theme]
+
+[.include.not-print]
+include::../DeveloperGuide.adoc[tag=change-theme-consideration]
 
 === New feature: Searching for a recipe on the Internet
 ==== Why?
@@ -62,9 +72,14 @@ This feature removes the need to open a separate browser to add recipes to ReciR
 
 This feature has been implemented in version 1.3, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/78[#78].
 
+[.include]
 include::../UserGuide.adoc[leveloffset=1,tag=internet-search]
 
+[.include]
 include::../DeveloperGuide.adoc[tag=internet-search]
+
+[.include.not-print]
+include::../DeveloperGuide.adoc[tag=internet-search-consideration]
 
 === New feature: Parsing a recipe from a website
 ==== Why?
@@ -72,9 +87,14 @@ This feature, in addition to the searching feature, removes the need for manual 
 
 This feature has been implemented in version 1.4, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/90[#90].
 
+[.include]
 include::../UserGuide.adoc[leveloffset=1,tag=web-parse]
 
+[.include]
 include::../DeveloperGuide.adoc[tag=web-parse]
+
+[.include.not-print]
+include::../DeveloperGuide.adoc[tag=web-parse-consideration]
 
 === New feature: Downloading an image in-app
 ==== Why?
@@ -82,7 +102,11 @@ This feature complements the parsing feature. With this feature, users no longer
 
 This feature has been implemented in version 1.5rc, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/134[#134].
 
+[.include]
 include::../DeveloperGuide.adoc[tag=download-image]
+
+[.include.not-print]
+include::../DeveloperGuide.adoc[tag=download-image-consideration]
 
 == Other contributions
 
@@ -91,19 +115,20 @@ Below are various contributions I have made to ReciRecipé, some of which were c
 * Miscellaneous code contributions:
 ** Morphed the application from AddressBook to RecipeBook, which required changing *the whole code base* while maintaining the interaction of the components as well as the correctness of the whole project (PR https://github.com/CS2103JAN2018-F09-B2/main/pull/32[#32]).
 ** Wrote additional tests for existing features to increase coverage to 93% (PR https://github.com/CS2103JAN2018-F09-B2/main/pull/51[#51]).
-** Add new fields (`CookingTime`, `PreparationTime`, `Calories`, `Servings`) and fix the formatting for the old fields (PR https://github.com/CS2103JAN2018-F09-B2/main/pull/50[#50]).
+** Added new fields (`CookingTime`, `PreparationTime`, `Calories`, `Servings`) and fix old fields formatting (PR https://github.com/CS2103JAN2018-F09-B2/main/pull/50[#50]).
 
-* Project management:
-** Managed the milestones on GitHub.
+* Project management & quality assurance:
 ** Added continuous integration tools using https://ci.appveyor.com/project/kokonguyen191/main[AppVeyor],
 https://coveralls.io/github/CS2103JAN2018-F09-B2/main?branch=master[Coveralls] and
 https://app.codacy.com/app/kokonguyen191/main/dashboard[Codacy] (commits link:https://github.com/CS2103JAN2018-F09-B2/main/commit/4bbee79bf29fed6255f28869c1fd4443afba5844[4bbee79] & link:https://github.com/CS2103JAN2018-F09-B2/main/commit/e1f945872d623f578a37246941f529d6b4ba64ea[e1f9458]).
-** Reviewed teammates' pull requests both via GitHub and other means of communication, ensured that the pull requests were healthy and had adequate testing.
+** Reviewed teammates' pull requests both via GitHub and other communication channels, ensured that the pull requests were healthy and had adequate testing.
+** Provided other teams with constructive feedback (link:https://github.com/CS2103JAN2018-T15-B1/main/issues?utf8=✓&q=is%3Aissue+kokonguyen191+[GitHub]).
 
 * Documentation contributions:
 ** Overhauled the guides (PR https://github.com/CS2103JAN2018-F09-B2/main/pull/81[#81]).
 ** Added a navigation bar to GitHub pages for ease of navigation (PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/77[#77]). (Credits: https://github.com/CS2103AUG2017-W11-B2/main[CS2103AUG2017-W11-B2])
 ** Added and maintained the link:{repoURL}/docs/Glossary.adoc[glossary].
+** Rewrote the UG for non-tech users, wrote manual testing guide (PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/161[#161]).
 
 ---
 

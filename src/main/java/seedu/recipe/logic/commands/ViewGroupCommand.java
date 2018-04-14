@@ -1,6 +1,8 @@
 //@@author hoangduong1607
 package seedu.recipe.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.recipe.model.recipe.GroupName;
 import seedu.recipe.model.recipe.GroupPredicate;
 
@@ -21,12 +23,15 @@ public class ViewGroupCommand extends Command {
     private GroupName groupName;
 
     public ViewGroupCommand(GroupPredicate groupPredicate, GroupName groupName) {
+        requireNonNull(groupPredicate);
+        requireNonNull(groupName);
         this.groupPredicate = groupPredicate;
         this.groupName = groupName;
     }
 
     @Override
     public CommandResult execute() {
+        requireNonNull(model);
         model.updateFilteredRecipeList(groupPredicate);
 
         String commandResult;

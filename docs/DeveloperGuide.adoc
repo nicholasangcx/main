@@ -285,7 +285,7 @@ Key combination kbd:[Shift]+kbd:[Tab] is used to show suggestion pop-up. For oth
 ----
 private void handleKeyPress(KeyEvent keyEvent) {
     suggestionsPopUp.hideSuggestions();
-    if width="750"HOW_SUGGESTIONS_COMMAND.match(keyEvent)) {
+    if (SHOW_SUGGESTIONS_COMMAND.match(keyEvent)) {
         keyEvent.consume();
         suggestionsPopUp.showSuggestions();
     }
@@ -299,7 +299,7 @@ Suggestion list is built with a given list as a dictionary and last word in user
 
 [source,java]
 ----
-for width="750"tring suggestion : dictionary) {
+for (String suggestion : dictionary) {
     if (suggestion.startsWith(prefix)) {
         addSuggestion(suggestion);
     }
@@ -407,15 +407,18 @@ Below is the implementation of the two operations:
 
 [.not-print,source,java]
 ----
-public void loadDefaultPage(boolean isDarkTheme) {
+public void loadDefaultPage(boolean isGirlTheme) {
     if (!isLoaded()) {
         URL defaultPage;
-        if (isDarkTheme) {
-            defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_DARK);
+        if (isGirlTheme) {
+            defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
         } else {
             defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_LIGHT);
         }
         loadPage(defaultPage.toExternalForm());
+        logger.info("BrowserPanel is empty, changed theme and reloaded BrowserPanel.");
+    } else {
+        logger.info("BrowserPanel is not empty, changed theme without reloading BrowserPanel.");
     }
 }
 private void loadStyle(boolean darkTheme) {
@@ -431,14 +434,13 @@ private void loadStyle(boolean darkTheme) {
     primaryStage.show();
 }
 ----
+// end::change-theme[]
 
-[.not-print]
+// tag::change-theme-consideration[]
 ==== Design considerations
 
-[.not-print]
 ===== Aspect: Handling of default page in `_BrowserPanel_`.
 
-[.not-print]
 * **Alternative 1 (current choice):** Reload the default page if there is nothing loaded in `_BrowserPanel_`.
 ** Pros: This would prevent any previously loaded page from being lost.
 ** Cons: This approach requires extra work to detect if there is any page loaded in `_BrowserPanel_`.
@@ -451,7 +453,7 @@ private void loadStyle(boolean darkTheme) {
 * **Alternative 4:** Stop using the default page.
 ** Pros: It is relatively easy to implement.
 ** Cons: There is no default page to display so we have to find another approach to make `_BrowserPanel_` display something as a placeholder, *without* using a default page.
-// end::change-theme[]
+// end::change-theme-consideration[]
 
 === Cloud storage support
 // tag::cloud-storage[]
@@ -550,7 +552,7 @@ Certain properties of the application can be controlled (e.g App name, logging l
 // tag::displaying-a-recipe[]
 === Displaying a recipe
 [discrete]
-==== Current Implementation
+==== Current implementation
 
 The text from a selected recipe is always displayed in the `_ResultDisplay_`.
 
@@ -563,7 +565,7 @@ The `_HtmlFormatter_` class is responsible for the HTML formatting of a recipe.
 === Downloading an image
 
 // tag::download-image[]
-==== Current Implementation
+==== Current implementation
 
 When an *`add`* or *`edit`* command has an image field input, that input will be checked if it is a valid image URL using `ImageDownloader`.
 [.not-print]
@@ -571,7 +573,7 @@ Below is the implementation of this method:
 
 [.not-print,source,java]
 ----
-public static boolean isValidImageUrlwidth="750"tring testUrl) {
+public static boolean isValidImageUrl(String testUrl) {
     URL imageUrl;
     try {
         imageUrl = new URL(testUrl);
@@ -598,16 +600,16 @@ If the input is indeed a URL that links to an image, `ImageDownloader` will go t
 
 [[fig-DownloadImageAD]]
 .Activity diagram of an image downloading process
-image::DownloadImageAD.png[width="800"]
+image::DownloadImageAD.png[width="900"]
 {nbsp} +
 
-A particular step that might seems out of place here is the checksum calculation. Because the `BufferedImage` object created by `ImageIO` has different hash code based on the execution configuration, using `hashCode()` does not guarantee the same file name for an image. However, we can be sure the same image data will return the same <<MD5>> checksum, and MD5 checksum is sufficient for the scale of our product. Therefore, using MD5 checksum for the file name will almost guarantee no hash collision and no image duplication. +
+Why do we need checksum calculation? The `BufferedImage` object created by `ImageIO` does not guarantee the same return value for `hashCode()` so we cannot use it as a file name. However, the same image data will certainly return the same <<MD5, MD5>> checksum. Therefore, using MD5 checksum as the file name will guarantee no image duplication. +
 [.not-print]
 Below is the implementation of `downloadImage()`:
 
 [.not-print, source,java]
 ----
-public static String downloadImagewidth="750"tring imageUrlString) {
+public static String downloadImage(String imageUrlString) {
     assert isValidImageUrl(imageUrlString);
 
     try {
@@ -625,14 +627,13 @@ public static String downloadImagewidth="750"tring imageUrlString) {
 ----
 
 For the detailed implementation of each step, please see link:{repoURL}/src/main/java/seedu/recipe/storage/ImageDownloader.java[`ImageDownloader.java`].
+// end::download-image[]
 
-[.not-print]
+// tag::download-image-consideration[]
 ==== Design considerations
 
-[.not-print]
 ===== Aspect: Image file name.
 
-[.not-print]
 * **Alternative 1 (current choice):** Use MD5 of the image data.
 ** Pros: MD5 can ensure that there won't be duplicates of an image.
 ** Cons: MD5 is significantly more computationally expensive compared to a simple `hashCode()`.
@@ -642,12 +643,12 @@ For the detailed implementation of each step, please see link:{repoURL}/src/main
 * **Alternative 3:** Use the recipe name.
 ** Pros: This is by far the most intuitive approach.
 ** Cons: However, this approach looks a lot easier than it seems. Furthermore, it would be hard to update the file name if the recipe name is changed.
-// end::download-image[]
+// end::download-image-consideration[]
 
 // tag::embedded-url[]
 === Embedded URL
 
-==== Current Implementation
+==== Current implementation
 
 The URL field is an optional field in the *`add`* command and can be omitted. In the case when a URL is embedded to a recipe, the `_BrowserPanel_` will load the given URL.
 
@@ -657,7 +658,7 @@ As seen below, the URL is not a required parameter during the checking of prefix
 ----
 if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_INSTRUCTION, PREFIX_PREPARATION_TIME,
     PREFIX_INGREDIENT) || !argMultimap.getPreamble().isEmpty()) {
-    throw new ParseExceptionwidth="750"tring.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 }
 ----
 
@@ -685,7 +686,7 @@ public static Optional<Url> parseUrlOnInitialAdd(Optional<String> url) throws Il
 
 // tag::facebook-compatibility[]
 === Facebook compatibility
-==== Current Implementation
+==== Current implementation
 
 The *`share`* command is implemented in the `_ShareCommand_` class. On command execution, a new `_ShareRecipeEvent_` is created (with parameters index and recipe) and posted to the `_EventsCenter_`.
 
@@ -712,7 +713,7 @@ The method for copying a string to the clipboard is implemented in the `_UiUtil_
 
 [source,java]
 ----
-public static void copyToClipboardwidth="750"tring string) {
+public static void copyToClipboard(String string) {
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Clipboard clipboard = toolkit.getSystemClipboard();
     StringSelection stringSelection = new StringSelection(string);
@@ -741,9 +742,53 @@ image::ADforShareCommand.jpg[width="800"]
 ** Cons: The user *must* manually obtain their Facebook access key and input it into the application - this may raise security concerns (Facebook does not allow automatic posting of text even if permission is given by the user upon log in).
 // end::facebook-compatibility[]
 
+// tag::group-command[]
+=== Grouping recipes
+==== Current implementation
+
+Group is not a new object, it is a hidden attribute of a recipe. Each recipe has a list of all groups that the recipe is a member.
+
+[source,java]
+----
+    private final Set<GroupName> groupNames;
+----
+
+`GroupName` is similar to `Name`, but it is used for group, not for recipe.
+
+When user creates a group, all recipes with indexes given by user will be modified. The group name provided by user will be added to list of groups in those recipes. It is implemented as below:
+
+[source,java]
+----
+        List<Recipe> lastShownList = model.getFilteredRecipeList();
+
+        for (Index index : targetIndices) {
+            if (index.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_RECIPE_DISPLAYED_INDEX);
+            }
+            Recipe recipe = model.getFilteredRecipeList().get(index.getZeroBased());
+            recipe.addNewGroup(groupName);
+        }
+----
+
+As the result of this implementation, when user creates a group that has the same name as an existing group, recipes will be added into existing group, instead of creating a new group and replace all the recipes.
+
+*_This is a feature, not a bug!_* (Please refer to section below for more details.)
+
+==== Design considerations
+
+===== Aspect: Effects when create a duplicate group.
+
+* **Alternative 1 (current choice):** Recipes are added to existing group.
+** Pros: Make application more flexible. Users can create a group and update a group with a single command like this, in the situation that other commands to edit groups are not supported.
+** Cons: Create confusion for users who do not read _User Guide_ carefully.
+* **Alternative 2:** No change. Display a message to inform users that the group exists.
+** Pros: Give users the most intuitive behavior of the command.
+** Cons: Limit operations with groups, when other commands are not implementated.
+// end::group-command[]
+
 // tag::inserting-an-image[]
 === Inserting an image
-==== Current Implementation
+==== Current implementation
 
 The image field is an optional field in the *`add`* command and can be omitted. A User can add an image to a recipe by inserting the absolute pathname of the image into the image field. The pathname must reference to a valid image file.
 
@@ -783,7 +828,7 @@ public static void saveAllImageFiles(ReadOnlyRecipeBook recipeBook, String fileP
     }
 }
 
-public static void saveImageFilewidth="750"tring imagePath, String imageFolderPath) {
+public static void saveImageFile(String imagePath, String imageFolderPath) {
     try {
         File imageToSave = new File(imagePath);
         File pathToNewImage = new File(imageFolderPath + imageToSave.getName());
@@ -844,27 +889,26 @@ private void handleKeyPress(KeyEvent keyEvent) {
 ----
 
 As seen from above, all key combinations implemented consume the default effect of the combinations. However, this is not a must as there may be future mappings that do not require consuming the `KeyEvent`.
+// end::keyboard-shortcut[]
 
-[.not-print]
+// tag::keyboard-shortcut-consideration[]
 ==== Design considerations
 
-[.not-print]
 ===== Aspect: Location of the shortcuts.
 
-[.not-print]
 * **Alternative 1 (current choice):** Store in the `_KeyboardShortcutsMapping_` class.
 ** Pros: There is good modularity, making it easier to keep track of the mappings.
 ** Cons: The shortcuts have to be imported to be used.
 * **Alternative 2:** Store in the `_CommandBox_` class.
 ** Pros: There is no need for imports. Furthermore, it is possible to declare new mappings on the run and use it directly in the `_CommandBox_`.
 ** Cons: It is impossible to use them if we want to implement shortcuts for other UI components or globally.
-// end::keyboard-shortcut[]
+// end::keyboard-shortcut-consideration[]
 
 === Logging
 
 We are using `java.util.logging` package for logging. The `_LogsCenter_` class is used to manage the logging levels and logging destinations.
 
-* The logging level can be controlled using the `logLevel` setting in the configuration file width="750"ee <<Implementation-Configuration>>)
+* The logging level can be controlled using the `logLevel` setting in the configuration file (See <<Implementation-Configuration>>)
 * The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level
 * Currently log messages are output through the console and to a *.log* file.
 
@@ -900,14 +944,13 @@ private void createNewLine() {
     commandTextArea.positionCaret(caretPosition + 1);
 }
 ----
+// end::multiple-lines[]
 
-[.not-print]
+// tag::multiple-lines-consideration[]
 ==== Design considerations
 
-[.not-print]
 ===== Aspect: Usage of a component that support multiple lines input.
 
-[.not-print]
 * **Alternative 1 (current choice):** `_TextArea_`.
 ** Pros: It is easy to use and very intuitive.
 ** Cons: The <<CSS,CSS>> is particularly hard to handle due to the way `_TextArea_` and its body function separately. There is no default handler for kbd:[Enter].
@@ -917,7 +960,7 @@ private void createNewLine() {
 * **Alternative 3:** `HTMLEditor`.
 ** Pros: There are abundant formatting features.
 ** Cons: It is too complex to implement and contains unintuitive inputs.
-// end::multiple-lines[]
+// end::multiple-lines-consideration[]
 
 === Parsing a recipe from BrowserPanel
 // tag::web-parse[]
@@ -982,7 +1025,7 @@ image::WebParserCD.png[width="750"]
 The full implementation can be found in link:{repoURL}/src/main/java/seedu/recipe/ui/parser/WebParserHandler.java[`WebParserHandler.java`].
 
 The `WebParser`, in turn, takes a string value of the HTML of the page loaded in the `WebView`, parses it then returns the parsed recipe. Therefore, a `WebParser` needs to have methods that return the name, instructions, ingredients, etc... of a recipe. +
-An example of the implementation of a `WebParser` can be found at link:{repoURL}/src/main/java/seedu/recipe/ui/util/WikiaParser.java[`WikiaParser.java`].
+An example of the implementation of a `WebParser` can be found at link:{repoURL}/src/main/java/seedu/recipe/ui/parser/WikiaParser.java[`WikiaParser.java`].
 
 After we get a recipe, or to be exact, a string that contains the `add` command with the recipe, `MainWindow` passes `parsedRecipe`, which is now the string of an `add` command, to the `CommandBox`. Then the `CommandBox` just replaces its body with the given string. See <<fig-ParseCommandDetailsSD>> for an example when a `parse` command is submitted with a wikia page loaded in the `BrowserPanel`. +
 {nbsp} +
@@ -992,14 +1035,13 @@ After we get a recipe, or to be exact, a string that contains the `add` command 
 image::SDforParseCommandDetails.png[width="900"]
 [.not-print]
 {nbsp} +
+// end::web-parse[]
 
-[.not-print]
+// tag::web-parse-consideration[]
 ==== Design considerations
 
-[.not-print]
 ===== Aspect: How to extract data from `WebView`.
 
-[.not-print]
 * **Alternative 1 (current choice):** Use Jsoup.
 ** Pros: It returns a Jsoup supported string, which will make parsing *significantly easier* later.
 ** Cons: This approach uses a 3rd-party library.
@@ -1007,10 +1049,8 @@ image::SDforParseCommandDetails.png[width="900"]
 ** Pros: This approach requires only one line of code.
 ** Cons: However, as we are going to see below, this method makes parsing almost impossible without a lot of trial-and-error.
 
-[.not-print]
 ===== Aspect: How to parse data from `WebView`.
 
-[.not-print]
 * **Alternative 1 (current choice):** Create a Jsoup Document from a HTML string, then parse on it.
 ** Pros: This approach is the easiest to do as Jsoup is a very robust HTML parsing library, especially when you are familiar with the way JQuery selects elements.
 ** Cons: This approach uses a 3rd-party library.
@@ -1018,17 +1058,15 @@ image::SDforParseCommandDetails.png[width="900"]
 ** Pros: This approach uses the built-in Java codes.
 ** Cons: The DOM queries that have to be made are very expensive. Furthermore, IntelliJ does not support variable debugging on w3c.dom.Document, which, as a result, makes parsing for the correct elements a game of lottery.
 
-[.not-print]
 ===== Aspect: Testing.
 
-[.not-print]
 * **Alternative 1 (current choice):** Create a dummy Document object for `WebParserHandler`.
 ** Pros: This is currently the only working approach.
 ** Cons: This approach does not fully test for the correctness of `WebParserHandler` constructor. Furthermore, the tests usually fail even though they should pass.
 * **Alternative 2:** Do a correct test by using a long waiting time.
 ** Pros: This approach works.
 ** Cons: It makes testing a lot slower due to the long waiting time.
-// end::web-parse[]
+// end::web-parse-consideration[]
 
 === Randomising Tag Colors
 // tag::randomised-tag-colors[]
@@ -1137,28 +1175,77 @@ public CommandResult execute() throws CommandException {
         return new CommandResult(String.format(MESSAGE_SUCCESS, noOfResult));
     }
 }
+@Subscribe
 private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) {
     logger.info(LogsCenter.getEventHandlingLogMessage(event));
-    if (event.wikiaQueryHandler.getQueryNumberOfResults() != 0) {
-        loadPage(event.wikiaQueryHandler.getRecipeQueryUrl());
+    if (event.getQueryNumberOfResults() != 0) {
+        loadPage(event.getRecipeQueryUrl());
     }
 }
 ----
+// end::internet-search[]
 
-[.not-print]
+// tag::internet-search-consideration[]
 ==== Design considerations
 
-[.not-print]
 ===== Aspect: Usage of `_WikiaQueryHandler_`.
 
-[.not-print]
 * **Alternative 1 (current choice):** Use `_WikiaQueryHandler_`.
 ** Pros: This approach allows more data to be processed separately from the page handling by `_BrowserPanel_`.
 ** Cons: In return, using a separate class makes the implementation a lot harder to manage.
 * **Alternative 2:** Do not use `_WikiaQueryHandler_`. Let `_BrowserPanel_` directly load the query URL.
 ** Pros: This approach is significantly easier to implement, requiring only 3-4 lines in `_BrowserPanel_`.
 ** Cons: However, we don't get any extra information for pre-processing and this could lead to redundant requests.
-// end::internet-search[]
+// end::internet-search-consideration[]
+
+=== Searching by ingredients
+[discrete]
+// tag::ingredient-search[]
+==== Current implementation
+The user input is parsed and separated into a `String[]` of keywords that represent each ingredient in `IngredientCommandParser`. This array is then passed to `IngredientContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their ingredients. The matching is case-insensitive and the predicate will only be true when the recipe contains ALL ingredients in the parsed array.
+The implementation of that can be seen below:
+[source,java]
+----
+@Override
+public boolean test(Recipe recipe) {
+    int matches = 0;
+    String ingredients = recipe.getIngredient().toString().replaceAll(",", " ");
+    for (String keyword : keywords) {
+        if (StringUtil.containsWordIgnoreCase(ingredients, keyword)) {
+            matches++;
+        }
+    }
+    return matches == keywords.size();
+}
+----
+This entire list of predicates is then passed into `IngredientCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the ingredients.
+Since the sequence is very similar to searching by tags, the sequence diagram of this entire process can be seen in the <<fig-TagCommandSD>> under <<tagSearch>> below.
+// end::ingredient-search[]
+
+[[tagSearch]]
+=== Searching by tags
+[discrete]
+// tag::tag-search[]
+==== Current implementation
+The user input is parsed and separated into a `String[]` of keywords in `TagCommandParser`. This array is then passed to `TagContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their tags using a stream, setting the predicate to true when there is any match (i.e. the recipe does not have to contain ALL the tags specified like how the ingredient search was implemented).
+The matching is case-sensitive and the implementation can be seen below:
+[source,java]
+----
+@Override
+public boolean test(Recipe recipe) {
+    return keywords.stream()
+                .anyMatch(keyword -> recipe.getTags().stream()
+                    .anyMatch(tag -> tag.tagName.equals(keyword)));
+}
+----
+This entire list of predicates is then passed into `TagCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the tags.
+The sequence diagram of this entire process can be seen in <<fig-TagCommandSD>> below:
+
+[[fig-TagCommandSD]]
+.Interactions inside the `Logic` component for the *`tag favourites`* command.
+image::TagCommandSD.PNG[width="900"]
+{nbsp}
+// end::tag-search[]
 
 === Searching by ingredients
 [discrete]
@@ -1210,7 +1297,7 @@ image::TagCommandSD.PNG[width="900"]
 // end::tag-search[]
 
 === Undo/Redo feature
-==== Current Implementation
+==== Current implementation
 
 The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `_LogicManager_`. It supports undoing and redoing of commands that modify the state of the recipe book (e.g. *`add`*, *`edit`*). Such commands will inherit from `_UndoableCommand_`.
 
@@ -1337,7 +1424,7 @@ The following activity diagram <<diag-UndoRedoActDiag>> summarizes what happens 
 image::UndoRedoActivityDiagram.png[width="650"]
 {nbsp} +
 
-==== Design Considerations
+==== Design considerations
 
 ===== Aspect: Implementation of `_UndoableCommand_`.
 
@@ -1707,8 +1794,8 @@ Format: `remark INDEX r/[REMARK]`
 
 Examples:
 
-* `remark 1 r/Likes to drink coffee.` +
-Edits the remark for the first recipe to `Likes to drink coffee.`
+* `remark 1 r/This is a fictional recipe.` +
+Edits the remark for the first recipe to `This is a fictional recipe.`
 * `remark 1 r/` +
 Removes the remark for the first recipe.
 
@@ -1728,7 +1815,7 @@ Let's start by teaching the application how to parse a `remark` command. We will
 . Add new test method to link:{repoURL}/src/test/java/seedu/recipe/logic/parser/RecipeBookParserTest.java[`RecipeBookParserTest`], which tests that typing "remark" returns an instance of `RemarkCommand`.
 
 **[Step 2] Logic: Teach the app to accept 'remark' arguments.**
-Let's teach the application to parse arguments that our `remark` command will accept. E.g. `1 r/Likes to drink coffee.`
+Let's teach the application to parse arguments that our `remark` command will accept. E.g. `1 r/This is a fictional recipe.`
 
 ===== Main:
 
@@ -2093,6 +2180,82 @@ _{More to be added}_
 .  UI should be visually appealing.
 
 _{More to be added}_
+
+[appendix]
+== Instructions for manual testing
+
+Given below are instructions to test the app manually. Each test will have several steps to follow and an expected test outcome.
+
+[NOTE]
+These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
+
+=== Launch and shutdown
+
+. Initial launch:
+* Steps:
+.. Download the jar file and copy into an empty folder.
+.. Double-click the jar file.
+* Expected outcome: The GUI appears with 12 sample recipes. The window size may not be optimum. The GUI may not appear if JRE on the tester's machine doesn't work properly. In that case, the tester should launch the app using command line.
+
+. Initial launch without Internet connection:
+* Steps:
+.. Delete all files in the folder except for the jar file.
+.. Launch the app without Internet connection.
+* Expected outcome: Each sample recipe will have a null image reference for the image field instead of an image as the app cannot connect to the Internet.
+
+. Initial launch with Internet connection:
+* Steps:
+.. Delete all files in the folder except for the jar file.
+.. Launch the app with Internet connection.
+* Expected outcome: 12 images will be downloaded and displayed for the sample recipes.
+
+. Saving window preferences:
+* Steps:
+.. Resize the window to an optimum size. Move the window to a different location. Close the window.
+.. Re-launch the app.
+* Expected outcome: The most recent window size and location is retained.
+
+=== Commands
+
+Sample commands can be found in the cheatsheet in the User Guide. Here are some corner cases for some of the commands:
+
+. Searching without Internet connection:
+* Steps:
+.. Disconnect your machine from the Internet.
+.. Execute a `search` command, for example, `*search chicken rice*`.
+* Expected outcome: The result box will say that ReciRecipé failed to search and ask for confirmation that the tester is connected to the Internet.
+
+. Searching without any arguments:
+* Steps:
+.. Type `*search*` in the command box then press kbd:[Enter].
+* Expected outcome: The result box will say that it is an invalid command and show the correct command format.
+
+. Adding an online image without Internet connection:
+* Steps:
+.. Run `search hainanese chicken rice`, select the first result, run `parse` *but do not submit the `add` command*.
+.. Disconnect your machine from the Internet.
+.. Now execute the `add` command.
+* Expected outcome: The recipe will still be added normally as it should but the image field will take a null reference instead of the image URL as the app cannot download the image.
+
+=== Missing/corrupted data
+
+. Dealing with missing data:
+* Steps:
+.. Delete the data folder.
+.. Re-launch the app.
+* Expected outcome: The app will be initialized with 12 sample recipes.
+
+. Dealing with corrupted data:
+* Steps:
+.. Open data/recipebook.xml, remove line 5, save the file.
+.. Re-launch the app.
+* Expected outcome: The app will be initialized with 12 sample recipes.
+
+. Dealing with missing images:
+* Steps:
+.. Delete the data/images folder.
+.. Re-launch the app.
+* Expected outcome: All images will not display and all recipes will have a null image reference for the image field instead of the old file path.
 
 [appendix]
 == Glossary

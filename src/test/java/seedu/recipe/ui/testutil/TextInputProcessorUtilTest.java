@@ -22,6 +22,8 @@ public class TextInputProcessorUtilTest {
     private static final String SECOND_SINGLE_LINE_SENTENCE = WHITESPACE + THIRD_WORD + WHITESPACE + FOURTH_WORD
             + WHITESPACE + FIFTH_WORD + WHITESPACE;
     private static final String MULTIPLE_LINES_SENTENCE = FIRST_SINGLE_LINE_SENTENCE + LF + SECOND_SINGLE_LINE_SENTENCE;
+    private static final String TEN_LINE_SENTENCE = FIRST_SINGLE_LINE_SENTENCE + LF + LF + LF + LF + LF + LF + LF + LF
+            + SECOND_SINGLE_LINE_SENTENCE;
 
     private static TextInputProcessorUtil textInputProcessor = new TextInputProcessorUtil();
 
@@ -47,5 +49,11 @@ public class TextInputProcessorUtilTest {
     public void getLastLine_success() {
         textInputProcessor.setContent(MULTIPLE_LINES_SENTENCE);
         assertEquals(SECOND_SINGLE_LINE_SENTENCE, textInputProcessor.getLastLine());
+    }
+
+    @Test
+    public void isTextTooLong_success() {
+        textInputProcessor.setContent(TEN_LINE_SENTENCE);
+        assertEquals(true, textInputProcessor.isTextTooLong());
     }
 }

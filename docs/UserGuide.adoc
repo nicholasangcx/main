@@ -39,20 +39,33 @@ You can use kbd:[Ctrl]+kbd:[F] to search for words in the user guide.
 
 To start using ReciRecipé, please follow the steps below carefully.
 
-.  Ensure you have Java Runtime Environment 1.8.0_60 or later installed in your Computer. You can download from http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[here].
-+
+.  Ensure you have Java Runtime Environment (<<JRE, JRE>>) 1.8.0_60 or later installed in your Computer. You can download from http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[here].
 [NOTE]
 Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
+
+.. Usually, you will find two versions of JRE there, e.g. 8u161 and 8u162. You can download either of these *but not both*.
+.. To download, click on "Accept License Agreement" first (refer to <<java-download>>). +
++
+[[java-download]]
+.JRE license agreement
+image::JREDownload.PNG[width="500"]
++
+.. Then select the version according to what system you are running on. The file you need to download will be around 60-80MB in size. +
++
+[NOTE]
+If you are using Windows, please download the Offline version. The installation file should end with _.exe_. +
+If you don't know whether to download the x64 or x86 version, you can download and install both!
 +
 .  Download the latest _recipebook.jar_ link:{repoURL}/releases[here].
 .  Copy the file to the folder you want to use as the home folder for your Recipe Book.
-.  Double-click the file to start the app. The GUI should appear in a few seconds (refer to Figure 1).
+.  Double-click the file to start the app. ReciRecipé should appear in a few seconds (refer to <<recirecipe-gui>>).
 +
-.GUI for ReciRecipe
-image::UI_Layout.PNG[width="790"]
+[[recirecipe-gui]]
+.ReciRecipé's user interface
+image::Ui.PNG[width="790"]
 {nbsp} +
-Referring to Figure 1 above:
+Referring to <<recirecipe-gui>> above:
 .. On the left section, we have the display page that gives more details about a specific recipe selected.
 .. On the upper-half of the center section, we have the command box where commands are entered.
 .. On the bottom-half of the center section, we have the response box where the application will provide feedback on the commands you have executed.
@@ -60,8 +73,8 @@ Referring to Figure 1 above:
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 E.g. typing `help` and pressing kbd:[Enter] will open the help window.
 
-[WARNING]
-This product needs Internet access the first time it runs.
+[NOTE]
+If you counter any problems while using ReciRecipé, you might want to refer to <<faq>> to see common issues and the solutions.
 
 [[Features]]
 == Features
@@ -96,7 +109,7 @@ Words in upper case are the parameters to be supplied by the user. For example:
 * Press kbd:[Enter] while holding down kbd:[Shift] to add a new line to your input.
 * Press kbd:[Enter] to submit a command.
 * Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows while holding down kbd:[Ctrl] will display the previous and next input respectively in the command box.
-* Press kbd:[Ctrl]+kbd:[Tab]/kbd:[Tab] to quickly move the caret to previous/next field.
+* Press kbd:[Ctrl]+kbd:[Tab]/kbd:[Tab] to quickly move the caret to previous/next field. (*NOTE:* kbd:[Ctrl]+kbd:[Tab] may not work for Mac users.)
 // end::app-navigation[]
 
 // tag::auto-completion[]
@@ -114,6 +127,9 @@ Words in upper case are the parameters to be supplied by the user. For example:
 * The suggestion will be added to your input automatically.
 ** If you choose a command keyword, it will replace your current input with the command and possible field prefixes (may be none, some or all possible field prefixes, depending on command).
 ** If you choose a field prefix, it will replace the word right before the caret (i.e, the word used to find suggestion).
+
+[NOTE]
+If you choose auto-completion for a command, your input will be cleared and replaced by the command with field prefixes (if any).
 
 // end::auto-completion[]
 
@@ -253,21 +269,25 @@ Returns any recipe having substrings `_chicken_`, `_fish_`, or `_pasta_`.
 
 Creates a group of one or multiple recipes by the index or indices used in the last recipe listing.
 
-Format: `group group_name/GROUP_NAME index/INDEX [index/INDEX]`
+Format: `group group_name/GROUP_NAME index/INDEX [index/INDEX]...`
 
 ****
+* Group name is case sensitive.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer*, e.g. "1, 2, 3, …"..
-* Only the name is searched.
-* Only full words will be matched e.g. *`find Chic`* will not match `_Chicken_`.
-* Recipes matching at least one keyword will be returned (i.e. "OR" search). E.g. *`find Chicken Pizza`* will return `_Chicken rice_` and `_Pizza_`.
 ****
+
+[NOTE]
+If your group name is the same as one of an existing group, the recipes listed in your command will be added to existing group. +
+If you want to avoid this situation, you are advised to use `view_group` command to check whether a group name exists before creating a recipe group.
 
 Examples:
 
 * *`list`* +
 *`group group_name/ My best index/ 1 index/ 3`* +
-Creates a group that contains 1st recipe and 3rd recipe and names the group as `_My best_`.
+Creates a group that contains 1st recipe and 3rd recipe and names the group as `_My best_`. +
+*`group group_name/ My best index/ 2`* +
+Adds 2nd recipe to `_My best_` group. `_My best_` now contains 1st recipe, 2nd recipe and 3rd recipe.
 // end::group-command[]
 
 === *`help`* : Viewing help
@@ -292,7 +312,7 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows while holding down kbd:[Ctrl] 
 
 Finds recipes whose ingredients contain all of the given keywords.
 
-Format: `ingredient KEYWORD [MORE_KEYWORDS]`
+Format: `ingredient KEYWORD [MORE_KEYWORDS]...`
 
 ****
 * The search is case insensitive. e.g *`ingredient chicken`* will match _Chicken_.
@@ -340,7 +360,7 @@ image::Parse_Success.PNG[width="450"]
 After that, you can add more fields if you want, or you can just press kbd:[Enter] to submit an `add` command!
 
 [NOTE]
-Currently only http://recipes.wikia.com/ is supported!
+Currently only http://recipes.wikia.com/ and its children sites, e.g. http://cocktails.wikia.com/, http://japaneserecipes.wikia.com/ are supported!
 //end::web-parse[]
 
 === *`redo`* : Redoing the previously undone command
@@ -460,7 +480,7 @@ The User will be redirected back to his/her Facebook feed once the post has been
 
 Finds recipe whose tags contain any of the given keywords.
 
-Format: `tag KEYWORD [MORE_KEYWORDS]`
+Format: `tag KEYWORD [MORE_KEYWORDS]...`
 
 ****
 * The search is case sensitive. For example, *`tag drinks`* will not match `_Drinks_`.
@@ -473,8 +493,8 @@ Examples:
 
 * *`tag drink`* +
 Returns all recipes with the tag `_drink_`.
-* *`tag drink food`* +
-Returns any recipe with the tag `_drink_` or `_food_`.
+* *`tag drink Food`* +
+Returns any recipe with the tag `_drink_` or `_Food_`.
 // end::tagCommand[]
 
 //tag::change-theme[]
@@ -583,11 +603,18 @@ Updated data file will be uploaded to Dropbox with the name RecipeBook(1).xml.
 Views recipes inside a group.
 
 Format: `view_group GROUP_NAME`
+****
+* Group name is case sensitive.
+****
 
 Examples:
 
-* *`view_group My best`* +
-Lists all recipes inside `_My best_` group.
+* *`group group_name/ My best index/ 1 index/ 3`* +
+Creates `_My best_` group that contains 1st recipe and 3rd recipe. +
+*`view_group My best`* +
+Lists all recipes inside `_My best_` group (i.e, 1st recipe and 3rd recipe). +
+*`view_group my best`* +
+Shows an empty list and a message to inform that the group does not exist since group name is case sensitive (i.e, `_my best_` is different from `_My best_`).
 // end::view-group-command[]
 
 === Saving the data
@@ -625,6 +652,7 @@ Examples:
 * *`push 6`* +
 Uploads the 6th recipe in the recipe book to the server.
 
+[[faq]]
 == FAQ
 
 *Q*: How do I transfer my data to another computer? +
@@ -637,8 +665,32 @@ Uploads the 6th recipe in the recipe book to the server.
 *Q*: There is still something I don't understand after reading this guide! +
 *A*: Please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] about what you're confused about. We will try our best to answer your query.
 
+*Q*: None of the commands work! Why? +
+*A*: Are you copying from the *command* section instead of the *example* section? If you want to use `add name/RECIPE_NAME [ingredient/INGREDIENT]`, a valid command would be *`add name/Chicken rice ingredient/chicken, rice`* instead of *`add name/Chicken rice [ingredient/chicken, rice]`*.
+
+*Q*: ReciRecipé doesn't appear when I double click _recipebook.jar_! What should I do? +
+*A*: If you are using Windows and ReciRecipé doesn't appear, it might be due to conflicting versions of JRE. +
+As a work around, hold kbd:[Shift] and right click on any blank space in the folder you are using as the home folder for ReciRecipé (refer to <<right-click-windows>>). +
+[[right-click-windows]]
+.Windows context menu
+image::WindowsContext.PNG[width="276"]
+{nbsp} +
+Select "Open command window here" (earlier versions of Windows) or "Open PowerShell window here" (Windows 10), type in `java -jar recipebook.jar`. +
+After this step, you should get something like <<powershell>> or <<cmd>> depending on the version of Windows you are running:
+[[powershell]]
+.Windows PowerShell
+image::WindowsPowerShell.PNG[width="400"]
+[[cmd]]
+.Windows command
+image::WindowsCMD.PNG[width="400"]
+{nbsp} +
+Then press kbd:[Enter] to launch ReciRecipé.
+
+*Q*: I cannot add an online image to my recipe! Why? +
+*A*: Please check if your device is connected to the Internet. Image downloading only works when there is an Internet connection.
+
 *Q*: I found a bug in your program, what should I do? +
-*A*: Please check <<current-issues>> to see whether your bug has been reported already. If it is a new bug, please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] describing the problem you encountered as detailed as possible.
+*A*: Please check <<current-issues>> to see whether your bug has been reported already. If it is a new bug, please https://github.com/CS2103JAN2018-F09-B2/main/issues[create a new issue in our repo] describing the problem you encountered as detailed as possible and upload your log file when you create the issue. Usually, the log file has a name like _recipebook.log.0_ or _recipebook.log.1_. You can find the log file in the folder you store ReciRecipé.
 
 *Q*: I know how to code, how can I contribute to your project? +
 *A*: Code contributors are always appreciated! Please https://github.com/CS2103JAN2018-F09-B2/main/pulls[create a PR] with your contribution. You might want to take a look at the <<DeveloperGuide#,Developer Guide>> to get started.
@@ -657,17 +709,19 @@ Uploads the 6th recipe in the recipe book to the server.
 | *Delete*          |  `delete INDEX`
                     |   *`delete 3`*
 | *Edit*            |  `edit INDEX [name/RECIPE_NAME] [ingredient/INGREDIENT] [instruction/INSTRUCTION] [cooking_time/COOKING_TIME] [preparation_time/PREPARATION_TIME] [calories/CALORIES] [servings/SERVINGS] [url/URL] [img/IMAGE] [tag/TAG]`
-                    |   *`edit 2 name/Chicken pizza ingredient/INGREDIENT/flour,chicken,pepper`*
+                    |   *`edit 2 name/Chicken pizza ingredient/flour,chicken,pepper`*
 | *Find*            |  `find KEYWORD [MORE_KEYWORDS]`
                     |   *`find Chicken Pizza`*
-| *Group*           |  `group group_name/GROUP_NAME index/INDEX [index/INDEX]`
+| *Group*           |  `group group_name/GROUP_NAME index/INDEX [index/INDEX]...`
                     |   *`group group_name/ Best index/ 1 index/ 3`*
 | *Help*            |  `help`
                     |  *`help`*
 | *History*         |  `history`
                     |  *`history`*
+| *Ingredient search* |  `ingredient KEYWORD [MORE_KEYWORDS]...`
+                    |   E.g. *`ingredient chicken rice`*
 | *Internet search* |  `search RECIPE_NAME`
-                    |   E.g. *`search chicken rice`*
+                    |   E.g. *`search hainanese chicken rice`*
 | *List*            |  `list`
                     |  *`list`*
 | *Parse*           |  `parse`
@@ -678,10 +732,10 @@ Uploads the 6th recipe in the recipe book to the server.
                     |   *`select 2`*
 | *Share*           |  `share INDEX`
                     |   *`share 2`*
-| *Tag*             |  `tag KEYWORD [MORE_KEYWORDS]`
-                    |   *`tag chicken favourites`*
-| *Token*           |   `token AuthorizationCode`
-                    |   *`token validCode`*
+| *Tag*             |  `tag KEYWORD [MORE_KEYWORDS]...`
+                    |   *`tag Cucumber Tomato Egg`*
+| *Token*           |   `token AUTHORIZATION_CODE`
+                    |   *`token someValidCode123456`*
 | *Undo*            |  `undo`
                     |  *`undo`*
 | *Upload*          |  `upload FILENAME`
@@ -711,15 +765,19 @@ Uploads the 6th recipe in the recipe book to the server.
 These are issues that have been reported and might be resolved in the future:
 
 * `parse` command does not work on some sites. +
-_Currently `parse` only works with http://recipes.wikia.com/ (both desktop and mobile versions). Support for other sites will be considered for v2.0._
-* `parse` command returns results for pages that are not recipes. +
-`parse` _is intended to work with recipe pages only. ReciRecipé might or might not parse other types of pages. Restricting `parse` to work on only recipe pages will be considred for v2.0._
+_Currently `parse` only works with http://recipes.wikia.com/ and its children sites (both desktop and mobile versions). Support for other sites will be considered for v2.0._
+* `parse` command returns results for pages that are not recipes / doesn't return result for pages that are recipes / returns incorrect results. +
+_A powerful text analyzer that can parse almost anything with high accuracy is out of our product scale. However, we will try our best to improve the parser quality so that you can enjoy a better product._
 * *_PREPARATION_TIME_* and *_COOKING_TIME_* accept invalid time values, e.g. `1h90m`, `200 mins 2 hours`, etc. +
 _We expect you to provide ReciRecipé with a correct and valid time value like `150m` instead of `1h90m`. More restrictive formats will be considered for v2.0._
-* kbd:[F1] and kbd:[F2] don't work when the in-app browser is clicked. +
-_This is a known problem with current version of Java. We have been looking into this problem and the issue might be resolved soon._
+* Sometimes `add` command hangs ReciRecipé. +
+_This is likely due to a tricky input that confuses our product. If you encounter such an event while using ReciRecipé, please https://github.com/CS2103JAN2018-F09-B2/main/issues[send us a feedback] with the input that caused the problem._
+* kbd:[F1] and kbd:[F2] sometimes don't work. +
+_This is a known problem with current versions of Java. We have been looking into this problem and the issue might be resolved soon._
 * Big images make ReciRecipé laggy. +
-_Currently, ReciRecipé does not distinguish between large and small images. You should use images under 1MB as a workaround for now. This problem will be resolved in v2.0._
+_Currently, ReciRecipé does not distinguish between large and small images. You should use images under 1MB as a workaround for now. This problem will be resolved in v2.0._ +
+* Suggestion list (auto-completion) sometimes does not show below caret position. +
+_This is due to the limited support of `CommandBox` to get coordinates of caret inside it. We have tried to fix this but have not found an efficient solution. This problem will be resolved in v2.0. Currently, our solution is to show suggestion list at the bottom of `CommandBox` if the input text is long enough to cause the problem. If the input text is short, suggestion list will still be shown below caret position._
 //end:current-issues[]
 
 == Glossary

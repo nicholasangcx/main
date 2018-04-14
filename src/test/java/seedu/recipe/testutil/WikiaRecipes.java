@@ -82,6 +82,17 @@ public class WikiaRecipes {
             .withImage("-")
             .withTags(UGANDAN_TAGS).build();
 
+    public static final String WIKIA_RECIPE_URL_DEVIL = "http://recipes.wikia.com/wiki/Devil_Chicken";
+    public static final String DEVIL_INSTRUCTION = "Clean and cut the Chicken into medium sized pieces. "
+            + "Grind all the ingredients together into a fine thick gravy. "
+            + "Apply this on the Chicken pieces and let it marinate for an hour. "
+            + "Afterwards cook the Chicken pieces along with the gravy till "
+            + "it gets cooked and it becomes dry. "
+            + "Take the Chicken pieces and cool it and then deep-fry the same. "
+            + "If you want the Chicken pieces to be crisp, roll over the Chicken pieces "
+            + "in corn flour before frying. This can be served as a starter or "
+            + "as an accompaniment in cocktail parties.";
+
     public static final String WIKIA_RECIPE_URL_BEEF =
             "http://recipes.wikia.com/wiki/Beef_Tenderloin_with_Madeira_Sauce";
     public static final String BEEF_INGREDIENT = "1 cup of garlic, 2 cups of mustard, 3 tbs chopped rosemary, 1 cup "

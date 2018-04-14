@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.recipe.commons.core.LogsCenter;
 import seedu.recipe.commons.core.index.Index;
 import seedu.recipe.commons.exceptions.IllegalValueException;
+import seedu.recipe.commons.exceptions.NoInternetConnectionException;
 import seedu.recipe.commons.util.StringUtil;
 import seedu.recipe.model.file.Filename;
 import seedu.recipe.model.recipe.Calories;
@@ -391,8 +393,12 @@ public class ParserUtil {
     public static Image parseImage(String image) throws IllegalValueException {
         requireNonNull(image);
         String trimmedImage = image.trim();
-        if (!Image.isValidImage(trimmedImage)) {
-            throw new IllegalValueException(Image.MESSAGE_IMAGE_CONSTRAINTS);
+        try {
+            if (!Image.isValidImage(trimmedImage)) {
+                throw new IllegalValueException(Image.MESSAGE_IMAGE_CONSTRAINTS);
+            }
+        } catch (NoInternetConnectionException e) {
+            LogsCenter.getLogger(ParserUtil.class).warning("No Internet connection while trying to parse image URL.");
         }
         return new Image(trimmedImage);
     }
@@ -448,6 +454,7 @@ public class ParserUtil {
     }
 
     //@@author hoangduong1607
+
     /**
      * Parses {@code Collection<String> indices} into a {@code Set<Index>}.
      */
@@ -479,6 +486,7 @@ public class ParserUtil {
     //@@author
 
     //@@author hoangduong1607
+
     /**
      * Parses a {@code String groupName} into a {@code GroupName}.
      * Leading and trailing whitespaces will be trimmed.

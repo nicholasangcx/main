@@ -1,6 +1,18 @@
 = Ryan Ang - Project Portfolio
+:toc:
+:toc-title:
+:toc-placement: preamble
+:experimental:
+:sectnums:
+:xrefstyle: short
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :imagesDir: ../images
 :stylesDir: ../stylesheets
+:repoURL: https://github.com/CS2103JAN2018-F09-B2/main/tree/master
+
+ifdef::env-github[]
+Please click https://recirecipe.netlify.com/team/RyanAng.html[here] to view my project portfolio with full formatting.
+endif::[]
 
 == PROJECT: ReciRecipé
 
@@ -10,7 +22,7 @@ Welcome to my portfolio page for CS2103T Academic Year 2018 Semester 2 project -
 
 include::../UserGuide.adoc[tag=applicationDescription]
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+*Code contributed*: https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/functional/RyanAngJY.md[Functional code] || https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/test/RyanAngJY.md[Test code]
 
 [[code-contributions]]
 == Summary of contributions
@@ -64,3 +76,8 @@ Listed below are other contributions I have made to the ReciRecipé project:
 * Other Documentation Contributions:
 ** Contributed to User Stories and Use Cases.
 
+---
+
+ifndef::env-github[]
+include::../NavBar.adoc[]
+endif::[]

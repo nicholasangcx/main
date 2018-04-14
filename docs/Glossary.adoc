@@ -38,6 +38,12 @@ In contrast to <<CLI,CLI>>, GUI is a type of user interface that allows users to
 Java is a general-purpose computer-programming language that is concurrent, class-based, object-oriented, and specifically designed to have as few implementation dependencies as possible. It is intended to let application developers "write once, run anywhere".
 ====
 
+[[JRE]] JRE::
+====
+Abbreviation of **Java Runtime Environment**. +
+You need this to run any applications developed in <<Java, Java>>.
+====
+
 [[mainstream-os]] Mainstream OS::
 ====
 High chance you are using one. +

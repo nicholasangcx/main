@@ -8,6 +8,7 @@ import java.io.File;
 import java.net.URL;
 
 import seedu.recipe.MainApp;
+import seedu.recipe.commons.exceptions.NoInternetConnectionException;
 import seedu.recipe.commons.util.FileUtil;
 import seedu.recipe.storage.ImageDownloader;
 
@@ -35,10 +36,16 @@ public class Image {
      */
     public Image(String imagePath) {
         requireNonNull(imagePath);
-        checkArgument(isValidImage(imagePath), MESSAGE_IMAGE_CONSTRAINTS);
-        if (ImageDownloader.isValidImageUrl(imagePath)) {
-            imagePath = ImageDownloader.downloadImage(imagePath);
+        //@@author kokonguyen191
+        try {
+            checkArgument(isValidImage(imagePath), MESSAGE_IMAGE_CONSTRAINTS);
+            if (ImageDownloader.isValidImageUrl(imagePath)) {
+                imagePath = ImageDownloader.downloadImage(imagePath);
+            }
+        } catch (NoInternetConnectionException e) {
+            imagePath = NULL_IMAGE_REFERENCE;
         }
+        //@@author
         this.value = imagePath;
         setImageName();
     }
@@ -63,7 +70,7 @@ public class Image {
     /**
      * Returns true if a given string is a valid file path, or no file path has been assigned
      */
-    public static boolean isValidImage(String testImageInput) {
+    public static boolean isValidImage(String testImageInput) throws NoInternetConnectionException {
         if (testImageInput.equals(NULL_IMAGE_REFERENCE)) {
             return true;
         } else {
@@ -72,7 +79,6 @@ public class Image {
             boolean isValidImageUrl = ImageDownloader.isValidImageUrl(testImageInput);
 
             boolean isValidImage = isValidImageStringInput && (isValidImagePath || isValidImageUrl);
-
             return isValidImage;
         }
     }

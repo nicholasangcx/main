@@ -74,8 +74,11 @@ public class WikiaQueryHandler implements WikiaQuery {
     }
 
     /**
-     * Reads the HTTP connection and print data to {@code rawDataString}.
+     * Reads the HTTP connection and prints data to {@code rawDataString}.
      * Adapted from https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
+     *
+     * @throws AssertionError when the app cannot read data from the HTTP connection. Usually this happens when
+     * there's no Internet connection.
      */
     private void getRawData() throws AssertionError {
         requireNonNull(queryUrl);

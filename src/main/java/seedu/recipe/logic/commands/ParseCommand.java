@@ -5,7 +5,7 @@ import seedu.recipe.commons.core.EventsCenter;
 import seedu.recipe.commons.events.ui.WebParseRequestEvent;
 
 /**
- * Parse the current page loaded in the BrowserPanel.
+ * Parses the current page loaded in the BrowserPanel.
  */
 public class ParseCommand extends Command {
 

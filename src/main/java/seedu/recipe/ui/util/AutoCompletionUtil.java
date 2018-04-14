@@ -47,7 +47,9 @@ public class AutoCompletionUtil {
 
         ArrayList<String> editPrefixes = new ArrayList<>(Arrays.asList(CliSyntax.PREFIX_NAME.toString(),
                 CliSyntax.PREFIX_INGREDIENT.toString(), CliSyntax.PREFIX_INSTRUCTION.toString(),
-                CliSyntax.PREFIX_TAG.toString(), CliSyntax.PREFIX_URL.toString()));
+                CliSyntax.PREFIX_COOKING_TIME.toString(), CliSyntax.PREFIX_PREPARATION_TIME.toString(),
+                CliSyntax.PREFIX_CALORIES.toString(), CliSyntax.PREFIX_SERVINGS.toString(),
+                CliSyntax.PREFIX_URL.toString(), CliSyntax.PREFIX_IMG.toString(), CliSyntax.PREFIX_TAG.toString()));
         prefixesForCommand.put("edit", editPrefixes);
 
         ArrayList<String> groupPrefixes = new ArrayList<>(Arrays.asList(CliSyntax.PREFIX_GROUP_NAME.toString(),
@@ -62,7 +64,7 @@ public class AutoCompletionUtil {
     }
 
     /**
-     * Checks whether {@code text} is a command keyword
+     * Checks whether {@code text} is a field prefix
      */
     public boolean isCommandKeyWord(String text) {
         return prefixesForCommand.containsKey(text);
@@ -82,8 +84,8 @@ public class AutoCompletionUtil {
     }
 
     /**
-     * Finds position of next field.
-     * Returns current position of caret if no field is found
+     * Finds position of next field prefix.
+     * Returns current position of caret if no field prefix is found
      */
     public int getNextFieldPosition(String inputText, int currentCaretPosition) {
         int nextFieldCaretPosition = currentCaretPosition;
@@ -106,13 +108,13 @@ public class AutoCompletionUtil {
     }
 
     /**
-     * Finds position of previous field.
-     * Returns current position of caret if no field is found
+     * Finds position of previous field prefix.
+     * Returns current position of caret if no field prefix is found
      */
     public int getPrevFieldPosition(String inputText, int currentCaretPosition) {
         int prevFieldCaretPosition = currentCaretPosition;
 
-        // skips current field (if any)
+        // skips current field prefix (if any)
         for (int i = 2; i < inputText.length(); i++) {
             int wrapAroundPosition = currentCaretPosition - i;
             if (wrapAroundPosition < 0) {

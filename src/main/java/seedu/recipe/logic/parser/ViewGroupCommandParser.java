@@ -25,8 +25,7 @@ public class ViewGroupCommandParser implements Parser<ViewGroupCommand> {
             GroupName groupName = ParserUtil.parseGroupName(args);
             return new ViewGroupCommand(new GroupPredicate(groupName), groupName);
         } catch (IllegalValueException ive) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewGroupCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewGroupCommand.MESSAGE_USAGE));
         }
     }
 }

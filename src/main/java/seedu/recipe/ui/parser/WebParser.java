@@ -21,7 +21,7 @@ public abstract class WebParser {
     protected Document document;
 
     /**
-     * Returns the parsed Recipe object from the page.
+     * Returns the AddCommand string that has the parsed recipe from the page.
      */
     public String parseRecipe() {
         String name = getName();

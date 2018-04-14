@@ -8,7 +8,9 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import seedu.recipe.commons.core.LogsCenter;
 import seedu.recipe.commons.exceptions.IllegalValueException;
+import seedu.recipe.commons.exceptions.NoInternetConnectionException;
 import seedu.recipe.model.recipe.Calories;
 import seedu.recipe.model.recipe.CookingTime;
 import seedu.recipe.model.recipe.Image;
@@ -55,7 +57,8 @@ public class XmlAdaptedRecipe {
      * Constructs an XmlAdaptedRecipe.
      * This is the no-arg constructor that is required by JAXB.
      */
-    public XmlAdaptedRecipe() {}
+    public XmlAdaptedRecipe() {
+    }
 
     /**
      * Constructs an {@code XmlAdaptedRecipe} with the given recipe details.
@@ -184,8 +187,13 @@ public class XmlAdaptedRecipe {
         if (this.image == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Image.class.getSimpleName()));
         }
-        if (!Image.isValidImage(this.image)) {
-            this.image = Image.NULL_IMAGE_REFERENCE;
+        try {
+            if (!Image.isValidImage(this.image)) {
+                this.image = Image.NULL_IMAGE_REFERENCE;
+            }
+        } catch (NoInternetConnectionException e) {
+            LogsCenter.getLogger(XmlAdaptedRecipe.class)
+                    .warning("No Internet connection while trying to get Recipe object from XmlAdaptedRecipe.");
         }
         final Image image = new Image(this.image);
         //@@author

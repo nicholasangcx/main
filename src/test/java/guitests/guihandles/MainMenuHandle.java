@@ -32,14 +32,14 @@ public class MainMenuHandle extends NodeHandle<Node> {
 
     //@@author kokonguyen191
     /**
-     * Change theme using the menu bar in {@code MainWindow}.
+     * Changes theme using the menu bar in {@code MainWindow}.
      */
     public void changeThemeUsingMenu() {
         clickOnMenuItemsSequentially("Change Theme", "F2");
     }
 
     /**
-     * Change theme by pressing the shortcut key associated with the menu bar in {@code MainWindow}.
+     * Changes theme by pressing the shortcut key associated with the menu bar in {@code MainWindow}.
      */
     public void changeThemeUsingAccelerator() {
         guiRobot.push(KeyCode.F2);

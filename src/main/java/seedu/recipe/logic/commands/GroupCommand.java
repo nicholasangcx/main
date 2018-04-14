@@ -25,12 +25,12 @@ public class GroupCommand extends UndoableCommand {
             + "Parameters: "
             + PREFIX_GROUP_NAME + "GROUP_NAME "
             + PREFIX_INDEX + "INDEX "
-            + "[" + PREFIX_INDEX + "INDEX] (must be a positive integer)\n"
+            + "[" + PREFIX_INDEX + "INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_GROUP_NAME + "Best "
             + PREFIX_INDEX + "1 "
             + PREFIX_INDEX + "3 ";
-    public static final String MESSAGE_SUCCESS = "Created New Recipe Group: %s";
+    public static final String MESSAGE_SUCCESS = "Created new recipe group: %s";
 
     private GroupName groupName;
     private Set<Index> targetIndices;

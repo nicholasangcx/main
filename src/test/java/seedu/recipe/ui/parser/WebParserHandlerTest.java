@@ -20,7 +20,7 @@ public class WebParserHandlerTest extends GuiUnitTest {
     private static final String DUMMY_URL = "https://google.com/";
     private static final String DUMMY_DOCUMENT_WIKIA = "<html><div id=\"mw-content-text\">something</div></html>";
     private static final String DUMMY_DOCUMENT_WIKIA_MOBILE = "<html></html>";
-    private static final String DUMMY_DOCUMENT_EMPTY = "<html></html>";
+    private static final String EMPTY_STRING = "";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -47,19 +47,19 @@ public class WebParserHandlerTest extends GuiUnitTest {
 
     @Test
     public void getWebParser_unparsableWebsite_returnNull() throws Exception {
-        assertNullWebParser(DUMMY_URL, "");
+        assertNullWebParser(DUMMY_URL, EMPTY_STRING);
     }
 
     @Test
     public void getWebParser_wikiaLoaded_returnWikiaParser() throws Exception {
         assertWebParser(WIKIA_RECIPE_URL, DUMMY_DOCUMENT_WIKIA,
-                new WikiaParser(new Document("")));
+                new WikiaParser(new Document(EMPTY_STRING)));
     }
 
     @Test
     public void getWebParser_mobileWikiaLoaded_returnMobileWikiaParser() throws Exception {
         assertWebParser(WIKIA_RECIPE_URL, DUMMY_DOCUMENT_WIKIA_MOBILE,
-                new MobileWikiaParser(new Document("")));
+                new MobileWikiaParser(new Document(EMPTY_STRING)));
     }
 
     /**

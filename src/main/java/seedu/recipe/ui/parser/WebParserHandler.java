@@ -48,9 +48,7 @@ public class WebParserHandler {
             String domain = uri.getHost();
             switch (domain) {
             case WikiaParser.DOMAIN:
-                /*
-                Try to pre-parse to see if the page is mobile wikia or wikia.
-                 */
+                /* Try to pre-parse to see if the page is mobile wikia or wikia. */
                 org.jsoup.nodes.Document jsoupDocument = Jsoup.parse(documentString);
                 if (jsoupDocument.getElementById("mw-content-text") == null) {
                     return new MobileWikiaParser(jsoupDocument);

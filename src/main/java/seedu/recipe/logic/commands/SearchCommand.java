@@ -9,7 +9,7 @@ import seedu.recipe.logic.commands.exceptions.CommandException;
 import seedu.recipe.logic.commands.util.WikiaQueryHandler;
 
 /**
- * Selects a recipe identified using it's last displayed index from the recipe book.
+ * Searches for a recipe on the Internet.
  */
 public class SearchCommand extends Command {
 

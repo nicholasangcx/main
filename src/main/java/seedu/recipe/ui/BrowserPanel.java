@@ -51,14 +51,14 @@ public class BrowserPanel extends UiPart<Region> {
     @FXML
     private WebView browser;
 
-    public BrowserPanel(boolean isDarkTheme) {
+    public BrowserPanel(boolean isGirlTheme) {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
 
         initializeWebParserHandler();
-        loadDefaultPage(isDarkTheme);
+        loadDefaultPage(isGirlTheme);
         registerAsAnEventHandler(this);
 
     }
@@ -103,12 +103,12 @@ public class BrowserPanel extends UiPart<Region> {
     /**
      * Loads a default HTML file with a background that matches the general theme.
      *
-     * @param isDarkTheme true if the app is using dark theme
+     * @param isGirlTheme true if the app is using girl theme
      */
-    public void loadDefaultPage(boolean isDarkTheme) {
+    public void loadDefaultPage(boolean isGirlTheme) {
         if (!isLoaded()) {
             URL defaultPage;
-            if (isDarkTheme) {
+            if (isGirlTheme) {
                 defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
             } else {
                 defaultPage = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_LIGHT);
@@ -125,7 +125,7 @@ public class BrowserPanel extends UiPart<Region> {
      */
     private boolean isLoaded() {
         URL lightTheme = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_LIGHT);
-        URL darkTheme = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
+        URL girlTheme = MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE_GIRL);
 
         String loadedUrlString = browser.getEngine().getLocation();
         if (loadedUrlString == null) {
@@ -139,9 +139,9 @@ public class BrowserPanel extends UiPart<Region> {
                         + "url loaded inside BrowserPanel. This should not happen.", murle);
             }
             boolean isLightThemeLoaded = loadedUrl.equals(lightTheme);
-            boolean isDarkThemeLoaded = loadedUrl.equals(darkTheme);
+            boolean isGirlThemeLoaded = loadedUrl.equals(girlTheme);
 
-            boolean isBlankPageLoaded = isLightThemeLoaded || isDarkThemeLoaded;
+            boolean isBlankPageLoaded = isLightThemeLoaded || isGirlThemeLoaded;
 
             return !isBlankPageLoaded;
         }
@@ -170,8 +170,8 @@ public class BrowserPanel extends UiPart<Region> {
     @Subscribe
     private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        if (event.wikiaQueryHandler.getQueryNumberOfResults() != 0) {
-            loadPage(event.wikiaQueryHandler.getRecipeQueryUrl());
+        if (event.getQueryNumberOfResults() != 0) {
+            loadPage(event.getRecipeQueryUrl());
         }
     }
 

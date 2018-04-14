@@ -8,7 +8,7 @@ public interface WikiaQuery {
 
     /**
      * Returns the string value of the URL of the query.
-     * This string can be used to get a displayable page for the {@code BrowserPanel}
+     * This string can be used to get a displayable page for the {@code BrowserPanel}.
      */
     String getRecipeQueryUrl();
 

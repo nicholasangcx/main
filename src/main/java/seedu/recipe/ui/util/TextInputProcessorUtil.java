@@ -13,6 +13,8 @@ public class TextInputProcessorUtil {
     private static final char LF = '\n';
     private static final char SPACE = ' ';
     private static final int LINE_HEIGHT = 26;
+    private static final int MAX_LENGTH = 60;
+    private static final int MAX_LINES = 9;
 
     private String content;
     private Font font;
@@ -35,6 +37,13 @@ public class TextInputProcessorUtil {
      */
     public double getCaretPositionY() {
         return getRow() * LINE_HEIGHT;
+    }
+
+    /**
+     * Checks whether text is too long in
+     */
+    public boolean isTextTooLong() {
+        return (content.length() >= MAX_LENGTH || getRow() >= MAX_LINES);
     }
 
     /**

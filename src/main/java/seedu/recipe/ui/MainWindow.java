@@ -186,7 +186,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Toggle between dark and light theme
+     * Toggles between dark and light theme
      */
     @FXML
     public void handleChangeTheme() {

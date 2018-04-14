@@ -92,7 +92,7 @@ public class ParseCommandSystemTest extends RecipeBookSystemTest {
     }
 
     /**
-     * Assert that the {@code SearchCommand} was executed correctly
+     * Asserts that the {@code SearchCommand} was executed correctly
      * and the current content of the CommandBox is {@code content}
      */
     private void assertCommandSuccess(String content) {

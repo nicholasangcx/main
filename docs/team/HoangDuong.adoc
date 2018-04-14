@@ -1,13 +1,29 @@
 = Hoang Duong - Project Portfolio
+:toc:
+:toc-title:
+:toc-placement: preamble
+:experimental:
+:sectnums:
+:xrefstyle: short
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :imagesDir: ../images
 :stylesDir: ../stylesheets
+:repoURL: https://github.com/CS2103JAN2018-F09-B2/main/tree/master
 
-== PROJECT: ReciRecipé
+Welcome to my portfolio page for CS2103T project - *_ReciRecipé_*.
 
-Welcome to my portfolio page for CS2103T project - ReciRecipé.
+ifdef::env-github[]
+Please click https://recirecipe.netlify.com/team/HoangDuong.html[here] to view my project portfolio with full formatting.
+---
+endif::[]
+
+[.print-only]
+Please visit the https://recirecipe.netlify.com/team/HoangDuong.html[online page] to view my project portfolio with full formatting.
+
 
 == Project Overview
 
+[.include]
 include::../UserGuide.adoc[tag=applicationDescription]
 
 * *Code contributed*: [https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/functional/hoangduong1607.md[Functional code]] [https://github.com/CS2103JAN2018-F09-B2/main/blob/master/collated/test/hoangduong1607.md[Test code]]
@@ -16,20 +32,28 @@ include::../UserGuide.adoc[tag=applicationDescription]
 == Summary of contributions
 
 === New feature: Auto-completion
-==== Why?
+==== Motivation
 
 Without auto-completion feature, users need to spend lots of their precious time just to type long commands and think of what missing fields they need to complete their commands. Auto-completion helps users save their time and effort so that they can enjoy interesting features of the application.
 
+[.include]
 include::../UserGuide.adoc[leveloffset=1,tag=auto-completion]
 
+[.include]
 include::../DeveloperGuide.adoc[tag=auto-completion]
 
 === New feature: group and view_group commands
-==== Why?
+==== Motivation
 
-This feature helps users manage their recipes more efficiently.
+These features help users manage their recipes more efficiently. It will be harder for users to manage their recipes when they have too many recipes. Allowing users to create custom groups of recipes provides a more convenient and flexible method for them to manage.
 
+[.include]
 include::../UserGuide.adoc[tag=group-command]
+
+[.include]
+include::../DeveloperGuide.adoc[tag=group-command]
+
+[.include]
 include::../UserGuide.adoc[tag=view-group-command]
 
 == Other contributions
@@ -42,3 +66,9 @@ https://github.com/CS2103JAN2018-F09-B2/main/pull/74[#74],
 https://github.com/CS2103JAN2018-F09-B2/main/pull/94[#94]
 
 ** Reported bugs and suggestions for other teams in the class (examples:  https://github.com/CS2103JAN2018-F12-B4/main/issues/133[1], https://github.com/CS2103JAN2018-F12-B4/main/issues/134[2], https://github.com/CS2103JAN2018-F12-B4/main/issues/138[3])
+
+---
+
+ifndef::env-github[]
+include::../NavBar.adoc[]
+endif::[]

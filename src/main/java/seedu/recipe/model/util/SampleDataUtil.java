@@ -23,7 +23,6 @@ import seedu.recipe.model.tag.Tag;
  */
 public class SampleDataUtil {
 
-    //@@author kokonguyen191
     public static Recipe[] getSampleRecipes() {
         return new Recipe[] {
             new Recipe(
@@ -375,7 +374,6 @@ public class SampleDataUtil {
         };
     }
 
-    //@@author
     public static ReadOnlyRecipeBook getSampleRecipeBook() {
         try {
             RecipeBook sampleAb = new RecipeBook();
