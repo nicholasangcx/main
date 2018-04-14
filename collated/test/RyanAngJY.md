@@ -80,7 +80,7 @@ public class ImageTest {
     }
 
     @Test
-    public void isValidImage() {
+    public void isValidImage() throws Exception {
         // blank image
         assertFalse(Image.isValidImage("")); // empty string
         assertFalse(Image.isValidImage("   ")); // spaces only

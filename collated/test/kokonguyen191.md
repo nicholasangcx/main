@@ -22,14 +22,14 @@
 ###### \java\guitests\guihandles\MainMenuHandle.java
 ``` java
     /**
-     * Change theme using the menu bar in {@code MainWindow}.
+     * Changes theme using the menu bar in {@code MainWindow}.
      */
     public void changeThemeUsingMenu() {
         clickOnMenuItemsSequentially("Change Theme", "F2");
     }
 
     /**
-     * Change theme by pressing the shortcut key associated with the menu bar in {@code MainWindow}.
+     * Changes theme by pressing the shortcut key associated with the menu bar in {@code MainWindow}.
      */
     public void changeThemeUsingAccelerator() {
         guiRobot.push(KeyCode.F2);
@@ -978,6 +978,17 @@ public class WikiaRecipes {
             .withImage("-")
             .withTags(UGANDAN_TAGS).build();
 
+    public static final String WIKIA_RECIPE_URL_DEVIL = "http://recipes.wikia.com/wiki/Devil_Chicken";
+    public static final String DEVIL_INSTRUCTION = "Clean and cut the Chicken into medium sized pieces. "
+            + "Grind all the ingredients together into a fine thick gravy. "
+            + "Apply this on the Chicken pieces and let it marinate for an hour. "
+            + "Afterwards cook the Chicken pieces along with the gravy till "
+            + "it gets cooked and it becomes dry. "
+            + "Take the Chicken pieces and cool it and then deep-fry the same. "
+            + "If you want the Chicken pieces to be crisp, roll over the Chicken pieces "
+            + "in corn flour before frying. This can be served as a starter or "
+            + "as an accompaniment in cocktail parties.";
+
     public static final String WIKIA_RECIPE_URL_BEEF =
             "http://recipes.wikia.com/wiki/Beef_Tenderloin_with_Madeira_Sauce";
     public static final String BEEF_INGREDIENT = "1 cup of garlic, 2 cups of mustard, 3 tbs chopped rosemary, 1 cup "
@@ -1098,43 +1109,43 @@ public class MobileWikiaParserTest extends GuiUnitTest {
 
     @Test
     public void getName_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getName(), CHICKEN_NAME);
-        assertEquals(wikiaParserUgandan.getName(), UGANDAN_NAME);
+        assertEquals(CHICKEN_NAME, wikiaParserChicken.getName());
+        assertEquals(UGANDAN_NAME, wikiaParserUgandan.getName());
     }
 
     @Test
     public void getIngredient_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getIngredient(), CHICKEN_INGREDIENT);
-        assertEquals(wikiaParserUgandan.getIngredient(), UGANDAN_INGREDIENT);
+        assertEquals(CHICKEN_INGREDIENT, wikiaParserChicken.getIngredient());
+        assertEquals(UGANDAN_INGREDIENT, wikiaParserUgandan.getIngredient());
     }
 
     @Test
     public void getInstruction_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getInstruction(), CHICKEN_INSTRUCTION);
-        assertEquals(wikiaParserUgandan.getInstruction(), UGANDAN_INSTRUCTION);
+        assertEquals(CHICKEN_INSTRUCTION, wikiaParserChicken.getInstruction());
+        assertEquals(UGANDAN_INSTRUCTION, wikiaParserUgandan.getInstruction());
     }
 
     @Test
     public void getImageUrl_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getImageUrl(), MOBILE_CHICKEN_RICE_IMAGE_URL);
+        assertEquals(MOBILE_CHICKEN_RICE_IMAGE_URL, wikiaParserChicken.getImageUrl());
     }
 
     @Test
     public void getUrl_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getUrl(), MOBILE_WIKIA_RECIPE_URL_CHICKEN);
-        assertEquals(wikiaParserUgandan.getUrl(), MOBILE_WIKIA_RECIPE_URL_UGANDAN);
+        assertEquals(MOBILE_WIKIA_RECIPE_URL_CHICKEN, wikiaParserChicken.getUrl());
+        assertEquals(MOBILE_WIKIA_RECIPE_URL_UGANDAN, wikiaParserUgandan.getUrl());
     }
 
     @Test
     public void getTags_validRecipes_returnsResult() throws Exception {
-        assertArrayEquals(wikiaParserChicken.getTags(), CHICKEN_TAGS);
-        assertArrayEquals(wikiaParserUgandan.getTags(), UGANDAN_TAGS);
+        assertArrayEquals(CHICKEN_TAGS, wikiaParserChicken.getTags());
+        assertArrayEquals(UGANDAN_TAGS, wikiaParserUgandan.getTags());
     }
 
     @Test
     public void parseRecipe_validRecipe_returnsValidCommand() throws Exception {
-        assertEquals(wikiaParserChicken.parseRecipe(), MOBILE_WIKIA_CHICKEN_ADD_COMMAND);
-        assertEquals(wikiaParserUgandan.parseRecipe(), MOBILE_WIKIA_UGANDAN_ADD_COMMAND);
+        assertEquals(MOBILE_WIKIA_CHICKEN_ADD_COMMAND, wikiaParserChicken.parseRecipe());
+        assertEquals(MOBILE_WIKIA_UGANDAN_ADD_COMMAND, wikiaParserUgandan.parseRecipe());
     }
 }
 ```
@@ -1161,7 +1172,7 @@ public class WebParserHandlerTest extends GuiUnitTest {
     private static final String DUMMY_URL = "https://google.com/";
     private static final String DUMMY_DOCUMENT_WIKIA = "<html><div id=\"mw-content-text\">something</div></html>";
     private static final String DUMMY_DOCUMENT_WIKIA_MOBILE = "<html></html>";
-    private static final String DUMMY_DOCUMENT_EMPTY = "<html></html>";
+    private static final String EMPTY_STRING = "";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -1188,19 +1199,19 @@ public class WebParserHandlerTest extends GuiUnitTest {
 
     @Test
     public void getWebParser_unparsableWebsite_returnNull() throws Exception {
-        assertNullWebParser(DUMMY_URL, "");
+        assertNullWebParser(DUMMY_URL, EMPTY_STRING);
     }
 
     @Test
     public void getWebParser_wikiaLoaded_returnWikiaParser() throws Exception {
         assertWebParser(WIKIA_RECIPE_URL, DUMMY_DOCUMENT_WIKIA,
-                new WikiaParser(new Document("")));
+                new WikiaParser(new Document(EMPTY_STRING)));
     }
 
     @Test
     public void getWebParser_mobileWikiaLoaded_returnMobileWikiaParser() throws Exception {
         assertWebParser(WIKIA_RECIPE_URL, DUMMY_DOCUMENT_WIKIA_MOBILE,
-                new MobileWikiaParser(new Document("")));
+                new MobileWikiaParser(new Document(EMPTY_STRING)));
     }
 
     /**
@@ -1233,6 +1244,7 @@ import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_NAME;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_RICE_IMAGE_URL;
 import static seedu.recipe.testutil.WikiaRecipes.CHICKEN_TAGS;
+import static seedu.recipe.testutil.WikiaRecipes.DEVIL_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INGREDIENT;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_INSTRUCTION;
 import static seedu.recipe.testutil.WikiaRecipes.UGANDAN_NAME;
@@ -1241,6 +1253,7 @@ import static seedu.recipe.testutil.WikiaRecipes.WIKIA_CHICKEN_ADD_COMMAND;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_NOT_RECIPE;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_RECIPE_URL_BEEF;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_RECIPE_URL_CHICKEN;
+import static seedu.recipe.testutil.WikiaRecipes.WIKIA_RECIPE_URL_DEVIL;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_RECIPE_URL_UGANDAN;
 import static seedu.recipe.testutil.WikiaRecipes.WIKIA_UGANDAN_ADD_COMMAND;
 
@@ -1262,6 +1275,7 @@ public class WikiaParserTest extends GuiUnitTest {
     private WikiaParser wikiaParserChicken;
     private WikiaParser wikiaParserBeef;
     private WikiaParser wikiaParserUgandan;
+    private WikiaParser wikiaParserDevil;
     private WikiaParser wikiaParserNotRecipe;
 
     @Before
@@ -1269,6 +1283,7 @@ public class WikiaParserTest extends GuiUnitTest {
         wikiaParserChicken = new WikiaParser(Jsoup.connect(WIKIA_RECIPE_URL_CHICKEN).get());
         wikiaParserUgandan = new WikiaParser(Jsoup.connect(WIKIA_RECIPE_URL_UGANDAN).get());
         wikiaParserBeef = new WikiaParser(Jsoup.connect(WIKIA_RECIPE_URL_BEEF).get());
+        wikiaParserDevil = new WikiaParser(Jsoup.connect(WIKIA_RECIPE_URL_DEVIL).get());
         wikiaParserNotRecipe = new WikiaParser(Jsoup.connect(WIKIA_NOT_RECIPE).get());
     }
 
@@ -1290,45 +1305,46 @@ public class WikiaParserTest extends GuiUnitTest {
 
     @Test
     public void getName_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getName(), CHICKEN_NAME);
-        assertEquals(wikiaParserUgandan.getName(), UGANDAN_NAME);
+        assertEquals(CHICKEN_NAME, wikiaParserChicken.getName());
+        assertEquals(UGANDAN_NAME, wikiaParserUgandan.getName());
     }
 
     @Test
     public void getIngredient_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserBeef.getIngredient(), BEEF_INGREDIENT);
-        assertEquals(wikiaParserChicken.getIngredient(), CHICKEN_INGREDIENT);
-        assertEquals(wikiaParserUgandan.getIngredient(), UGANDAN_INGREDIENT);
+        assertEquals(BEEF_INGREDIENT, wikiaParserBeef.getIngredient());
+        assertEquals(CHICKEN_INGREDIENT, wikiaParserChicken.getIngredient());
+        assertEquals(UGANDAN_INGREDIENT, wikiaParserUgandan.getIngredient());
     }
 
     @Test
     public void getInstruction_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getInstruction(), CHICKEN_INSTRUCTION);
-        assertEquals(wikiaParserUgandan.getInstruction(), UGANDAN_INSTRUCTION);
+        assertEquals(CHICKEN_INSTRUCTION, wikiaParserChicken.getInstruction());
+        assertEquals(UGANDAN_INSTRUCTION, wikiaParserUgandan.getInstruction());
+        assertEquals(DEVIL_INSTRUCTION, wikiaParserDevil.getInstruction());
     }
 
     @Test
     public void getImageUrl_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getImageUrl(), CHICKEN_RICE_IMAGE_URL);
+        assertEquals(CHICKEN_RICE_IMAGE_URL, wikiaParserChicken.getImageUrl());
     }
 
     @Test
     public void getUrl_validRecipes_returnsResult() throws Exception {
-        assertEquals(wikiaParserChicken.getUrl(), WIKIA_RECIPE_URL_CHICKEN);
-        assertEquals(wikiaParserUgandan.getUrl(), WIKIA_RECIPE_URL_UGANDAN);
+        assertEquals(WIKIA_RECIPE_URL_CHICKEN, wikiaParserChicken.getUrl());
+        assertEquals(WIKIA_RECIPE_URL_UGANDAN, wikiaParserUgandan.getUrl());
     }
 
     @Test
     public void getTags_validRecipes_returnsResult() throws Exception {
-        assertArrayEquals(wikiaParserChicken.getTags(), CHICKEN_TAGS);
-        assertArrayEquals(wikiaParserUgandan.getTags(), UGANDAN_TAGS);
+        assertArrayEquals(CHICKEN_TAGS, wikiaParserChicken.getTags());
+        assertArrayEquals(UGANDAN_TAGS, wikiaParserUgandan.getTags());
     }
 
     @Test
     public void parseRecipe_validRecipe_returnsValidCommand() throws Exception {
         String a = WIKIA_CHICKEN_ADD_COMMAND;
-        assertEquals(wikiaParserChicken.parseRecipe(), WIKIA_CHICKEN_ADD_COMMAND);
-        assertEquals(wikiaParserUgandan.parseRecipe(), WIKIA_UGANDAN_ADD_COMMAND);
+        assertEquals(WIKIA_CHICKEN_ADD_COMMAND, wikiaParserChicken.parseRecipe());
+        assertEquals(WIKIA_UGANDAN_ADD_COMMAND, wikiaParserUgandan.parseRecipe());
     }
 
     @Test
@@ -1548,7 +1564,7 @@ public class ParseCommandSystemTest extends RecipeBookSystemTest {
     }
 
     /**
-     * Assert that the {@code SearchCommand} was executed correctly
+     * Asserts that the {@code SearchCommand} was executed correctly
      * and the current content of the CommandBox is {@code content}
      */
     private void assertCommandSuccess(String content) {

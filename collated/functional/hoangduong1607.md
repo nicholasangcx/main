@@ -27,12 +27,12 @@ public class GroupCommand extends UndoableCommand {
             + "Parameters: "
             + PREFIX_GROUP_NAME + "GROUP_NAME "
             + PREFIX_INDEX + "INDEX "
-            + "[" + PREFIX_INDEX + "INDEX] (must be a positive integer)\n"
+            + "[" + PREFIX_INDEX + "INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_GROUP_NAME + "Best "
             + PREFIX_INDEX + "1 "
             + PREFIX_INDEX + "3 ";
-    public static final String MESSAGE_SUCCESS = "Created New Recipe Group: %s";
+    public static final String MESSAGE_SUCCESS = "Created new recipe group: %s";
 
     private GroupName groupName;
     private Set<Index> targetIndices;
@@ -73,6 +73,8 @@ public class GroupCommand extends UndoableCommand {
 ``` java
 package seedu.recipe.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.recipe.model.recipe.GroupName;
 import seedu.recipe.model.recipe.GroupPredicate;
 
@@ -93,12 +95,15 @@ public class ViewGroupCommand extends Command {
     private GroupName groupName;
 
     public ViewGroupCommand(GroupPredicate groupPredicate, GroupName groupName) {
+        requireNonNull(groupPredicate);
+        requireNonNull(groupName);
         this.groupPredicate = groupPredicate;
         this.groupName = groupName;
     }
 
     @Override
     public CommandResult execute() {
+        requireNonNull(model);
         model.updateFilteredRecipeList(groupPredicate);
 
         String commandResult;
@@ -151,8 +156,7 @@ public class GroupCommandParser implements Parser<GroupCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer
                 .tokenize(args, PREFIX_GROUP_NAME, PREFIX_INDEX);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_GROUP_NAME)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!arePrefixesPresent(argMultimap, PREFIX_GROUP_NAME, PREFIX_INDEX) || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, GroupCommand.MESSAGE_USAGE));
         }
 
@@ -177,6 +181,7 @@ public class GroupCommandParser implements Parser<GroupCommand> {
 ```
 ###### \java\seedu\recipe\logic\parser\ParserUtil.java
 ``` java
+
     /**
      * Parses {@code Collection<String> indices} into a {@code Set<Index>}.
      */
@@ -191,6 +196,7 @@ public class GroupCommandParser implements Parser<GroupCommand> {
 ```
 ###### \java\seedu\recipe\logic\parser\ParserUtil.java
 ``` java
+
     /**
      * Parses a {@code String groupName} into a {@code GroupName}.
      * Leading and trailing whitespaces will be trimmed.
@@ -243,8 +249,7 @@ public class ViewGroupCommandParser implements Parser<ViewGroupCommand> {
             GroupName groupName = ParserUtil.parseGroupName(args);
             return new ViewGroupCommand(new GroupPredicate(groupName), groupName);
         } catch (IllegalValueException ive) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewGroupCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewGroupCommand.MESSAGE_USAGE));
         }
     }
 }
@@ -254,7 +259,7 @@ public class ViewGroupCommandParser implements Parser<ViewGroupCommand> {
 package seedu.recipe.model.recipe;
 
 /**
- * Represents a Recipe's group name in the recipe book.
+ * Represents a recipe group's name in the recipe book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class GroupName extends Name {
@@ -289,7 +294,7 @@ public class GroupPredicate implements Predicate<Recipe> {
 
     @Override
     public boolean test(Recipe recipe) {
-        return recipe.getGroupNames().stream().anyMatch(groupName1 -> groupName1.equals(groupName));
+        return recipe.getGroupNames().stream().anyMatch(other -> other.equals(groupName));
     }
 }
 ```
@@ -396,9 +401,11 @@ public class SuggestionsPopUp extends ContextMenu {
         textInputProcessor.setContent(prefix);
         textInputProcessor.setFont(commandTextArea.getFont());
         String lastWord = textInputProcessor.getLastWord();
+
         // finds suggestions and displays
         ArrayList<String> suggestionList = new ArrayList<>();
 
+        // decides to show commands or field prefixes as suggestions
         String firstWord = textInputProcessor.getFirstWord();
         if (APPLICATION_COMMANDS.contains(firstWord)) {
             if (firstWord.equals(lastWord)) {
@@ -416,12 +423,18 @@ public class SuggestionsPopUp extends ContextMenu {
         double anchorX = findDisplayPositionX(textInputProcessor.getCaretPositionX());
         double anchorY = findDisplayPositionY(textInputProcessor.getCaretPositionY());
 
+        // shows at bottom of input area if text is too long
+        textInputProcessor.setContent(commandTextArea.getText());
+        if (textInputProcessor.isTextTooLong()) {
+            anchorX = anchorY = MARGIN;
+        }
+
         show(commandTextArea, Side.BOTTOM, anchorX, anchorY);
     }
 
     /**
-     * Finds possible suggestions from {@code word} and
-     * list of valid suggestions {@code textList}.
+     * Finds possible suggestions from {@code prefix} and
+     * list of valid suggestions {@code dictionary}.
      */
     private void findSuggestions(String prefix, List<String> dictionary) {
         getItems().clear();
@@ -442,7 +455,7 @@ public class SuggestionsPopUp extends ContextMenu {
      * Finds X-coordinate to display SuggestionsPopUp in CommandBox
      */
     double findDisplayPositionX(double caretPositionX) {
-        return commandBox.getRoot().getLayoutX() + commandTextArea.getInsets().getLeft() + caretPositionX;
+        return commandBox.getRoot().getLayoutX() + commandTextArea.getInsets().getLeft() + caretPositionX + MARGIN;
     }
 
     /**
@@ -514,7 +527,9 @@ public class AutoCompletionUtil {
 
         ArrayList<String> editPrefixes = new ArrayList<>(Arrays.asList(CliSyntax.PREFIX_NAME.toString(),
                 CliSyntax.PREFIX_INGREDIENT.toString(), CliSyntax.PREFIX_INSTRUCTION.toString(),
-                CliSyntax.PREFIX_TAG.toString(), CliSyntax.PREFIX_URL.toString()));
+                CliSyntax.PREFIX_COOKING_TIME.toString(), CliSyntax.PREFIX_PREPARATION_TIME.toString(),
+                CliSyntax.PREFIX_CALORIES.toString(), CliSyntax.PREFIX_SERVINGS.toString(),
+                CliSyntax.PREFIX_URL.toString(), CliSyntax.PREFIX_IMG.toString(), CliSyntax.PREFIX_TAG.toString()));
         prefixesForCommand.put("edit", editPrefixes);
 
         ArrayList<String> groupPrefixes = new ArrayList<>(Arrays.asList(CliSyntax.PREFIX_GROUP_NAME.toString(),
@@ -529,7 +544,7 @@ public class AutoCompletionUtil {
     }
 
     /**
-     * Checks whether {@code text} is a command keyword
+     * Checks whether {@code text} is a field prefix
      */
     public boolean isCommandKeyWord(String text) {
         return prefixesForCommand.containsKey(text);
@@ -549,8 +564,8 @@ public class AutoCompletionUtil {
     }
 
     /**
-     * Finds position of next field.
-     * Returns current position of caret if no field is found
+     * Finds position of next field prefix.
+     * Returns current position of caret if no field prefix is found
      */
     public int getNextFieldPosition(String inputText, int currentCaretPosition) {
         int nextFieldCaretPosition = currentCaretPosition;
@@ -573,13 +588,13 @@ public class AutoCompletionUtil {
     }
 
     /**
-     * Finds position of previous field.
-     * Returns current position of caret if no field is found
+     * Finds position of previous field prefix.
+     * Returns current position of caret if no field prefix is found
      */
     public int getPrevFieldPosition(String inputText, int currentCaretPosition) {
         int prevFieldCaretPosition = currentCaretPosition;
 
-        // skips current field (if any)
+        // skips current field prefix (if any)
         for (int i = 2; i < inputText.length(); i++) {
             int wrapAroundPosition = currentCaretPosition - i;
             if (wrapAroundPosition < 0) {
@@ -622,6 +637,8 @@ public class TextInputProcessorUtil {
     private static final char LF = '\n';
     private static final char SPACE = ' ';
     private static final int LINE_HEIGHT = 26;
+    private static final int MAX_LENGTH = 60;
+    private static final int MAX_LINES = 9;
 
     private String content;
     private Font font;
@@ -644,6 +661,13 @@ public class TextInputProcessorUtil {
      */
     public double getCaretPositionY() {
         return getRow() * LINE_HEIGHT;
+    }
+
+    /**
+     * Checks whether text is too long in
+     */
+    public boolean isTextTooLong() {
+        return (content.length() >= MAX_LENGTH || getRow() >= MAX_LINES);
     }
 
     /**

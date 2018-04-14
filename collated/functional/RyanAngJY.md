@@ -144,8 +144,12 @@ public class ShareCommand extends Command {
     public static Image parseImage(String image) throws IllegalValueException {
         requireNonNull(image);
         String trimmedImage = image.trim();
-        if (!Image.isValidImage(trimmedImage)) {
-            throw new IllegalValueException(Image.MESSAGE_IMAGE_CONSTRAINTS);
+        try {
+            if (!Image.isValidImage(trimmedImage)) {
+                throw new IllegalValueException(Image.MESSAGE_IMAGE_CONSTRAINTS);
+            }
+        } catch (NoInternetConnectionException e) {
+            LogsCenter.getLogger(ParserUtil.class).warning("No Internet connection while trying to parse image URL.");
         }
         return new Image(trimmedImage);
     }
@@ -206,6 +210,7 @@ import java.io.File;
 import java.net.URL;
 
 import seedu.recipe.MainApp;
+import seedu.recipe.commons.exceptions.NoInternetConnectionException;
 import seedu.recipe.commons.util.FileUtil;
 import seedu.recipe.storage.ImageDownloader;
 
@@ -233,29 +238,6 @@ public class Image {
      */
     public Image(String imagePath) {
         requireNonNull(imagePath);
-        checkArgument(isValidImage(imagePath), MESSAGE_IMAGE_CONSTRAINTS);
-        if (ImageDownloader.isValidImageUrl(imagePath)) {
-            imagePath = ImageDownloader.downloadImage(imagePath);
-        }
-        this.value = imagePath;
-        setImageName();
-    }
-
-    /**
-     * Sets the name of the image file
-     */
-    public void setImageName() {
-        if (this.value.equals(NULL_IMAGE_REFERENCE)) {
-            imageName = NULL_IMAGE_REFERENCE;
-        } else {
-            this.imageName = new File(this.value).getName();
-        }
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
-
 ```
 ###### \java\seedu\recipe\model\recipe\Image.java
 ``` java
@@ -509,8 +491,13 @@ public class ImageStorage {
         if (this.image == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Image.class.getSimpleName()));
         }
-        if (!Image.isValidImage(this.image)) {
-            this.image = Image.NULL_IMAGE_REFERENCE;
+        try {
+            if (!Image.isValidImage(this.image)) {
+                this.image = Image.NULL_IMAGE_REFERENCE;
+            }
+        } catch (NoInternetConnectionException e) {
+            LogsCenter.getLogger(XmlAdaptedRecipe.class)
+                    .warning("No Internet connection while trying to get Recipe object from XmlAdaptedRecipe.");
         }
         final Image image = new Image(this.image);
 ```

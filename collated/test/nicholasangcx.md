@@ -10,6 +10,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.dropbox.core.DbxException;
+
 public class AccessTokenCommandTest {
 
     private static final String INVALID_AUTHORIZATION_CODE = "wrong_format";
@@ -45,8 +47,8 @@ public class AccessTokenCommandTest {
     }
 
     @Test
-    public void execute_invalidAuthorizationCode() {
-        thrown.expect(AssertionError.class);
+    public void execute_invalidAuthorizationCode() throws DbxException {
+        thrown.expect(DbxException.class);
         AccessTokenCommand command = new AccessTokenCommand(INVALID_AUTHORIZATION_CODE);
         command.execute();
     }
@@ -492,6 +494,7 @@ import static seedu.recipe.logic.parser.CommandParserTestUtil.assertParseSuccess
 import org.junit.Test;
 
 import seedu.recipe.logic.commands.UploadCommand;
+import seedu.recipe.model.file.Filename;
 
 public class UploadCommandParserTest {
 
@@ -515,8 +518,52 @@ public class UploadCommandParserTest {
 
     @Test
     public void parseInvalidArgsThrowsParseException() {
-        assertParseFailure(parser, "recipe/book", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                UploadCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "recipe/book", Filename.MESSAGE_FILENAME_CONSTRAINTS);
+    }
+}
+```
+###### \java\seedu\recipe\model\file\FilenameTest.java
+``` java
+package seedu.recipe.model.file;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import seedu.recipe.testutil.Assert;
+
+public class FilenameTest {
+
+    @Test
+    public void constructor_null_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class, () -> new Filename(null));
+    }
+
+    @Test
+    public void constructor_invalidFilename_throwsIllegalArgumentException() {
+        String invalidFilename = "";
+        Assert.assertThrows(IllegalArgumentException.class, () -> new Filename(invalidFilename));
+    }
+
+    @Test
+    public void isValidFilename() {
+        // null Filename
+        Assert.assertThrows(NullPointerException.class, () -> Filename.isValidFilename(null));
+
+        // blank Filename
+        assertFalse(Filename.isValidFilename("")); // empty string
+        assertFalse(Filename.isValidFilename(" ")); // spaces only
+
+        // invalid Filename
+        assertFalse(Filename.isValidFilename("test.Filename")); // invalid character .
+        assertFalse(Filename.isValidFilename("test|test")); // invalid character |
+        assertFalse(Filename.isValidFilename("test/filename")); // invalid character /
+
+        // valid Filename
+        assertTrue(Filename.isValidFilename("Recipe2Book")); // alphanumeric filename
+        assertTrue(Filename.isValidFilename("RecipeBook(1)")); // valid characters ()
+        assertTrue(Filename.isValidFilename("Recipe_Book")); // valid character _
     }
 }
 ```
@@ -671,51 +718,6 @@ public class TagContainsKeywordsPredicateTest {
     }
 }
 ```
-###### \java\seedu\recipe\storage\model\FilenameTest.java
-``` java
-package seedu.recipe.storage.model;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-import seedu.recipe.testutil.Assert;
-
-public class FilenameTest {
-
-    @Test
-    public void constructor_null_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> new Filename(null));
-    }
-
-    @Test
-    public void constructor_invalidFilename_throwsIllegalArgumentException() {
-        String invalidFilename = "";
-        Assert.assertThrows(IllegalArgumentException.class, () -> new Filename(invalidFilename));
-    }
-
-    @Test
-    public void isValidFilename() {
-        // null Filename
-        Assert.assertThrows(NullPointerException.class, () -> Filename.isValidFilename(null));
-
-        // blank Filename
-        assertFalse(Filename.isValidFilename("")); // empty string
-        assertFalse(Filename.isValidFilename(" ")); // spaces only
-
-        // invalid Filename
-        assertFalse(Filename.isValidFilename("test.Filename")); // invalid character .
-        assertFalse(Filename.isValidFilename("test|test")); // invalid character |
-        assertFalse(Filename.isValidFilename("test/filename")); // invalid character /
-
-        // valid Filename
-        assertTrue(Filename.isValidFilename("Recipe2Book")); // alphanumeric filename
-        assertTrue(Filename.isValidFilename("RecipeBook(1)")); // valid characters ()
-        assertTrue(Filename.isValidFilename("Recipe_Book")); // valid character _
-    }
-}
-```
 ###### \java\seedu\recipe\ui\testutil\CloudStorageUtilTest.java
 ``` java
 package seedu.recipe.ui.testutil;
@@ -726,6 +728,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import com.dropbox.core.DbxException;
 
 import seedu.recipe.ui.util.CloudStorageUtil;
 
@@ -747,8 +751,8 @@ public class CloudStorageUtilTest {
     }
 
     @Test
-    public void processInvalidAuthorizationCode() {
-        thrown.expect(AssertionError.class);
+    public void processInvalidAuthorizationCode() throws DbxException {
+        thrown.expect(DbxException.class);
         CloudStorageUtil.processAuthorizationCode(WRONG_AUTHORIZATION_CODE);
         assertFalse(CloudStorageUtil.hasAccessToken());
     }
