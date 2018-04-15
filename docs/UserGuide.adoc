@@ -16,9 +16,10 @@ endif::[]
 
 By: `Team F09-B2`      Since: `Jan 2018`      Licence: `MIT`
 
-ifdef::env-github[]
-Please click https://recirecipe.netlify.com/userguide[here] to view the User Guide with full formatting.
-endif::[]
+[.print-only]
+Please visit the https://recirecipe.netlify.com/userguide[online page] to view the User Guide in full formatting.
+
+---
 
 == Introduction
 
@@ -37,7 +38,7 @@ This product only works on computers with monitors having resolution of at least
 [TIP]
 You can use kbd:[Ctrl]+kbd:[F] to search for words in the user guide.
 
-To start using ReciRecipé, please follow the steps below carefully.
+To start using ReciRecipé, please follow the steps below carefully:
 
 .  Ensure you have Java Runtime Environment (<<JRE, JRE>>) 1.8.0_60 or later installed in your Computer. You can download from http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[here].
 [NOTE]
@@ -74,7 +75,7 @@ Referring to <<recirecipe-gui>> above:
 E.g. typing `help` and pressing kbd:[Enter] will open the help window.
 
 [NOTE]
-If you counter any problems while using ReciRecipé, you might want to refer to <<faq>> to see common issues and the solutions.
+If you counter any problems while using ReciRecipé, you might want to refer to <<faq, the FAQ>>.
 
 [[Features]]
 == Features
@@ -94,9 +95,9 @@ Words in upper case are the parameters to be supplied by the user. For example:
 ** *_PREPARATION_TIME_* and *_COOKING_TIME_* fields accept a number of formats: `1h20m`, `1h20min`, `1 hour 20 minutes`, `80m`, `80min`, `80 mins`, etc. However, sticking to the most simple format `80m` is recommended.
 ** *_CALORIES_* and *_SERVINGS_* are positive numbers. E.g. `120`, `5000`, etc.
 ** *_URL_* takes a valid website address as its value. E.g. `http://google.com`.
-** *_IMAGE_* takes a valid image path as its value (E.g. for macOS: `/Users/administrator/Desktop/image.png`, for windows: `C:\Users\admin\image.png`). Or it can also be a valid image URL, for example, `https://i.imgur.com/FhRsgCK.jpg`.
-* Items in square brackets are optional e.g `name/NAME [tag/TAG]` can be used as *`name/Chicken rice tag/chicken`* or as *`name/Chicken rice`*.
-* Items with `...` after them can be used multiple times including zero times e.g. `[tag/TAG]...` can be used as `{nbsp}` (i.e. 0 times), *`tag/rice`*, *`tag/rice tag/chicken`*, etc.
+** *_IMAGE_* takes a valid image path as its value (E.g. for macOS: `/Users/administrator/Desktop/image.png`, for Windows: `C:\Users\admin\image.png`). Or it can also be a valid image URL, for example, `https://i.imgur.com/FhRsgCK.jpg`.
+* Items in square brackets are optional e.g. `name/NAME [tag/TAG]` can be used as *`name/Chicken rice tag/chicken`* or as *`name/Chicken rice`*.
+* Items with `...` after them can be used multiple times including zero times e.g. `[tag/TAG]...` can be used as `{nbsp}` (i.e. 0 times), *`tag/rice`*, *`tag/rice tag/chicken`*, or `ingredient KEYWORD [MORE_KEYWORDS]...` can be used as `ingredient chicken rice salt`.
 * Parameters can be in any order. E.g. if the command specifies `name/RECIPE_NAME instruction/INSTRUCTION`, `instruction/INSTRUCTION name/RECIPE_NAME` has the same effect.
 * White spaces after a slash are automatically trimmed. For example, `add name/ Chicken rice` and `add name/Chicken rice` are the same. However, the former is more visually pleasing.
 * You can split a command into multiple lines for ease of input.
@@ -675,7 +676,7 @@ As a work around, hold kbd:[Shift] and right click on any blank space in the fol
 .Windows context menu
 image::WindowsContext.PNG[width="276"]
 {nbsp} +
-Select "Open command window here" (earlier versions of Windows) or "Open PowerShell window here" (Windows 10), type in `java -jar recipebook.jar`. +
+Select *Open command window here* (earlier versions of Windows) or *Open PowerShell window here* (Windows 10), type in `java -jar recipebook.jar`. +
 After this step, you should get something like <<powershell>> or <<cmd>> depending on the version of Windows you are running:
 [[powershell]]
 .Windows PowerShell
@@ -719,9 +720,9 @@ Then press kbd:[Enter] to launch ReciRecipé.
 | *History*         |  `history`
                     |  *`history`*
 | *Ingredient search* |  `ingredient KEYWORD [MORE_KEYWORDS]...`
-                    |   E.g. *`ingredient chicken rice`*
+                    |   *`ingredient chicken rice`*
 | *Internet search* |  `search RECIPE_NAME`
-                    |   E.g. *`search hainanese chicken rice`*
+                    |   *`search hainanese chicken rice`*
 | *List*            |  `list`
                     |  *`list`*
 | *Parse*           |  `parse`

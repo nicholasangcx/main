@@ -1,4 +1,4 @@
-﻿= ReciRecipé - Developer Guide
+= ReciRecipé - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -15,9 +15,10 @@ endif::[]
 
 By: `Team F09-B2`      Since: `Jan 2018`      Licence: `MIT`
 
-ifdef::env-github[]
-Please click https://recirecipe.netlify.com/userguide[here] to view the Developer Guide with full formatting.
-endif::[]
+[.print-only]
+Please visit the https://recirecipe.netlify.com/developerguide[online page] to view the Developer Guide in full formatting.
+
+---
 
 == Introduction
 *<<ReciRecipe,ReciRecipé>>* is a desktop recipe storage application for users who prefer using the keyboard instead of a mouse for efficient management. It is useful for tech-savvy cooks that want all their recipes stored in one place.
@@ -140,7 +141,7 @@ Given below is a quick overview of each component:
 . <<Design-Model,*`Model`*>>: Contains the the data of the app in-memory.
 . <<Design-Storage,*`Storage`*>>: Contains the interaction of the app with the external memory, which consists of reading from and writing to the hard disk.
 
-Each of the four components <<Design-Ui,*`UI`*>>, <<Design-Logic,*`Logic`*>>, <<Design-Model,*`Model`*>>, <<Design-Storage,*`Storage`*>>
+Each of the four components <<Design-Ui,*`UI`*>>, <<Design-Logic,*`Logic`*>>, <<Design-Model,*`Model`*>>, <<Design-Storage,*`Storage`*>>:
 
 * Defines its <<API,API>> in an interface with the same name as the component.
 * Exposes its functionality using a `{Component Name}Manager` class.
@@ -148,11 +149,9 @@ Each of the four components <<Design-Ui,*`UI`*>>, <<Design-Logic,*`Logic`*>>, <<
 [discrete]
 ==== Events-driven architecture
 
-For example, the <<Design-Logic,*`Logic`*>> component (see the class diagram given below) defines its <<API,API>> in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
-
 In general, the components are designed in such a way that their interactions are being driven by events. And we will now give an example of what happens when a command is being executed.
 
-The _Sequence Diagram_ below (<<fig-ComponentInteraction>>) shows how the components interact in the scenario where the user issues the command *`delete 1`*.
+The sequence diagram below (<<fig-ComponentInteraction>>) shows how the components interact in the scenario where the user issues the command *`delete 1`*.
 
 [[fig-ComponentInteraction]]
 .Component interactions for *`delete 1`* command (part 1)
@@ -173,10 +172,10 @@ The sections below give more details of each component.
 
 [[Design-Main]]
 === Main component
-<<Design-Main,*`Main`*>> has only one class called link:{repoURL}/src/main/java/seedu/recipe/MainApp.java[`MainApp`]. This class:
+<<Design-Main,*`Main`*>> has only one class called link:{repoURL}/src/main/java/seedu/recipe/MainApp.java[`_MainApp_`]. This class:
 
 * Initializes all the components in the correct sequence, and connects them up with each other at app launch.
-* Shuts down the components and invokes cleanup method where necessary when the app shuts down..
+* Shuts down the components and invokes cleanup method where necessary when the app shuts down.
 
 [[Design-Commons]]
 === Commons component
@@ -188,14 +187,22 @@ The sections below give more details of each component.
 [[Design-Ui]]
 === UI component
 
-The UI consists of a `_MainWindow_` that is made up of smaller parts, for example, `_CommandBox_`, `_ResultDisplay_`, `_RecipeListPanel_`, `_StatusBarFooter_`, `_BrowserPanel_`, etc. All these, including the `_MainWindow_`, inherit from the abstract `_UiPart_` class (see <<fig-UiClassDiagram>>).
+The UI consists of a `_MainWindow_` that is made up of smaller parts:
+
+* A `_CommandBox_` that takes in user input.
+* A `_ResultDisplay_` that displays the command feedback.
+* A `_RecipeListPanel_` that displays all recipes in a list view.
+* A `_StatusBarFooter_` that displays important data changes.
+* A `_BrowserPanel_` that contains the in-app browser.
+
+All these parts, including the `_MainWindow_`, inherit from the abstract `_UiPart_` class (see <<fig-UiClassDiagram>>).
 
 [[fig-UiClassDiagram]]
 .Structure of the `UI` component
 image::UiClassDiagram.png[width="800"]
 {nbsp} +
 
-The <<Design-Ui,*`UI`*>> component uses JavaFX UI framework. The layout of these UI parts is defined in matching *.fxml* files that are in the *src/main/resources/view* folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/recipe/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[MainWindow.fxml].
+The <<Design-Ui,*`UI`*>> component uses JavaFX UI framework. The layout of these UI parts is defined in matching *.fxml* files that are in the *src/main/resources/view* folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/recipe/ui/MainWindow.java[`_MainWindow_`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[MainWindow.fxml].
 
 The <<Design-Ui,*`UI`*>> component:
 
@@ -206,12 +213,13 @@ The <<Design-Ui,*`UI`*>> component:
 [[Design-Logic]]
 === Logic component
 
-<<Design-Logic,*`Logic`*>> contains all commands and this is how <<Design-Logic,*`Logic`*>> reacts when the user submits a command:
+The <<Design-Logic,*`Logic`*>> component contains all commands and their their implementation. +
+When the user submits a command, the <<Design-Logic,*`Logic`*>> component:
 
-.  <<Design-Logic,*`Logic`*>> uses the `_RecipeBookParser_` class to parse the user command.
-.  This results in a `_Command_` object which is executed by the `_LogicManager_`.
-.  The command execution can affect the <<Design-Model,*`Model`*>> (e.g. adding a recipe) and/or raise events.
-.  The result of the command execution is encapsulated as a `_CommandResult_` object which is passed back to the <<Design-Ui,*`UI`*>>.
+.  Uses the `_RecipeBookParser_` class to parse the user command.
+.  Creates a `_Command_` object which is executed by the `_LogicManager_`.
+.  Might affect the <<Design-Model,*`Model`*>> (e.g. adding a recipe) and/or raise events.
+.  Passes the result of the command execution, which is encapsulated as a `_CommandResult_` object, back to the <<Design-Ui,*`UI`*>>.
 
 For an overview of the structure of the <<Design-Logic,*`Logic`*>> component, refer to the diagram below <<fig-LogicClassDiagram>>.
 
@@ -238,12 +246,11 @@ image::DeleteRecipeSdForLogic.png[width="800"]
 [[Design-Model]]
 === Model component
 
-The <<Design-Model,*`Model`*>>,
+The <<Design-Model,*`Model`*>> stores the app data structures. The structures used in ReciRecipé are:
 
-* stores a `_UserPref_` object that represents the user's preferences.
-* stores the Recipe Book data.
-* exposes an unmodifiable `_ObservableList<Recipe>_` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* does not depend on any of the other three components.
+* `_UserPref_` that represents the user's preferences.
+* `_Recipe_` as well as its information, for example, `_Instruction_`, `_CookingTime_`, etc.
+* `_ObservableList<Recipe>_` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 
 Refer to diagram below <<fig-ModelClassDiagram>> for the interaction between the `Model` component classes.
 
@@ -255,10 +262,10 @@ image::ModelClassDiagram.png[width="800"]
 [[Design-Storage]]
 === Storage component
 
-The <<Design-Storage,*`Storage`*>> component,
+The <<Design-Storage,*`Storage`*>> component:
 
-* can save `_UserPref_` objects in JSON format and read it back.
-* can save the Recipe Book data in XML format and read it back.
+* Can save `_UserPref_` objects in JSON format and read it back.
+* Can save the Recipe Book data in XML format and read it back.
 
 Refer to diagram below <<fig-StorageClassDiagram>> for the interaction between the `Storage` component classes.
 
@@ -327,7 +334,7 @@ protected void hideSuggestions() {
 }
 ----
 
-To automatically fill input field with chosen word, an `EventListener` is attached to each item in the pop-up menu. When an item is chosen, it replaces the last word in input field with the word associated with the item. The code is shown below:
+To automatically fill input field with chosen word, an `_EventListener_` is attached to each item in the pop-up menu. When an item is chosen, it replaces the last word in input field with the word associated with the item. The code is shown below:
 
 [source,java]
 ----
@@ -370,14 +377,14 @@ item.setOnAction(event -> commandBox.replaceText(textInputProcessor.replaceLastW
 // tag::change-theme[]
 ==== Current implementation
 
-The command is implemented in `_ChangeThemeCommand_`. When the user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_ChangeThemeRequestEvent_` to the `_EventsCenter_`. For more details, refer to <<fig-ChangeThemeSD>>).
+The command is implemented in the class `_ChangeThemeCommand_`. When the user submits the command to the *`UI`* component, it passes on the command to the *`Logic`* component, which posts a `_ChangeThemeRequestEvent_` to the `_EventsCenter_`. For more details, refer to <<fig-ChangeThemeSD>>.
 
 [[fig-ChangeThemeSD]]
 .Component interactions for *`theme`* command (part 1)
 image::SDforChangeTheme.png[width="750"]
 {nbsp} +
 
-The event is then propagated through the `_EventsCenter_` to the `UI`. The `UI` will call `handleChangeThemeRequestEvent()` to update the theme accordingly. To understand the execution better, refer to <<fig-ChangeThemeEventSD>>).
+The event is then propagated through the `_EventsCenter_` to the `UI`. The `UI` will call `handleChangeThemeRequestEvent()` to update the theme accordingly. To understand the execution better, refer to <<fig-ChangeThemeEventSD>>.
 
 [[fig-ChangeThemeEventSD]]
 .Component interactions for *`theme`* command (part 2)
@@ -394,7 +401,7 @@ If the command is called directly from the menu bar, `handleChangeTheme()` will 
 . Changes the main page loaded on the `_BrowserPanel_`.
 . Changes the style using on the `_Stage_`.
 
-To understand the interaction between the components, refer to <<fig-ChangeThemeDetailsSD>>):
+To understand the interaction between the components, refer to <<fig-ChangeThemeDetailsSD>>:
 
 [[fig-ChangeThemeDetailsSD]]
 .Component interactions for `handleChangeTheme()`
@@ -405,7 +412,7 @@ image::SDforChangeThemeDetails.png[width="500"]
 [.not-print]
 Below is the implementation of the two operations:
 
-[.not-print,source,java]
+[source,java,role="not-print"]
 ----
 public void loadDefaultPage(boolean isGirlTheme) {
     if (!isLoaded()) {
@@ -443,12 +450,12 @@ private void loadStyle(boolean darkTheme) {
 
 * **Alternative 1 (current choice):** Reload the default page if there is nothing loaded in `_BrowserPanel_`.
 ** Pros: This would prevent any previously loaded page from being lost.
-** Cons: This approach requires extra work to detect if there is any page loaded in `_BrowserPanel_`.
+** Cons: This approach requires detection for any page loaded in `_BrowserPanel_`, thus is harder to implement.
 * **Alternative 2:** Reload the style for the default page.
 ** Pros: It is possible to keep the status of the `_BrowserPanel_`, in other words, any page loaded may still retain.
 ** Cons: It is not entirely sure if this implementation is possible.
 * **Alternative 3:** Reload the default page.
-** Pros: It is easy to implement. This was the implementation until v1.5rc.
+** Pros: This approach is easy to implement and it indeed was the implementation up to v1.5rc.
 ** Cons: This causes any page loaded on `_BrowserPanel_` to be lost during the operation.
 * **Alternative 4:** Stop using the default page.
 ** Pros: It is relatively easy to implement.
@@ -459,7 +466,7 @@ private void loadStyle(boolean darkTheme) {
 // tag::cloud-storage[]
 ==== Current implementation
 
-The class `CloudStorageUtil` contains all the utility methods that are required to upload files and also important data such as filenames and access tokens.
+The class `_CloudStorageUtil_` contains all the utility methods that are required to upload files and also important data such as filenames and access tokens.
 The command `_UploadCommand_` has been added to allow users to upload data in the recipe book onto the cloud.
 
 `_UploadCommandParser_` takes in and checks the `_String_` filename, adds an XML extension to it before saving it to `_CloudStorageUtil_` and parsing it to `_UploadCommand_`.
@@ -483,7 +490,7 @@ public static boolean isValidFilename(String test) {
 }
 ----
 Because the file is being uploaded to the user's Dropbox account, they will be prompted to authorize ReciRecipe if it is their first time connecting to Dropbox.
-An `UploadRecipesEvent` will be created, posted to the `EventsCenter` and propagated to the `BrowserPanel`. The `handleUploadRecipesEvent()` will then be called and the Dropbox authentication page will open in a system browser.
+An `_UploadRecipesEvent_` will be created, posted to the `_EventsCenter_` and propagated to the `_BrowserPanel_`. The `handleUploadRecipesEvent()` will then be called and the Dropbox authentication page will open in a system browser.
 The component interactions can be seen in <<fig-UploadCommandSD>> below:
 
 [[fig-UploadCommandSD]]
@@ -492,7 +499,7 @@ image::UploadCommandSD.PNG[width="700"]
 {nbsp} +
 After authorization the user will copy and paste the authorization code given.
 They can do this using the *`token`* command which takes in and converts the authorization code into a unqiue access token.
-This token will then be stored in `CloudStorageUtil` for that session.
+This token will then be stored in `_CloudStorageUtil_` for that session.
 The `token` command will then invoke the `upload()` method.
 
 [source,java]
@@ -567,11 +574,11 @@ The `_HtmlFormatter_` class is responsible for the HTML formatting of a recipe.
 // tag::download-image[]
 ==== Current implementation
 
-When an *`add`* or *`edit`* command has an image field input, that input will be checked if it is a valid image URL using `ImageDownloader`.
+When an *`add`* or *`edit`* command has an image field input, that input will be checked if it is a valid image URL using `_ImageDownloader_`.
 [.not-print]
 Below is the implementation of this method:
 
-[.not-print,source,java]
+[source,java,role="not-print"]
 ----
 public static boolean isValidImageUrl(String testUrl) {
     URL imageUrl;
@@ -588,26 +595,22 @@ public static boolean isValidImageUrl(String testUrl) {
                 + testUrl + ". It is likely the app is not connected to the Internet.");
         return false;
     }
-    if (image != null) {
-        return true;
-    } else {
-        return false;
-    }
+    return image != null;
 }
 ----
 
-If the input is indeed a URL that links to an image, `ImageDownloader` will go through several steps to download the image and set the new image path (<<fig-DownloadImageAD>>).
+If the input is indeed a URL that links to an image, `_ImageDownloader_` will go through several steps to download the image and set the new image path (<<fig-DownloadImageAD>>).
 
 [[fig-DownloadImageAD]]
 .Activity diagram of an image downloading process
 image::DownloadImageAD.png[width="900"]
 {nbsp} +
 
-Why do we need checksum calculation? The `BufferedImage` object created by `ImageIO` does not guarantee the same return value for `hashCode()` so we cannot use it as a file name. However, the same image data will certainly return the same <<MD5, MD5>> checksum. Therefore, using MD5 checksum as the file name will guarantee no image duplication. +
+Why do we need checksum calculation? The `_BufferedImage_` object created by `_ImageIO_` does not guarantee the same return value for `hashCode()` so we cannot use it as a file name. However, the same image data will certainly return the same <<MD5, MD5>> checksum. Therefore, using MD5 checksum as the file name will guarantee no image duplication. +
 [.not-print]
 Below is the implementation of `downloadImage()`:
 
-[.not-print, source,java]
+[source,java,role="not-print"]
 ----
 public static String downloadImage(String imageUrlString) {
     assert isValidImageUrl(imageUrlString);
@@ -637,7 +640,7 @@ For the detailed implementation of each step, please see link:{repoURL}/src/main
 * **Alternative 1 (current choice):** Use MD5 of the image data.
 ** Pros: MD5 can ensure that there won't be duplicates of an image.
 ** Cons: MD5 is significantly more computationally expensive compared to a simple `hashCode()`.
-* **Alternative 2:** Use `hashCode()` of the `BufferedImage` object.
+* **Alternative 2:** Use `hashCode()` of the `_BufferedImage_` object.
 ** Pros: This approach is simple, fast, easy to implement.
 ** Cons: Due to the way `hashCode()` works, different run configurations will make `hashCode()` return different values. Therefore, it is always certain that the same image from one URL will be downloaded several times into several duplicates.
 * **Alternative 3:** Use the recipe name.
@@ -753,7 +756,7 @@ Group is not a new object, it is a hidden attribute of a recipe. Each recipe has
     private final Set<GroupName> groupNames;
 ----
 
-`GroupName` is similar to `Name`, but it is used for group, not for recipe.
+`_GroupName_` is similar to `_Name_`, but it is used for group, not for recipe.
 
 When user creates a group, all recipes with indexes given by user will be modified. The group name provided by user will be added to list of groups in those recipes. It is implemented as below:
 
@@ -866,7 +869,7 @@ public static void saveImageFile(String imagePath, String imageFolderPath) {
 [[keyboard-shortcut]]
 ==== Current implementation
 
-Currently, only `_CommandBox_` accepts keyboard shortcuts (`MenuItem` accelerators excluded). All shortcuts are stored in the `_KeyboardShortcutsMapping_` class inside the `UI` component. `_CommandBox_` listens for key combinations and executes actions mapped to these key presses, which are defined in the `handleKeyPress()` method as shown below:
+Currently, only `_CommandBox_` accepts keyboard shortcuts (`_MenuItem_` accelerators excluded). All shortcuts are stored in the `_KeyboardShortcutsMapping_` class inside the `UI` component. `_CommandBox_` listens for key combinations and executes actions mapped to these key presses, which are defined in the `handleKeyPress()` method as shown below:
 
 [source,java]
 ----
@@ -888,7 +891,7 @@ private void handleKeyPress(KeyEvent keyEvent) {
 }
 ----
 
-As seen from above, all key combinations implemented consume the default effect of the combinations. However, this is not a must as there may be future mappings that do not require consuming the `KeyEvent`.
+As seen from above, all key combinations implemented consume the default effect of the combinations. However, this is not a must as there may be future mappings that do not require consuming the `_KeyEvent_`.
 // end::keyboard-shortcut[]
 
 // tag::keyboard-shortcut-consideration[]
@@ -905,32 +908,33 @@ As seen from above, all key combinations implemented consume the default effect 
 // end::keyboard-shortcut-consideration[]
 
 === Logging
+[discrete]
+==== Current implementation
+We are using `java.util.logging` package for logging. The `_LogsCenter_` class is used to manage the logging levels and logging destinations:
 
-We are using `java.util.logging` package for logging. The `_LogsCenter_` class is used to manage the logging levels and logging destinations.
+* The logging level can be controlled using the `logLevel` setting in the configuration file (see <<Implementation-Configuration>>).
+* The `_Logger_` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level.
+* Currently log messages are printed through the console and to a _.log_ file.
 
-* The logging level can be controlled using the `logLevel` setting in the configuration file (See <<Implementation-Configuration>>)
-* The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level
-* Currently log messages are output through the console and to a *.log* file.
+We have four logging levels:
 
-*Logging Levels*
-
-* *SEVERE* : Critical problem detected which may possibly cause the termination of the application.
-* *WARNING* : Can continue, but with caution.
-* *INFO* : Information showing the noteworthy actions by the App.
-* *FINE* : Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size.
+* *SEVERE*: Critical problems which may terminate the application.
+* *WARNING*: Problems that need some attention but not severe enough for the app to terminate.
+* *INFO*: Information of noteworthy actions by the app.
+* *FINE*: Details that are not of particular importance but might be useful in debugging.
 
 === Multiple lines input support
 // tag::multiple-lines[]
 ==== Current implementation
 
-Former implementation of the `_CommandBox_` used `_TextField_`, which only allows single-line inputs but supports automatic handler of kbd:[Enter]. To support commands with multiple lines, another class has to be used for `_CommandBox_`. The current implementation of `_CommandBox_`
+Former implementation of the `_CommandBox_` used `_TextField_`, which only allows single-line inputs but has a default handler for kbd:[Enter]. To support commands with multiple lines, another class has to be used for `_CommandBox_`. The current implementation of `_CommandBox_`
 uses `_TextArea_`, a class which has fewer restrictions on the number of input lines allowed. However, the trade off for `_TextArea_` is that it does not support automatic handling of kbd:[Enter].
 
-Currently, the solution is to consume the use of kbd:[Enter] and invoke the function `submitCommand()` whenever `CommandBox` receives a keyboard combination that is assigned to command submission (default is kbd:[Enter]). +
+Currently, the solution is to consume the use of kbd:[Enter] and invoke the function `submitCommand()` whenever `_CommandBox_` receives a keyboard combination that is assigned to command submission (default is kbd:[Enter]). +
 Because the default use of kbd:[Enter] has been replaced by command submission, another key combination is used for line breaks. The default combination for line breaks is kbd:[Shift]+kbd:[Enter] (like in Facebook). +
 For the implementation of the keyboard shortcuts, please refer to <<keyboard-shortcut>>.
 
-When `CommandBox` receives a keyboard combination that is assigned to line breaks (default is kbd:[Shift]+kbd:[Enter]), `_CommandBox_` generates a `_StringBuilder_` from current text inside `_CommandBox_`, gets the caret location. The `_StringBuilder_` then inserts a new line at the given caret location, returns a `_String_` and `_CommandBox_` replaces its entire body with the new `_String_`.
+When `_CommandBox_` receives a keyboard combination that is assigned to line breaks (default is kbd:[Shift]+kbd:[Enter]), `_CommandBox_` generates a `_StringBuilder_` from the current text inside `_CommandBox_` and gets the caret location. The `_StringBuilder_` then inserts a new line at the given caret location and returns a `_String_`. After that, `_CommandBox_` replaces its entire body with the new `_String_` returned by the `_StringBuilder_`.
 
 The implementation of line breaks is as below:
 [source,java]
@@ -951,13 +955,13 @@ private void createNewLine() {
 
 ===== Aspect: Usage of a component that support multiple lines input.
 
-* **Alternative 1 (current choice):** `_TextArea_`.
+* **Alternative 1 (current choice):** Use `_TextArea_`.
 ** Pros: It is easy to use and very intuitive.
 ** Cons: The <<CSS,CSS>> is particularly hard to handle due to the way `_TextArea_` and its body function separately. There is no default handler for kbd:[Enter].
-* **Alternative 2:** `_TextField_` with support for `\n`.
+* **Alternative 2:** Use `_TextField_` with support for `\n`.
 ** Pros: It hardly requires any changes to the code.
 ** Cons: The inputs are unintuitive and ugly. Also, a long line with hundreds of characters is unavoidable. Once the line gets too long, it is nearly impossible to make changes to the input.
-* **Alternative 3:** `HTMLEditor`.
+* **Alternative 3:** Use `_HTMLEditor_`.
 ** Pros: There are abundant formatting features.
 ** Cons: It is too complex to implement and contains unintuitive inputs.
 // end::multiple-lines-consideration[]
@@ -980,8 +984,8 @@ The event then propagates through the `_EventsCenter_` to the `UI`. The `UI` wil
 image::SDforParseCommandEventHandling.png[width="500"]
 {nbsp} +
 
-This event needs to deal with two `UiPart`: `BrowserPanel` to parse the recipe, and `CommandBox` to display an `AddCommand` with the parsed recipe. +
-Therefore, `handleWebParseRequestEvent()` is implemented in `MainWindow` class, which contains both `BrowserPanel` and `CommandBox`. Below is the implementation of `handleWebParseRequestEvent()`:
+This event needs to deal with two `_UiPart_`: `_BrowserPanel_` to parse the recipe, and `_CommandBox_` to display an `_AddCommand_` with the parsed recipe. +
+Therefore, `handleWebParseRequestEvent()` is implemented in `_MainWindow_` class, which contains both `_BrowserPanel_` and `_CommandBox_`. Below is the implementation of `handleWebParseRequestEvent()`:
 [source,java]
 ----
 @Subscribe
@@ -996,7 +1000,7 @@ private void handleWebParseRequestEvent(WebParseRequestEvent event) {
 }
 ----
 
-`handleWebParseRequestEvent()` will then call `parseRecipe()`. `parseRecipe()`, in turn, creates a `WebParser` and call `parseRecipe()` of the new `WebParser` (implementation below):
+`handleWebParseRequestEvent()` will then call `parseRecipe()`. `parseRecipe()`, in turn, creates a `_WebParser_` and call `parseRecipe()` of the new `_WebParser_` (implementation below):
 [source,java]
 ----
 public String parseRecipe() {
@@ -1010,7 +1014,7 @@ public String parseRecipe() {
 ----
 
 [.not-print]
-For the interactions between the three classes mentioned above and one parser example (`WikiaParser`), refer to <<fig-WebParserCD>>.  +
+For the interactions between the three classes mentioned above and one parser example (`_WikiaParser_`), refer to <<fig-WebParserCD>>.  +
 [.not-print]
 {nbsp} +
 
@@ -1021,13 +1025,13 @@ image::WebParserCD.png[width="750"]
 [.not-print]
 {nbsp} +
 
-`WebParserHandler` takes in a `WebView`, which is the main part of the `BrowserPanel` and returns the corresponding `WebParser`.
+`_WebParserHandler_` takes in a `_WebView_`, which is the main part of the `_BrowserPanel_` and returns the corresponding `_WebParser_`.
 The full implementation can be found in link:{repoURL}/src/main/java/seedu/recipe/ui/parser/WebParserHandler.java[`WebParserHandler.java`].
 
-The `WebParser`, in turn, takes a string value of the HTML of the page loaded in the `WebView`, parses it then returns the parsed recipe. Therefore, a `WebParser` needs to have methods that return the name, instructions, ingredients, etc... of a recipe. +
-An example of the implementation of a `WebParser` can be found at link:{repoURL}/src/main/java/seedu/recipe/ui/parser/WikiaParser.java[`WikiaParser.java`].
+The `_WebParser_`, in turn, takes a string value of the HTML of the page loaded in the `_WebView_`, parses it then returns the parsed recipe. Therefore, a `_WebParser_` needs to have methods that return the name, instructions, ingredients, etc... of a recipe. +
+An example of the implementation of a `_WebParser_` can be found at link:{repoURL}/src/main/java/seedu/recipe/ui/parser/WikiaParser.java[`WikiaParser.java`].
 
-After we get a recipe, or to be exact, a string that contains the `add` command with the recipe, `MainWindow` passes `parsedRecipe`, which is now the string of an `add` command, to the `CommandBox`. Then the `CommandBox` just replaces its body with the given string. See <<fig-ParseCommandDetailsSD>> for an example when a `parse` command is submitted with a wikia page loaded in the `BrowserPanel`. +
+After we get a recipe, or to be exact, a string that contains the `add` command with the recipe, `_MainWindow_` passes `parsedRecipe`, which is now the string of an `add` command, to the `_CommandBox_`. Then the `_CommandBox_` just replaces its body with the given string. See <<fig-ParseCommandDetailsSD>> for an example when a `parse` command is submitted with a wikia page loaded in the `_BrowserPanel_`. +
 {nbsp} +
 
 [[fig-ParseCommandDetailsSD]]
@@ -1040,7 +1044,7 @@ image::SDforParseCommandDetails.png[width="900"]
 // tag::web-parse-consideration[]
 ==== Design considerations
 
-===== Aspect: How to extract data from `WebView`.
+===== Aspect: How to extract data from `_WebView_`.
 
 * **Alternative 1 (current choice):** Use Jsoup.
 ** Pros: It returns a Jsoup supported string, which will make parsing *significantly easier* later.
@@ -1049,26 +1053,26 @@ image::SDforParseCommandDetails.png[width="900"]
 ** Pros: This approach requires only one line of code.
 ** Cons: However, as we are going to see below, this method makes parsing almost impossible without a lot of trial-and-error.
 
-===== Aspect: How to parse data from `WebView`.
+===== Aspect: How to parse data from `_WebView_`.
 
-* **Alternative 1 (current choice):** Create a Jsoup Document from a HTML string, then parse on it.
-** Pros: This approach is the easiest to do as Jsoup is a very robust HTML parsing library, especially when you are familiar with the way JQuery selects elements.
+* **Alternative 1 (current choice):** Create a Jsoup Document from a HTML string, then parse it.
+** Pros: This approach is the easiest to do as Jsoup is a very robust HTML parsing library, especially when you are familiar with CSS selectors.
 ** Cons: This approach uses a 3rd-party library.
 * **Alternative 2:** Do DOM query on a w3c.dom.Document directly.
 ** Pros: This approach uses the built-in Java codes.
-** Cons: The DOM queries that have to be made are very expensive. Furthermore, IntelliJ does not support variable debugging on w3c.dom.Document, which, as a result, makes parsing for the correct elements a game of lottery.
+** Cons: DOM queries are very computationally expensive. Furthermore, IntelliJ does not support variable debugging on w3c.dom.Document, which, as a result, makes parsing for the correct elements a game of lottery.
 
 ===== Aspect: Testing.
 
-* **Alternative 1 (current choice):** Create a dummy Document object for `WebParserHandler`.
-** Pros: This is currently the only working approach.
-** Cons: This approach does not fully test for the correctness of `WebParserHandler` constructor. Furthermore, the tests usually fail even though they should pass.
+* **Alternative 1 (current choice):** Create a dummy Document object for `_WebParserHandler_`.
+** Pros: This approach usually works when the Internet speed is decent enough.
+** Cons: This approach does not fully test for the correctness of `_WebParserHandler_` constructor. Furthermore, the tests usually fail even though they should pass.
 * **Alternative 2:** Do a correct test by using a long waiting time.
 ** Pros: This approach works.
 ** Cons: It makes testing a lot slower due to the long waiting time.
 // end::web-parse-consideration[]
 
-=== Randomising Tag Colors
+=== Randomising tag colors
 // tag::randomised-tag-colors[]
 ==== Current implementation
 The `_RecipeCard_` class calls the `_UiUtil_` class to convert the hashcode of a tag name into a valid hexadecimal color code. This ensures that all tags with the same name will have the same tag color.
@@ -1119,7 +1123,7 @@ public static boolean isColorDark(String color) {
 ** Cons: The implementation is slightly more complicated.
 // end::randomised-tag-colors[]
 
-=== Searching on the internet
+=== Searching on the Internet
 // tag::internet-search[]
 ==== Current implementation
 
@@ -1137,7 +1141,7 @@ The event is then propagated through the `_EventsCenter_` to the `UI`. The `UI` 
 image::SDforInternetSearchEventHandling.png[width="500"]
 {nbsp} +
 
-This command deals with a class called `_WikiaQueryHandler_`. `_WikiaQueryHandler_` is a class that resolves a query to http://recipes.wikia.com[the recipe repo] we are using for ReciRecipé. Below is the constructor of `WikiaQueryHandler`:
+This command deals with a class called `_WikiaQueryHandler_`. `_WikiaQueryHandler_` is a class that resolves a query to http://recipes.wikia.com[the recipe repo] we are using for ReciRecipé. Below is the constructor of `_WikiaQueryHandler_`:
 [source,java]
 ----
 public WikiaQueryHandler(String recipeToSearch) throws AssertionError {
@@ -1191,18 +1195,18 @@ private void handleInternetSearchRequestEvent(InternetSearchRequestEvent event) 
 ===== Aspect: Usage of `_WikiaQueryHandler_`.
 
 * **Alternative 1 (current choice):** Use `_WikiaQueryHandler_`.
-** Pros: This approach allows more data to be processed separately from the page handling by `_BrowserPanel_`.
+** Pros: This approach allows query abstraction from display.
 ** Cons: In return, using a separate class makes the implementation a lot harder to manage.
 * **Alternative 2:** Do not use `_WikiaQueryHandler_`. Let `_BrowserPanel_` directly load the query URL.
 ** Pros: This approach is significantly easier to implement, requiring only 3-4 lines in `_BrowserPanel_`.
-** Cons: However, we don't get any extra information for pre-processing and this could lead to redundant requests.
+** Cons: However, we don't get any extra information for pre-processing and this could lead to redundant requests to the server.
 // end::internet-search-consideration[]
 
 === Searching by ingredients
 [discrete]
 // tag::ingredient-search[]
 ==== Current implementation
-The user input is parsed and separated into a `String[]` of keywords that represent each ingredient in `IngredientCommandParser`. This array is then passed to `IngredientContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their ingredients. The matching is case-insensitive and the predicate will only be true when the recipe contains ALL ingredients in the parsed array.
+The user input is parsed and separated into a `_String_` array of keywords that represent each ingredient in `_IngredientCommandParser_`. This array is then passed to `_IngredientContainsKeywordsPredicate_` which compares them individually to the entire list of recipes and their ingredients. The matching is case-insensitive and the predicate will only be true when the recipe contains ALL ingredients in the parsed array.
 The implementation of that can be seen below:
 [source,java]
 ----
@@ -1218,7 +1222,7 @@ public boolean test(Recipe recipe) {
     return matches == keywords.size();
 }
 ----
-This entire list of predicates is then passed into `IngredientCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the ingredients.
+This entire list of predicates is then passed into `_IngredientCommand_` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the ingredients.
 Since the sequence is very similar to searching by tags, the sequence diagram of this entire process can be seen in the <<fig-TagCommandSD>> under <<tagSearch>> below.
 // end::ingredient-search[]
 
@@ -1227,7 +1231,7 @@ Since the sequence is very similar to searching by tags, the sequence diagram of
 [discrete]
 // tag::tag-search[]
 ==== Current implementation
-The user input is parsed and separated into a `String[]` of keywords in `TagCommandParser`. This array is then passed to `TagContainsKeywordsPredicate` which compares them individually to the entire list of recipes and their tags using a stream, setting the predicate to true when there is any match (i.e. the recipe does not have to contain ALL the tags specified like how the ingredient search was implemented).
+The user input is parsed and separated into a `_String_` array of keywords in `_TagCommandParser_`. This array is then passed to `_TagContainsKeywordsPredicate_` which compares them individually to the entire list of recipes and their tags using a stream, setting the predicate to true when there is any match (i.e. the recipe does not have to contain ALL the tags specified like how the ingredient search was implemented).
 The matching is case-sensitive and the implementation can be seen below:
 [source,java]
 ----
@@ -1238,7 +1242,7 @@ public boolean test(Recipe recipe) {
                     .anyMatch(tag -> tag.tagName.equals(keyword)));
 }
 ----
-This entire list of predicates is then passed into `TagCommand` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the tags.
+This entire list of predicates is then passed into `_TagCommand_` which uses the `updateFilteredRecipeList()` method of `Model` to change the list of recipes displayed to those that matched the tags.
 The sequence diagram of this entire process can be seen in <<fig-TagCommandSD>> below:
 
 [[fig-TagCommandSD]]
@@ -1299,9 +1303,9 @@ image::TagCommandSD.PNG[width="900"]
 === Undo/Redo feature
 ==== Current implementation
 
-The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `_LogicManager_`. It supports undoing and redoing of commands that modify the state of the recipe book (e.g. *`add`*, *`edit`*). Such commands will inherit from `_UndoableCommand_`.
+The undo/redo mechanism is facilitated by an `_UndoRedoStack_`, which resides inside `_LogicManager_`. It supports undoing and redoing of commands that modify the state of the recipe book (e.g. *`add`*, *`edit`*). Such commands will inherit from `_UndoableCommand_`.
 
-`UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `_Command_` instead. The following diagram  <<diag-LogicCommandClass>> shows the inheritance diagram for commands:
+`_UndoRedoStack_` only deals with `_UndoableCommands_`. Commands that cannot be undone will inherit from `_Command_` instead. The following diagram  <<diag-LogicCommandClass>> shows the inheritance diagram for commands:
 
 {nbsp} +
 
@@ -1310,7 +1314,7 @@ The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides insi
 image::LogicCommandClassDiagram.png[width="800"]
 {nbsp} +
 
-As you can see from the diagram, `UndoableCommand` adds an extra layer between the abstract `_Command_` class and concrete commands that can be undone, such as the `_DeleteCommand_`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the recipe book before execution. `_UndoableCommand_` contains the high-level algorithm for those extra tasks while the child classes implement the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
+As you can see from the diagram, `_UndoableCommand_` adds an extra layer between the abstract `_Command_` class and concrete commands that can be undone, such as the `_DeleteCommand_`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the recipe book before execution. `_UndoableCommand_` contains the high-level algorithm for those extra tasks while the child classes implement the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
 
 Commands that are not undoable are implemented this way:
 [source,java]
@@ -1343,9 +1347,9 @@ public class DeleteCommand extends UndoableCommand {
 }
 ----
 
-Suppose that the user has just launched the application. The `UndoRedoStack` will be empty at the beginning.
+Suppose that the user has just launched the application. The `_UndoRedoStack_` will be empty at the beginning.
 
-The user executes a new `_UndoableCommand_`, *`delete 5`*, to delete the 5th recipe in the recipe book. The current state of the recipe book is saved before the *`delete 5`* command executes. The *`delete 5`* command will then be pushed onto the `undoStack` as seen in <<diag-UndoRedo1>> below (the current state is saved together with the command).
+The user executes a new `_UndoableCommand_`, for example, *`delete 5`*. The current state of the recipe book is saved before the *`delete 5`* command executes. The *`delete 5`* command will then be pushed onto the `undoStack` as seen in <<diag-UndoRedo1>> below (the current state is saved together with the command).
 
 {nbsp} +
 
@@ -1354,7 +1358,7 @@ The user executes a new `_UndoableCommand_`, *`delete 5`*, to delete the 5th rec
 image::UndoRedoStartingStackDiagram.png[width="800"]
 {nbsp} +
 
-As the user continues to use the program, more commands are added into the `undoStack`. For example, the user may execute *`add n/David ...`* to add a new recipe.
+As the user continues to use the program, more commands are added into the `undoStack`. For example, the user may execute *`add n/Pizza ...`* to add a new recipe.
 The state of the stack is shown in <<diag-UndoRedo2>> below.
 
 {nbsp} +
@@ -1365,7 +1369,7 @@ image::UndoRedoNewCommand1StackDiagram.png[width="800"]
 {nbsp} +
 
 [NOTE]
-If a command fails its execution, it will not be pushed to the `UndoRedoStack` at all.
+If a command fails its execution, it will not be pushed to the `_UndoRedoStack_` at all.
 
 The user now decides that adding the recipe was a mistake, and decides to undo that action using *`undo`*.
 
@@ -1394,9 +1398,9 @@ image::UndoRedoSequenceDiagram.png[width="800"]
 The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the recipe book to the state after the command is executed).
 
 [NOTE]
-If the `redoStack` is empty, then there are no other commands left to be redone, and an `Exception` will be thrown when popping the `redoStack`.
+If the `redoStack` is empty, then there are no other commands left to be redone, and an `_Exception_` will be thrown when popping the `redoStack`.
 
-The user now decides to execute a new command, *`clear`*. As before, *`clear`* will be pushed into the `undoStack`. This time the `redoStack` is no longer empty. It will be purged as it no longer makes sense to redo the *`add n/David`* command (this is the behavior that most modern desktop applications follow).
+The user now decides to execute a new command, *`clear`*. As before, *`clear`* will be pushed into the `undoStack`. This time the `redoStack` is no longer empty. It will be purged as it no longer makes sense to redo the *`add n/Pizza`* command (this is the behavior that most modern desktop applications follow).
 Details can be seen in <<diag-UndoRedo4>> below.
 
 {nbsp} +
@@ -1406,7 +1410,7 @@ Details can be seen in <<diag-UndoRedo4>> below.
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
 {nbsp} +
 
-Commands that are not undoable are not added into the `undoStack`. For example, *`list`*, which inherits from `_Command_` rather than `UndoableCommand`, will not be added after execution as can be seen in <<diag-CannotUndoRedo>> below.
+Commands that are not undoable are not added into the `undoStack`. For example, *`list`*, which inherits from `_Command_` rather than `_UndoableCommand_`, will not be added after execution as can be seen in <<diag-CannotUndoRedo>> below.
 
 {nbsp} +
 
@@ -1415,7 +1419,7 @@ Commands that are not undoable are not added into the `undoStack`. For example, 
 image::UndoRedoNewCommand3StackDiagram.png[width="800"]
 {nbsp} +
 
-The following activity diagram <<diag-UndoRedoActDiag>> summarizes what happens inside the `UndoRedoStack` when a user executes a new command.
+The following activity diagram <<diag-UndoRedoActDiag>> summarizes what happens inside the `_UndoRedoStack_` when a user executes a new command.
 
 {nbsp} +
 
@@ -1437,17 +1441,17 @@ image::UndoRedoActivityDiagram.png[width="650"]
 
 ===== Aspect: How undo & redo executes.
 
-* **Alternative 1 (current choice):** Saves the entire recipe book.
+* **Alternative 1 (current choice):** Save the entire recipe book.
 ** Pros: It is easy to implement.
 ** Cons: There may be performance issues in terms of memory usage.
-* **Alternative 2:** Individual command knows how to undo/redo by itself.
+* **Alternative 2:** Hardcode the undo/redo into each command.
 ** Pros: This will use less memory (e.g. for *`delete`*, as it just saves the recipe being deleted).
 ** Cons: We must ensure that the implementation of each individual command is correct.
 
 
 ===== Aspect: Type of commands that can be undone/redone.
 
-* **Alternative 1 (current choice):** Only include commands that modify the recipe book (*`add`*, *`clear`*, *`edit`*).
+* **Alternative 1 (current choice):** Include only commands that modify the recipe book (*`add`*, *`clear`*, *`edit`*).
 ** Pros: We only revert changes that are hard to change back (the view can easily be re-modified as no data are * lost).
 ** Cons: The user might think that undo also applies when the list is modified (undoing filtering for example), * only to realize that it does not do that, after executing *`undo`*.
 * **Alternative 2:** Include all commands.
@@ -1459,11 +1463,11 @@ image::UndoRedoActivityDiagram.png[width="650"]
 ===== Aspect: Data structure to support the undo/redo commands.
 
 * **Alternative 1 (current choice):** Use separate stack for undo and redo.
-** Pros: This is easy to for new Computer Science student undergraduates to understand, who are likely to be * the new incoming developers of our project.
-** Cons: The logic is duplicated twice. For example, when a new command is executed, we must remember to update * both `HistoryManager` and `UndoRedoStack`.
-* **Alternative 2:** Use `HistoryManager` for undo/redo.
+** Pros: This is easy to for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.
+** Cons: The logic is duplicated twice. For example, when a new command is executed, we must remember to update both `_HistoryManager_` and `_UndoRedoStack_`.
+* **Alternative 2:** Use `_HistoryManager_` for undo/redo.
 ** Pros: We do not need to maintain a separate stack, and can just reuse what is already in the codebase.
-** Cons: This requires dealing with commands that have already been undone, meaning we must remember to skip these commands. It violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two * different things.
+** Cons: This requires dealing with commands that have already been undone, meaning we must remember to skip these commands. It violates Single Responsibility Principle and Separation of Concerns as `_HistoryManager_` now needs to do two * different things.
 
 === Unique Tag Colors
 // tag::unique-tag-colors[]
@@ -1591,7 +1595,7 @@ e.g. `seedu.recipe.logic.LogicManagerTest`
 
 
 === Troubleshooting testing
-**Problem: `HelpWindowTest` fails with a `NullPointerException`.**
+**Problem: `_HelpWindowTest_` fails with a `_NullPointerException_`.**
 
 * Reason: One of its dependencies, *UserGuide.html* in *src/main/resources/docs* is missing.
 * Solution: Execute Gradle task *processResources*.
@@ -1615,7 +1619,7 @@ When a pull request has changes to asciidoc files, you can use https://www.netli
 
 === Making a release
 
-Here are the steps to create a new release.
+Here are the steps to create a new release:
 
 .  Update the version number in link:{repoURL}/src/main/java/seedu/recipe/MainApp.java[`MainApp.java`].
 .  Generate a JAR file <<UsingGradle#creating-the-jar-file, using Gradle>>.
@@ -1656,7 +1660,7 @@ Do take a look at <<Design-Logic>> before attempting to modify the `Logic` compo
 ****
 * Hints
 ** Just like we store each individual command word constant `COMMAND_WORD` inside `*Command.java` (e.g.  link:{repoURL}/src/main/java/seedu/recipe/logic/commands/FindCommand.java[`FindCommand#COMMAND_WORD`], link:{repoURL}/src/main/java/seedu/recipe/logic/commands/DeleteCommand.java[`DeleteCommand#COMMAND_WORD`]), you need a new constant for aliases as well (e.g. `FindCommand#COMMAND_ALIAS`).
-** link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`RecipeBookParser`] is responsible for analyzing command words.
+** link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`_RecipeBookParser_`] is responsible for analyzing command words.
 * Solution
 ** Modify the switch statement in link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`RecipeBookParser#parseCommand(String)`] such that both the proper command word and alias can be used to execute the same intended command.
 ** Add new tests for each of the aliases that you have added.
@@ -1676,15 +1680,15 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 +
 ****
 * Hints
-** The link:{repoURL}/src/main/java/seedu/recipe/model/Model.java[`Model`] and the link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`RecipeBook`] API need to be updated.
+** The link:{repoURL}/src/main/java/seedu/recipe/model/Model.java[`Model`] and the link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`_RecipeBook_`] API need to be updated.
 ** Think about how you can use SLAP to design the method. Where should we place the main logic of deleting tags?
-**  Find out which of the existing API methods in  link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`RecipeBook`] and link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`Recipe`] classes can be used to implement the tag removal logic. link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`RecipeBook`] allows you to update a recipe, and link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`Recipe`] allows you to update the tags.
+**  Find out which of the existing API methods in  link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`_RecipeBook_`] and link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`_Recipe_`] classes can be used to implement the tag removal logic. link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`_RecipeBook_`] allows you to update a recipe, and link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`_Recipe_`] allows you to update the tags.
 * Solution
-** Implement a `removeTag(Tag)` method in link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`RecipeBook`]. Loop through each recipe, and remove the `tag` from each recipe.
-** Add a new API method `deleteTag(Tag)` in link:{repoURL}/src/main/java/seedu/recipe/model/ModelManager.java[`ModelManager`]. Your link:{repoURL}/src/main/java/seedu/recipe/model/ModelManager.java[`ModelManager`] should call `RecipeBook#removeTag(Tag)`.
+** Implement a `removeTag(Tag)` method in link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`_RecipeBook_`]. Loop through each recipe, and remove the `tag` from each recipe.
+** Add a new API method `deleteTag(Tag)` in link:{repoURL}/src/main/java/seedu/recipe/model/ModelManager.java[`_ModelManager_`]. Your link:{repoURL}/src/main/java/seedu/recipe/model/ModelManager.java[`_ModelManager_`] should call `RecipeBook#removeTag(Tag)`.
 ** Add new tests for each of the new public methods that you have added.
 ** See this https://github.com/se-edu/addressbook-level4/pull/790[PR] for the full solution.
-*** The current codebase has a flaw in tags management. Tags no longer in use by anyone may still exist on the link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`RecipeBook`]. This may cause some tests to fail. See issue  https://github.com/se-edu/addressbook-level4/issues/753[`#753`] for more information about this flaw.
+*** The current codebase has a flaw in tags management. Tags no longer in use by anyone may still exist on the link:{repoURL}/src/main/java/seedu/recipe/model/RecipeBook.java[`_RecipeBook_`]. This may cause some tests to fail. See issue  https://github.com/se-edu/addressbook-level4/issues/753[`#753`] for more information about this flaw.
 *** The solution PR has a temporary fix for the flaw mentioned above in its first commit.
 ****
 
@@ -1708,16 +1712,16 @@ image::getting-started-ui-tag-after.png[width="300"]
 +
 ****
 * Hints
-** The tag labels are created inside link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[the `RecipeCard` constructor] (`new Label(tag.tagName)`). https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Label.html[JavaFX's `Label` class] allows you to modify the style of each Label, such as changing its color.
+** The tag labels are created inside link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[the `_RecipeCard_` constructor] (`new Label(tag.tagName)`). https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Label.html[JavaFX's `_Label_` class] allows you to modify the style of each Label, such as changing its color.
 ** Use the .css attribute `-fx-background-color` to add a color.
 ** You may wish to modify link:{repoURL}/src/main/resources/view/DarkTheme.css[*DarkTheme.css*] to include some pre-defined colors using CSS, especially if you have experience with web-based CSS.
 * Solution
-** You can modify the existing test methods for `RecipeCard` 's to include testing the tag's color as well.
+** You can modify the existing test methods for `_RecipeCard_` 's to include testing the tag's color as well.
 ** See this https://github.com/se-edu/addressbook-level4/pull/798[PR] for the full solution.
 *** The PR uses the hash code of the tag names to generate a color. This is deliberately designed to ensure consistent colors each time the application runs. You may wish to expand on this design to include additional features, such as allowing users to set their own tag colors, and directly saving the colors to storage, so that tags retain their colors even if the hash code algorithm changes.
 ****
 
-. Modify link:{repoURL}/src/main/java/seedu/recipe/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/recipe/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
+. Modify link:{repoURL}/src/main/java/seedu/recipe/commons/events/ui/NewResultAvailableEvent.java[`_NewResultAvailableEvent_`] such that link:{repoURL}/src/main/java/seedu/recipe/ui/ResultDisplay.java[`_ResultDisplay_`] can show a different style on error (currently it shows the same regardless of errors).
 +
 **Before**
 +
@@ -1729,19 +1733,19 @@ image::getting-started-ui-result-after.png[width="200"]
 +
 ****
 * Hints
-** link:{repoURL}/src/main/java/seedu/recipe/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] is raised by link:{repoURL}/src/main/java/seedu/recipe/ui/CommandBox.java[`CommandBox`] which also knows whether the result is a success or failure, and is caught by link:{repoURL}/src/main/java/seedu/recipe/ui/ResultDisplay.java[`ResultDisplay`] which is where we want to change the style to.
-** Refer to link:{repoURL}/src/main/java/seedu/recipe/ui/CommandBox.java[`CommandBox`] for an example on how to display an error.
+** link:{repoURL}/src/main/java/seedu/recipe/commons/events/ui/NewResultAvailableEvent.java[`_NewResultAvailableEvent_`] is raised by link:{repoURL}/src/main/java/seedu/recipe/ui/CommandBox.java[`_CommandBox_`] which also knows whether the result is a success or failure, and is caught by link:{repoURL}/src/main/java/seedu/recipe/ui/ResultDisplay.java[`_ResultDisplay_`] which is where we want to change the style to.
+** Refer to link:{repoURL}/src/main/java/seedu/recipe/ui/CommandBox.java[`_CommandBox_`] for an example on how to display an error.
 * Solution
-** Modify link:{repoURL}/src/main/java/seedu/recipe/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] 's constructor so that users of the event can indicate whether an error has occurred.
+** Modify link:{repoURL}/src/main/java/seedu/recipe/commons/events/ui/NewResultAvailableEvent.java[`_NewResultAvailableEvent_`] 's constructor so that users of the event can indicate whether an error has occurred.
 ** Modify link:{repoURL}/src/main/java/seedu/recipe/ui/ResultDisplay.java[`ResultDisplay#handleNewResultAvailableEvent(NewResultAvailableEvent)`] to react to this event appropriately.
 ** You can write two different kinds of tests to ensure that the functionality works:
-*** The unit tests for `ResultDisplay` can be modified to include verification of the color.
-*** The system tests link:{repoURL}/src/test/java/systemtests/RecipeBookSystemTest.java[`RecipeBookSystemTest#assertCommandBoxShowsDefaultStyle() and RecipeBookSystemTest#assertCommandBoxShowsErrorStyle()`] to include verification for `ResultDisplay` as well.
+*** The unit tests for `_ResultDisplay_` can be modified to include verification of the color.
+*** The system tests link:{repoURL}/src/test/java/systemtests/RecipeBookSystemTest.java[`RecipeBookSystemTest#assertCommandBoxShowsDefaultStyle() and RecipeBookSystemTest#assertCommandBoxShowsErrorStyle()`] to include verification for `_ResultDisplay_` as well.
 ** See this https://github.com/se-edu/addressbook-level4/pull/799[PR] for the full solution.
 *** Do read the commits one at a time if you feel overwhelmed.
 ****
 
-. Modify the link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of recipes in the recipe book.
+. Modify the link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`_StatusBarFooter_`] to show the total number of recipes in the recipe book.
 +
 **Before**
 +
@@ -1753,13 +1757,13 @@ image::getting-started-ui-status-after.png[width="500"]
 +
 ****
 * Hints
-** link:{repoURL}/src/main/resources/view/StatusBarFooter.fxml[StatusBarFooter.fxml] will need a new `StatusBar`. Be sure to set the `GridPane.columnIndex` properly for each `StatusBar` to avoid misalignment!
-** link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`StatusBarFooter`] needs to initialize the status bar on application start, and to update it accordingly whenever the recipe book is updated.
+** link:{repoURL}/src/main/resources/view/StatusBarFooter.fxml[StatusBarFooter.fxml] will need a new `_StatusBar_`. Be sure to set the `GridPane.columnIndex` properly for each `_StatusBar_` to avoid misalignment!
+** link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`_StatusBarFooter_`] needs to initialize the status bar on application start, and to update it accordingly whenever the recipe book is updated.
 * Solution
-** Modify the constructor of link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`StatusBarFooter`] to take in the number of recipes when the application just started.
+** Modify the constructor of link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`_StatusBarFooter_`] to take in the number of recipes when the application just started.
 ** Use link:{repoURL}/src/main/java/seedu/recipe/ui/StatusBarFooter.java[`StatusBarFooter#handleRecipeBookChangedEvent(RecipeBookChangedEvent)`] to update the number of recipes whenever there are new changes to the Recipe Book.
-** For tests, modify link:{repoURL}/src/test/java/guitests/guihandles/StatusBarFooterHandle.java[`StatusBarFooterHandle`] by adding a state-saving functionality for the total number of recipes status, just like what we did for save location and sync status.
-** For system tests, modify link:{repoURL}/src/test/java/systemtests/RecipeBookSystemTest.java[`RecipeBookSystemTest`] to also verify the new total number of recipes status bar.
+** For tests, modify link:{repoURL}/src/test/java/guitests/guihandles/StatusBarFooterHandle.java[`_StatusBarFooterHandle_`] by adding a state-saving functionality for the total number of recipes status, just like what we did for save location and sync status.
+** For system tests, modify link:{repoURL}/src/test/java/systemtests/RecipeBookSystemTest.java[`_RecipeBookSystemTest_`] to also verify the new total number of recipes status bar.
 ** See this https://github.com/se-edu/addressbook-level4/pull/803[PR] for the full solution.
 ****
 
@@ -1775,8 +1779,8 @@ Do take a look at <<Design-Storage>> before attempting to modify the `Storage` c
 +
 ****
 * Hint
-** Add the API method in link:{repoURL}/src/main/java/seedu/recipe/storage/RecipeBookStorage.java[`RecipeBookStorage`] interface.
-** Implement the logic in link:{repoURL}/src/main/java/seedu/recipe/storage/StorageManager.java[`StorageManager`] and link:{repoURL}/src/main/java/seedu/recipe/storage/XmlRecipeBookStorage.java[`XmlRecipeBookStorage`] class.
+** Add the API method in link:{repoURL}/src/main/java/seedu/recipe/storage/RecipeBookStorage.java[`_RecipeBookStorage_`] interface.
+** Implement the logic in link:{repoURL}/src/main/java/seedu/recipe/storage/StorageManager.java[`_StorageManager_`] and link:{repoURL}/src/main/java/seedu/recipe/storage/XmlRecipeBookStorage.java[`_XmlRecipeBookStorage_`] class.
 * Solution
 ** See this https://github.com/se-edu/addressbook-level4/pull/594[PR] for the full solution.
 ****
@@ -1806,88 +1810,88 @@ Let's start by teaching the application how to parse a `remark` command. We will
 
 ===== Main:
 
-. Add a `RemarkCommand` that extends link:{repoURL}/src/main/java/seedu/recipe/logic/commands/UndoableCommand.java[`UndoableCommand`]. Upon execution, it should just throw an `Exception`.
-. Modify link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`RecipeBookParser`] to accept a `RemarkCommand`.
+. Add a `_RemarkCommand_` that extends link:{repoURL}/src/main/java/seedu/recipe/logic/commands/UndoableCommand.java[`_UndoableCommand_`]. Upon execution, it should just throw an `_Exception_`.
+. Modify link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`_RecipeBookParser_`] to accept a `_RemarkCommand_`.
 
 ===== Tests:
 
-. Add `RemarkCommandTest` that tests that `executeUndoableCommand()` throws an Exception.
-. Add new test method to link:{repoURL}/src/test/java/seedu/recipe/logic/parser/RecipeBookParserTest.java[`RecipeBookParserTest`], which tests that typing "remark" returns an instance of `RemarkCommand`.
+. Add `_RemarkCommandTest_` that tests that `executeUndoableCommand()` throws an Exception.
+. Add new test method to link:{repoURL}/src/test/java/seedu/recipe/logic/parser/RecipeBookParserTest.java[`_RecipeBookParserTest_`], which tests that typing "remark" returns an instance of `_RemarkCommand_`.
 
 **[Step 2] Logic: Teach the app to accept 'remark' arguments.**
 Let's teach the application to parse arguments that our `remark` command will accept. E.g. `1 r/This is a fictional recipe.`
 
 ===== Main:
 
-. Modify `RemarkCommand` to take in an `Index` and `_String_` and print those two parameters as the error message.
-. Add `RemarkCommandParser` that knows how to parse two arguments, one index and one with prefix 'r/'.
-. Modify link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`RecipeBookParser`] to use the newly implemented `RemarkCommandParser`.
+. Modify `_RemarkCommand_` to take in an `_Index_` and `_String_` and print those two parameters as the error message.
+. Add `_RemarkCommandParser_` that knows how to parse two arguments, one index and one with prefix 'r/'.
+. Modify link:{repoURL}/src/main/java/seedu/recipe/logic/parser/RecipeBookParser.java[`_RecipeBookParser_`] to use the newly implemented `_RemarkCommandParser_`.
 
 ===== Tests:
 
-. Modify `RemarkCommandTest` to test the `RemarkCommand#equals()` method.
-. Add `RemarkCommandParserTest` that tests different boundary values
-for `RemarkCommandParser`.
-. Modify link:{repoURL}/src/test/java/seedu/recipe/logic/parser/RecipeBookParserTest.java[`RecipeBookParserTest`] to test that the correct command is generated according to the user input.
+. Modify `_RemarkCommandTest_` to test the `RemarkCommand#equals()` method.
+. Add `_RemarkCommandParserTest_` that tests different boundary values
+for `_RemarkCommandParser_`.
+. Modify link:{repoURL}/src/test/java/seedu/recipe/logic/parser/RecipeBookParserTest.java[`_RecipeBookParserTest_`] to test that the correct command is generated according to the user input.
 
-**[Step 3] Ui: Add a placeholder for remark in `RecipeCard`.**
-Let's add a placeholder on all our link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`RecipeCard`] s to display a remark for each recipe later.
+**[Step 3] Ui: Add a placeholder for remark in `_RecipeCard_`.**
+Let's add a placeholder on all our link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`_RecipeCard_`] s to display a remark for each recipe later.
 
 ===== Main:
 
-. Add a `Label` with any random text inside link:{repoURL}/src/main/resources/view/RecipeListCard.fxml[RecipeListCard.fxml].
-. Add FXML annotation in link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`RecipeCard`] to tie the variable to the actual label.
+. Add a `_Label_` with any random text inside link:{repoURL}/src/main/resources/view/RecipeListCard.fxml[RecipeListCard.fxml].
+. Add FXML annotation in link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`_RecipeCard_`] to tie the variable to the actual label.
 
 ===== Tests:
 
-. Modify link:{repoURL}/src/test/java/guitests/guihandles/RecipeCardHandle.java[`RecipeCardHandle`] so that future tests can read the contents of the remark label.
+. Modify link:{repoURL}/src/test/java/guitests/guihandles/RecipeCardHandle.java[`_RecipeCardHandle_`] so that future tests can read the contents of the remark label.
 
-**[Step 4] Model: Add `Remark` class.**
-We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`Recipe`] class. Instead of just using a `_String_`, let's follow the conventional class structure that the codebase already uses by adding a `Remark` class.
+**[Step 4] Model: Add `_Remark_` class.**
+We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`_Recipe_`] class. Instead of just using a `_String_`, let's follow the conventional class structure that the codebase already uses by adding a `_Remark_` class.
 
 ===== Main:
 
-. Add `Remark` to model component (you can copy from link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Instruction.java[`Instruction`], remove the regex and change the names accordingly).
-. Modify `RemarkCommand` to now take in a `Remark` instead of a `_String_`.
+. Add `_Remark_` to model component (you can copy from link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Instruction.java[`_Instruction_`], remove the regex and change the names accordingly).
+. Modify `_RemarkCommand_` to now take in a `_Remark_` instead of a `_String_`.
 
 ===== Tests:
 
-. Add test for `Remark`, to test the `Remark#equals()` method.
+. Add test for `_Remark_`, to test the `Remark#equals()` method.
 
-**[Step 5] Model: Modify `_Recipe_` to support a `Remark` field.**
-Now we have the `Remark` class, we need to actually use it inside link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`Recipe`].
+**[Step 5] Model: Modify `_Recipe_` to support a `_Remark_` field.**
+Now we have the `_Remark_` class, we need to actually use it inside link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`_Recipe_`].
 
 ===== Main:
 
-. Add `getRemark()` in link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`Recipe`].
+. Add `getRemark()` in link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`_Recipe_`].
 . You may assume that the user will not be able to use the *`add`* and `edit` commands to modify the remarks field (i.e. the recipe will be created without a remark).
-. Modify link:{repoURL}/src/main/java/seedu/recipe/model/util/SampleDataUtil.java/[`SampleDataUtil`] to add remarks for the sample data (delete your *recipeBook.xml* so that the application will load the sample data when you launch it.)
+. Modify link:{repoURL}/src/main/java/seedu/recipe/model/util/SampleDataUtil.java/[`_SampleDataUtil_`] to add remarks for the sample data (delete your *recipeBook.xml* so that the application will load the sample data when you launch it.)
 
-**[Step 6] Storage: Add `Remark` field to `XmlAdaptedRecipe` class.**
-We now have `Remark` s for `_Recipe_` s, but they will be gone when we exit the application. Let's modify link:{repoURL}/src/main/java/seedu/recipe/storage/XmlAdaptedRecipe.java[`XmlAdaptedRecipe`] to include a `Remark` field so that it will be saved.
+**[Step 6] Storage: Add `_Remark_` field to `_XmlAdaptedRecipe_` class.**
+We now have `_Remark_` s for `_Recipe_` s, but they will be gone when we exit the application. Let's modify link:{repoURL}/src/main/java/seedu/recipe/storage/XmlAdaptedRecipe.java[`_XmlAdaptedRecipe_`] to include a `_Remark_` field so that it will be saved.
 
 ===== Main:
 
-. Add a new XML field for `Remark`.
+. Add a new XML field for `_Remark_`.
 
 ===== Tests:
 
 . Fix *invalidAndValidRecipeRecipeBook.xml*, *typicalRecipesRecipeBook.xml*, *validRecipeBook.xml* etc., such that the XML tests will not fail due to a missing `<remark>` element.
 
-**[Step 6b] Test: Add withRemark() for `RecipeBuilder`.**
-Since `_Recipe_` can now have a `Remark`, we should add a helper method to link:{repoURL}/src/test/java/seedu/recipe/testutil/RecipeBuilder.java[`RecipeBuilder`], so that users are able to create remarks when building a link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`Recipe`].
+**[Step 6b] Test: Add withRemark() for `_RecipeBuilder_`.**
+Since `_Recipe_` can now have a `_Remark_`, we should add a helper method to link:{repoURL}/src/test/java/seedu/recipe/testutil/RecipeBuilder.java[`_RecipeBuilder_`], so that users are able to create remarks when building a link:{repoURL}/src/main/java/seedu/recipe/model/recipe/Recipe.java[`_Recipe_`].
 
 ===== Tests:
 
-. Add a new method `withRemark()` for link:{repoURL}/src/test/java/seedu/recipe/testutil/RecipeBuilder.java[`RecipeBuilder`]. This method will create a new `Remark` for the recipe that it is currently building.
-. Try and use the method on any sample `_Recipe_` in link:{repoURL}/src/test/java/seedu/recipe/testutil/TypicalRecipes.java[`TypicalRecipes`].
+. Add a new method `withRemark()` for link:{repoURL}/src/test/java/seedu/recipe/testutil/RecipeBuilder.java[`_RecipeBuilder_`]. This method will create a new `_Remark_` for the recipe that it is currently building.
+. Try and use the method on any sample `_Recipe_` in link:{repoURL}/src/test/java/seedu/recipe/testutil/TypicalRecipes.java[`_TypicalRecipes_`].
 
-**[Step 7] Ui: Connect `Remark` field to `RecipeCard`.**
-Our remark label in link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`RecipeCard`] is still a placeholder. Let's bring it to life by binding it with the actual `remark` field.
+**[Step 7] Ui: Connect `_Remark_` field to `_RecipeCard_`.**
+Our remark label in link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`_RecipeCard_`] is still a placeholder. Let's bring it to life by binding it with the actual `remark` field.
 
 ===== Main:
 
-. Modify link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`RecipeCard`]'s constructor to bind the `Remark` field to the `_Recipe_` 's remark.
+. Modify link:{repoURL}/src/main/java/seedu/recipe/ui/RecipeCard.java[`_RecipeCard_`]'s constructor to bind the `_Remark_` field to the `_Recipe_` 's remark.
 
 ===== Tests:
 
@@ -1898,11 +1902,11 @@ We now have everything set up... but we still can't modify the remarks. Let's fi
 
 ===== Main:
 
-. Replace the logic in `RemarkCommand#execute()` (that currently just throws an `Exception`), with the actual logic to modify the remarks of a recipe.
+. Replace the logic in `RemarkCommand#execute()` (that currently just throws an `_Exception_`), with the actual logic to modify the remarks of a recipe.
 
 ===== Tests:
 
-. Update `RemarkCommandTest` to test that the `execute()` logic works.
+. Update `_RemarkCommandTest_` to test that the `execute()` logic works.
 
 **Full Solution**
 
@@ -2249,7 +2253,7 @@ Sample commands can be found in the cheatsheet in the User Guide. Here are some 
 * Steps:
 .. Open data/recipebook.xml, remove line 5, save the file.
 .. Re-launch the app.
-* Expected outcome: The app will be initialized with 12 sample recipes.
+* Expected outcome: The app will be initialized with an empty recipe book.
 
 . Dealing with missing images:
 * Steps:

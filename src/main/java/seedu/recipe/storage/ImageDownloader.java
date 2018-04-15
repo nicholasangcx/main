@@ -49,11 +49,7 @@ public class ImageDownloader {
                     + testUrl + ". It is likely the app is not connected to the Internet.");
         }
 
-        if (image != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return image != null;
     }
 
     /**

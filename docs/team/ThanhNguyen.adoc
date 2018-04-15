@@ -13,7 +13,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 Welcome to my portfolio page for CS2103T Academic Year 2018 Semester 2 project - *ReciRecipé*.
 
 [.print-only]
-Please visit the https://recirecipe.netlify.com/team/ThanhNguyen.html[online page] to view my project portfolio with full formatting.
+Please visit the https://recirecipe.netlify.com/team/ThanhNguyen.html[online page] to view my project portfolio in full formatting.
 
 ---
 
@@ -29,7 +29,7 @@ include::../UserGuide.adoc[tag=applicationDescription]
 
 === Enhancement: Input with multiple lines support
 ==== Why?
-A recipe book needs to have instructions and instructions usually consist of long body of text which contains multiple lines. Therefore, a `_CommandBox_` that supports input with multiple lines is essential for this product.
+A recipe book needs to have instructions, and instructions usually consist of long body of text which contains multiple lines. Therefore, a `_CommandBox_` that supports input with multiple lines is essential for this product.
 
 This feature has been implemented in version 1.1, in PR link:https://github.com/CS2103JAN2018-F09-B2/main/pull/12[#12].
 
@@ -118,6 +118,7 @@ Below are various contributions I have made to ReciRecipé, some of which were c
 ** Added new fields (`CookingTime`, `PreparationTime`, `Calories`, `Servings`) and fix old fields formatting (PR https://github.com/CS2103JAN2018-F09-B2/main/pull/50[#50]).
 
 * Project management & quality assurance:
+** Managed the issues and milestones.
 ** Added continuous integration tools using https://ci.appveyor.com/project/kokonguyen191/main[AppVeyor],
 https://coveralls.io/github/CS2103JAN2018-F09-B2/main?branch=master[Coveralls] and
 https://app.codacy.com/app/kokonguyen191/main/dashboard[Codacy] (commits link:https://github.com/CS2103JAN2018-F09-B2/main/commit/4bbee79bf29fed6255f28869c1fd4443afba5844[4bbee79] & link:https://github.com/CS2103JAN2018-F09-B2/main/commit/e1f945872d623f578a37246941f529d6b4ba64ea[e1f9458]).
