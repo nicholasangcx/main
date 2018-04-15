@@ -347,30 +347,30 @@ item.setOnAction(event -> commandBox.replaceText(textInputProcessor.replaceLastW
 
 ===== Aspect: Base class of SuggestionsPopUp.
 
-* **Alternative 1 (current choice):** `_ContextMenu_`.
-** Pros: Easy to use since `_ContextMenu_` and `_TextArea_` are in the same library `javafx.scene.control`.
-** Cons: Dependent on `_TextArea_` in `_CommandBox_` class.
-* **Alternative 2:** `_JPopupMenu_`
-** Pros: NA.
-** Cons: Need additional work to make `_JPopupMenu_` compatible with `_TextArea_`.
+* **Alternative 1 (current choice):** Usage of a `_ContextMenu_`.
+** Pros: It is easy to use since `_ContextMenu_` and `_TextArea_` are in the same library `javafx.scene.control`.
+** Cons: This is dependent on `_TextArea_` in the `_CommandBox_` class.
+* **Alternative 2:** Usage of a `_JPopupMenu_`
+** Pros: There are no pros to this implementation.
+** Cons: It requires additional work to make `_JPopupMenu_` compatible with `_TextArea_`.
 
 ===== Aspect: Abstraction of `_SuggestionsPopUp_`.
 
 * **Alternative 1 (current choice):** A separate class `_SuggestionsPopUp_`.
-** Pros: More intuitive approach since `_SuggestionsPopUp_` is a component in `UI`.
-** Cons: Need to take extra information from `_CommandBox_` class.
+** Pros: This is a more intuitive approach since `_SuggestionsPopUp_` is a component in `UI`.
+** Cons: It requires extra information to be taken from `_CommandBox_` class.
 * **Alternative 2:** An inner class of `_CommandBox_` class.
-** Pros: Easy to implement since it has access to all attributes and methods of `_CommandBox_`.
-** Cons: Limitations in reusability.
+** Pros: This is easy to implement since it has access to all attributes and methods of `_CommandBox_`.
+** Cons: There are limitations to the reusability of this implementation.
 
 ===== Aspect: Abstraction of `_TextInputProcessorUtil_`.
 
 * **Alternative 1 (current choice):** A separate class `_TextInputProcessorUtil_`.
-** Pros: Common functions easily used by other classes if needed.
-** Cons: NA.
+** Pros: The common functions are easily used by other classes if needed.
+** Cons: There are no cons to this implementation.
 * **Alternative 2:** An inner class of `_SuggestionsPopUp_` class.
-** Pros: Convenient to use inside the containing class.
-** Cons: Limitations in reusability.
+** Pros: It is convenient to use inside the containing class.
+** Cons: There are limitations to the reusability of this implementation.
 // end::auto-completion[]
 
 === Changing theme
@@ -782,11 +782,11 @@ As the result of this implementation, when user creates a group that has the sam
 ===== Aspect: Effects when create a duplicate group.
 
 * **Alternative 1 (current choice):** Recipes are added to existing group.
-** Pros: Make application more flexible. Users can create a group and update a group with a single command like this, in the situation that other commands to edit groups are not supported.
-** Cons: Create confusion for users who do not read _User Guide_ carefully.
+** Pros: This makes the application more flexible as users can create a group and update a group with a single command.
+** Cons: It might create confusion for users who do not read _User Guide_ carefully.
 * **Alternative 2:** No change. Display a message to inform users that the group exists.
-** Pros: Give users the most intuitive behavior of the command.
-** Cons: Limit operations with groups, when other commands are not implementated.
+** Pros: This gives users the most intuitive behavior of the command.
+** Cons: There are only limited operations with groups, if no additional commands are implemented.
 // end::group-command[]
 
 // tag::inserting-an-image[]
